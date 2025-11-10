@@ -63,16 +63,15 @@ public class QueryAvailabilityFunction(
         var requestUntil = request.Until;
         var requestConsecutive = request.Consecutive;
 
-        var sites = await siteService.GetAllSites();
-        var activeSites = request.Sites.Where(rs => sites.Any(s => s.Id == rs && s.isDeleted is false or null));
-        if (!activeSites.Any())
+        var sites = await siteService.GetAllSites(includeDeleted: false);
+        if (!sites.Any())
         {
             return Success([]);
         }
 
-        await Parallel.ForEachAsync(activeSites, async (site, ct) =>
+        await Parallel.ForEachAsync(sites, async (site, ct) =>
         {
-            var siteAvailability = await GetAvailability(site, request.Service, request.QueryType, requestFrom, requestUntil, requestConsecutive ?? 1);
+            var siteAvailability = await GetAvailability(site.Id, request.Service, request.QueryType, requestFrom, requestUntil, requestConsecutive ?? 1);
             concurrentResults.Add(siteAvailability);
         });
 

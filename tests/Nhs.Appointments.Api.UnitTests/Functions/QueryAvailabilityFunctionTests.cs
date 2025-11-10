@@ -405,45 +405,7 @@ public class QueryAvailabilityFunctionTests
     public async Task RunAsync_ReturnsEmptyArray_WhenAllRequestedSites_HaveBeenSoftDeleted()
     {
         _siteService.Setup(x => x.GetAllSites(It.IsAny<bool>(), It.IsAny<bool>()))
-            .ReturnsAsync(new List<Site>
-            {
-                new(
-                    "2de5bb57-060f-4cb5-b14d-16587d0c2e8f",
-                    "Test Site",
-                    "Test Address",
-                    "01234567890",
-                    "ODS1",
-                    "R1",
-                    "ICB1",
-                    string.Empty,
-                    new List<Accessibility>
-                    {
-                        new("test_acces/one", "true")
-                    },
-                    new Location("Coords", [1.234, 5.678]),
-                    null,
-                    true,
-                    string.Empty
-                    ),
-                new(
-                    "34e990af-5dc9-43a6-8895-b9123216d699",
-                    "Test Site 2",
-                    "Test Address 2",
-                    "09876543210",
-                    "ODS2",
-                    "R2",
-                    "ICB2",
-                    string.Empty,
-                    new List<Accessibility>
-                    {
-                        new("test_acces/one", "true")
-                    },
-                    new Location("Coords", [1.234, 5.678]),
-                    null,
-                    true,
-                    string.Empty
-                    )
-            });
+            .ReturnsAsync(new List<Site>());
 
         var request = new QueryAvailabilityRequest(
             ["2de5bb57-060f-4cb5-b14d-16587d0c2e8f", "34e990af-5dc9-43a6-8895-b9123216d699"],
@@ -493,24 +455,6 @@ public class QueryAvailabilityFunctionTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     false,
-                    string.Empty
-                    ),
-                new(
-                    "34e990af-5dc9-43a6-8895-b9123216d699",
-                    "Test Site 2",
-                    "Test Address 2",
-                    "09876543210",
-                    "ODS2",
-                    "R2",
-                    "ICB2",
-                    string.Empty,
-                    new List<Accessibility>
-                    {
-                        new("test_acces/one", "true")
-                    },
-                    new Location("Coords", [1.234, 5.678]),
-                    null,
-                    true,
                     string.Empty
                     )
             });

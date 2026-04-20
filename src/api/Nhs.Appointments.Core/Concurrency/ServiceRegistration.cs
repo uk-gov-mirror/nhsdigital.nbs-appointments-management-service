@@ -1,5 +1,6 @@
-﻿using Nhs.Appointments.Core.Concurrency;
 using Microsoft.Extensions.Azure;
+using Nhs.Appointments.Core.Blob;
+using Nhs.Appointments.Core.Concurrency;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -17,12 +18,14 @@ public static class ServiceRegistration
             opts.Timeout = TimeSpan.FromSeconds(30);
             opts.ContainerName = containerName;
         });
-
+                    
         services.AddAzureClients(x =>
         {
             x.AddBlobServiceClient(connectionString);
         });
 
-        return services.AddSingleton<ISiteLeaseManager, AzureStorageSiteLeaseManager>();
+        return services
+            .AddSingleton<IAzureBlobStorage, AzureBlobStorage>()
+            .AddSingleton<ISiteLeaseManager, AzureStorageSiteLeaseManager>();
     }
 }

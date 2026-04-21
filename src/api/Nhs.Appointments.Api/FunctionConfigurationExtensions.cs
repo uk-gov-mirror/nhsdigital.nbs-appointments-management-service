@@ -26,6 +26,7 @@ using Nhs.Appointments.Core;
 using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Core.BulkImport;
+using Nhs.Appointments.Core.Caching;
 using Nhs.Appointments.Core.ClinicalServices;
 using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Json;
@@ -35,7 +36,6 @@ using Nhs.Appointments.Core.Okta;
 using Nhs.Appointments.Core.Reports.MasterSiteList;
 using Nhs.Appointments.Core.Reports.SiteSummary;
 using Nhs.Appointments.Core.Reports.Users;
-using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Persistance;
 
 namespace Nhs.Appointments.Api;
@@ -122,7 +122,8 @@ public static class FunctionConfigurationExtensions
             .AddTransient<ISiteStatusDataImportHandler, SiteStatusDataImportHandler>()
             .AddTransient<IAvailableSlotsFilter, AvailableSlotsFilter>()
             .AddScoped<ILastUpdatedByResolver, LastUpdatedByResolver>()
-            .AddTransient<IUserCsvWriter, UserCsvWriter>();
+            .AddTransient<IUserCsvWriter, UserCsvWriter>()
+            .AddCaching(configuration);
 
         var leaseManagerConnection = Environment.GetEnvironmentVariable("LEASE_MANAGER_CONNECTION");
         if (leaseManagerConnection == "local")

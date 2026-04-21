@@ -19,7 +19,7 @@ public class ClinicalServiceProviderTests
     {
         _storeMock = new Mock<IClinicalServiceStore>();
         _memoryCacheMock = new Mock<IMemoryCache>();
-        _sut = new ClinicalServiceProvider(_storeMock.Object, new CacheService(new InMemoryCacheStore(_memoryCacheMock.Object), TimeProvider.System));
+        _sut = new ClinicalServiceProvider(_storeMock.Object, new CacheService(new InMemoryCacheStore(_memoryCacheMock.Object), new InMemoryCacheLease(), TimeProvider.System));
     }
 
     [Fact]

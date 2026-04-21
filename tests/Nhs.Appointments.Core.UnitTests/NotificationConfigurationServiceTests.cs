@@ -13,7 +13,7 @@ public class NotificationConfigurationServiceTests
 
     public NotificationConfigurationServiceTests()
     {
-        _sut = new NotificationConfigurationService(new CacheService(new InMemoryCacheStore(_memoryCacheMock.Object), TimeProvider.System), _storeMock.Object);
+        _sut = new NotificationConfigurationService(new CacheService(new InMemoryCacheStore(_memoryCacheMock.Object), new InMemoryCacheLease(), TimeProvider.System), _storeMock.Object);
     }
 
     [Fact]

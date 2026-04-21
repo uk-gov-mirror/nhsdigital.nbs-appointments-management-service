@@ -8,11 +8,11 @@ using Nhs.Appointments.Api.Providers;
 using Nhs.Appointments.Audit.Persistance;
 using Nhs.Appointments.Audit.Services;
 using Nhs.Appointments.Core;
+using Nhs.Appointments.Core.Caching;
 using Nhs.Appointments.Core.ClinicalServices;
 using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Messaging;
 using Nhs.Appointments.Core.Reports.SiteSummary;
-using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 using Nhs.Appointments.Persistance;
 
@@ -52,7 +52,8 @@ public class NotificationsServiceProviderExtensionsTests
             {
                 { "Notifications_Provider", "local" },
                 { "GovNotifyBaseUri", "https://api.notifications.service.gov.uk" },
-                { "GovNotifyApiKey", "some-api-key-123abc" }
+                { "GovNotifyApiKey", "some-api-key-123abc" },
+                { "CACHE_MODE", "InMemory" }
             })
             .Build();
 
@@ -60,6 +61,7 @@ public class NotificationsServiceProviderExtensionsTests
             .AddDependenciesNotUnderTest()
             .AddUserNotifications(configuration)
             .AddTypedCosmosDataStores()
+            .AddCaching(configuration)
             .AddTransient<ITypedDocumentCosmosStore<AuditFunctionDocument>, TypedDocumentCosmosStore<AuditFunctionDocument>>()
             .AddTransient<ITypedDocumentCosmosStore<AuditAuthDocument>, TypedDocumentCosmosStore<AuditAuthDocument>>()
             .AddTransient<ITypedDocumentCosmosStore<AuditNotificationDocument>, TypedDocumentCosmosStore<AuditNotificationDocument>>()

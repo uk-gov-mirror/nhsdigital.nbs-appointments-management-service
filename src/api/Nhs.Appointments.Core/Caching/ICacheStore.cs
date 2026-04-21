@@ -2,7 +2,8 @@
 
 public interface ICacheStore
 {
-    Task<bool> TryGetAsync<T>(string key, out T value);
+    Task<CacheStoreResponse<T>> TryGetAsync<T>(string key);
     Task SetAsync<T>(string key, T value, DateTimeOffset absoluteExpiration);
+    Task<bool> CanUpdateCacheAsync(string key);
     Task SetAsync<T>(string key, T value, TimeSpan expirationRelativeToNow);
 }

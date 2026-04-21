@@ -15,7 +15,7 @@ public class JwksRetrieverTests
 
     public JwksRetrieverTests()
     {
-        _sut = new JwksRetriever(_httpClientFactory.Object, new CacheService(new InMemoryCacheStore(_memoryCache.Object), TimeProvider.System));
+        _sut = new JwksRetriever(_httpClientFactory.Object, new CacheService(new InMemoryCacheStore(_memoryCache.Object), new InMemoryCacheLease(), TimeProvider.System));
     }
 
     [Fact]

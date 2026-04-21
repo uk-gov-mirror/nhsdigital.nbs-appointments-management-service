@@ -24,7 +24,7 @@ public class PermissionCheckerTests
         _sut = new PermissionChecker(
             _userAssignmentService.Object,
             _roleService.Object,
-            new CacheService(new InMemoryCacheStore(_cache.Object), TimeProvider.System),
+            new CacheService(new InMemoryCacheStore(_cache.Object), new InMemoryCacheLease(), TimeProvider.System),
             _siteService.Object);
 
         _cache.Setup(x => x.CreateEntry(It.IsAny<string>())).Returns(_cacheEntry.Object);

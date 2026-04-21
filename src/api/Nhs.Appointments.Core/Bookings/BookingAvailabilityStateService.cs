@@ -156,10 +156,12 @@ public class BookingAvailabilityStateService(
         
         var state = new BookingAvailabilityState();
 
+        var bookingsList = bookings.ToList();
+
         //have to materialise to a list as we transform the data within
         var slotsList = sessions.SelectMany(session => session.ToSlots()).ToList();
 
-        var liveBookings = bookings.Where(x => _liveStatuses.Contains(x.Status));
+        var liveBookings = bookingsList.Where(x => _liveStatuses.Contains(x.Status));
 
         List<DayAvailabilitySummary> daySummaries = [];
 
@@ -249,7 +251,7 @@ public class BookingAvailabilityStateService(
                 state.AvailableSlots = slotsList.Where(s => s.Capacity > 0);
                 break;
             case BookingAvailabilityStateReturnType.Summary:
-                state.Summary = GenerateSummary(bookings, daySummaries);
+                state.Summary = GenerateSummary(bookingsList, daySummaries);
                 break;
             case BookingAvailabilityStateReturnType.Recalculations:
             case BookingAvailabilityStateReturnType.SessionUpdateProposalMetrics:

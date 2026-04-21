@@ -27,6 +27,8 @@ public class SiteServiceTests
             SiteSupportsServiceSlidingCacheSlideThresholdSeconds = 900,
             SiteSupportsServiceSlidingCacheAbsoluteExpirationSeconds = 14400,
             SiteSupportsServiceBatchMultiplier = 2,
+            SiteCacheDurationMinutes = 5,
+            SiteSlideCacheDurationMinutes = 1,
         });
 
         var cacheService = new CacheService(_memoryCache.Object, TimeProvider.System);

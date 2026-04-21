@@ -79,17 +79,17 @@ public abstract class GetMasterSiteListReportFeatureSteps(string flag, bool enab
             SiteName = r.Cells.ElementAt(0).Value,
             OdsCode = r.Cells.ElementAt(1).Value,
             SiteType = r.Cells.ElementAt(2).Value,
-            Region = r.Cells.ElementAt(3).Value,
-            ICB = r.Cells.ElementAt(4).Value,
-            GUID = r.Cells.ElementAt(5).Value,
-            IsDeleted = r.Cells.ElementAt(6).Value, 
-            Status = r.Cells.ElementAt(7).Value, 
-            Long = r.Cells.ElementAt(8).Value, 
-            Lat = r.Cells.ElementAt(9).Value, 
-            Address = r.Cells.ElementAt(10).Value, 
-            RegionalName = r.Cells.ElementAt(11).Value, 
-            IcbName = r.Cells.ElementAt(12).Value, 
-            Accessibility = r.Cells.ElementAt(13).Value 
+            Region = r.Cells.ElementAt(3).Value, 
+            RegionalName = r.Cells.ElementAt(4).Value,  
+            ICB = r.Cells.ElementAt(5).Value,
+            IcbName = r.Cells.ElementAt(6).Value,
+            GUID = r.Cells.ElementAt(7).Value,
+            IsDeleted = r.Cells.ElementAt(8).Value,
+            Status = r.Cells.ElementAt(9).Value,
+            Long = r.Cells.ElementAt(10).Value,
+            Lat = r.Cells.ElementAt(11).Value, 
+            Address = r.Cells.ElementAt(12).Value,
+            Accessibility = r.Cells.ElementAt(19).Value
         });
 
         var actualReport = actualData.ToList();
@@ -141,7 +141,7 @@ public abstract class GetMasterSiteListReportFeatureSteps(string flag, bool enab
         public string Lat { get; set; }
         [Name("Address")]
         public string Address { get; set; }
-        [Name("accessibility/attr_one")]
+        [Name("Step free access")]
         public string Accessibility { get; set; }
     }
 }

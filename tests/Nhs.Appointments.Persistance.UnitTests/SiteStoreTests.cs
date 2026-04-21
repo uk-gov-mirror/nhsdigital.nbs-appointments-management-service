@@ -1,18 +1,24 @@
 using FluentAssertions;
 using Microsoft.Azure.Cosmos;
+using Moq;
 using Nhs.Appointments.Core.Sites;
+using Nhs.Appointments.Core.OdsCodes;
 using Nhs.Appointments.Persistance.Models;
 
 namespace Nhs.Appointments.Persistance.UnitTests;
 public class SiteStoreTests
 {
     private readonly Mock<ITypedDocumentCosmosStore<SiteDocument>> _siteStore = new();
+    private readonly Mock<IWellKnownOdsCodesStore> _odsCodeStore = new();
 
     private readonly SiteStore _sut;
 
     public SiteStoreTests()
     {
-        _sut = new SiteStore(_siteStore.Object);
+        _sut = new SiteStore(_siteStore.Object, _odsCodeStore.Object);
+
+        _odsCodeStore.Setup(x => x.GetWellKnownOdsCodesDocument())
+            .ReturnsAsync(new List<WellKnownOdsEntry>());
     }
 
     [Fact]
@@ -43,8 +49,6 @@ public class SiteStoreTests
                 OdsCode = "ODS1",
                 Region = "R1",
                 IntegratedCareBoard = "ICB1",
-                RegionalName = "Regional Name 1",
-                IntegratedCareBoardName = "ICB Name 1",
                 InformationForCitizens = "Information",
                 Accessibilities = [],
                 Location = new Location("Coordinates", [-1.75, 52.76]),
@@ -83,8 +87,6 @@ public class SiteStoreTests
                 OdsCode = "ODS1",
                 Region = "R1",
                 IntegratedCareBoard = "ICB1",
-                RegionalName = "Regional Name 1",
-                IntegratedCareBoardName = "ICB Name 1",
                 InformationForCitizens = "Information",
                 Accessibilities = [],
                 Location = new Location("Coordinates", [-1.75, 52.76]),
@@ -123,8 +125,6 @@ public class SiteStoreTests
                 OdsCode = "ODS1",
                 Region = "R1",
                 IntegratedCareBoard = "ICB1",
-                RegionalName = "Regional Name 1",
-                IntegratedCareBoardName = "ICB Name 1",
                 InformationForCitizens = "Information",
                 Accessibilities = [],
                 Location = new Location("Coordinates", [-1.75, 52.76]),
@@ -163,8 +163,6 @@ public class SiteStoreTests
                 OdsCode = "ODS1",
                 Region = "R1",
                 IntegratedCareBoard = "ICB1",
-                RegionalName = "Regional Name 1",
-                IntegratedCareBoardName = "ICB Name 1",
                 InformationForCitizens = "Information",
                 Accessibilities = [],
                 Location = new Location("Coordinates", [-1.75, 52.76]),
@@ -227,8 +225,6 @@ public class SiteStoreTests
                 OdsCode = "ODS1",
                 Region = "R1",
                 IntegratedCareBoard = "ICB1",
-                RegionalName = "Regional Name 1",
-                IntegratedCareBoardName = "ICB Name 1",
                 InformationForCitizens = "Information",
                 Accessibilities = [],
                 Location = new Location("Coordinates", [-1.75, 52.76]),
@@ -259,8 +255,6 @@ public class SiteStoreTests
                 OdsCode = "ODS1",
                 Region = "R1",
                 IntegratedCareBoard = "ICB1",
-                RegionalName = "Regional Name 1",
-                IntegratedCareBoardName = "ICB Name 1",
                 InformationForCitizens = "Information",
                 Accessibilities = [],
                 Location = new Location("Coordinates", [-1.75, 52.76]),
@@ -298,8 +292,6 @@ public class SiteStoreTests
                 OdsCode = "ODS1",
                 Region = "R1",
                 IntegratedCareBoard = "ICB1",
-                RegionalName = "Regional Name 1",
-                IntegratedCareBoardName = "ICB Name 1",
                 InformationForCitizens = "Information",
                 Accessibilities = [],
                 Location = new Location("Coordinates", [-1.75, 52.76]),
@@ -337,8 +329,6 @@ public class SiteStoreTests
                 OdsCode = "ODS1",
                 Region = "R1",
                 IntegratedCareBoard = "ICB1",
-                RegionalName = "Regional Name 1",
-                IntegratedCareBoardName = "ICB Name 1",
                 InformationForCitizens = "Information",
                 Accessibilities = [],
                 Location = new Location("Coordinates", [-1.75, 52.76]),

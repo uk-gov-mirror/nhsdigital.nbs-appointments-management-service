@@ -86,20 +86,21 @@ public class GetReportMasterSiteListFunctionTests
         var csvLines = contentString.Split(Environment.NewLine);
         var headers = csvLines[0].Split(',');
 
-        headers.Length.Should().Be(13);
-        headers.Should().Contain("Site Name");
-        headers.Should().Contain("ODS Code");
-        headers.Should().Contain("Site Type");
-        headers.Should().Contain("Region");
-        headers.Should().Contain("Regional Name");
-        headers.Should().Contain("ICB");
-        headers.Should().Contain("ICB Name");
-        headers.Should().Contain("GUID");
-        headers.Should().Contain("IsDeleted");
-        headers.Should().Contain("Status");
-        headers.Should().Contain("Long");
-        headers.Should().Contain("Lat");
-        headers.Should().Contain("Address");
+        headers.Length.Should().Be(22);
+
+        var expectedHeaders = new[]
+        {
+            "Site Name", "ODS Code", "Site Type", "Region", "Regional Name",
+            "ICB", "ICB Name", "GUID", "IsDeleted", "Status", "Long", "Lat", "Address",
+            "Accessible toilet", "Braille translation service", "Disabled car parking",
+            "Car parking", "Induction loop", "Sign language service",
+            "Step free access", "Text relay", "Wheelchair access"
+        };
+
+        foreach (var header in expectedHeaders)
+        {
+            headers.Should().Contain(header);
+        }
     }
 
     private static HttpRequest CreateRequest()

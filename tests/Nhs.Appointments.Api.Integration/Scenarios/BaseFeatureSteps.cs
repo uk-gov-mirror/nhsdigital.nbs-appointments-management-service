@@ -962,13 +962,6 @@ public abstract partial class BaseFeatureSteps : Feature
             OdsCode = dataTable.GetRowValueOrDefault(row, "OdsCode"),
             Region = dataTable.GetRowValueOrDefault(row, "Region"),            
             IntegratedCareBoard = dataTable.GetRowValueOrDefault(row, "ICB"),
-            // These now only attempt to pull if the column exists in Gherkin
-            RegionalName = headers.Contains("RegionalName")
-            ? dataTable.GetRowValueOrDefault(row, "RegionalName")
-            : null,
-            IntegratedCareBoardName = headers.Contains("ICBName")
-            ? dataTable.GetRowValueOrDefault(row, "ICBName")
-            : null,
             InformationForCitizens = dataTable.GetRowValueOrDefault(row, "InformationForCitizens"),
             DocumentType = "site",
             Accessibilities = ParseAccessibilities(dataTable.GetRowValueOrDefault(row, "Accessibilities")),
@@ -1005,12 +998,6 @@ public abstract partial class BaseFeatureSteps : Feature
             OdsCode = dataTable.GetRowValueOrDefault(row, "OdsCode"),
             Region = dataTable.GetRowValueOrDefault(row, "Region"),
             IntegratedCareBoard = dataTable.GetRowValueOrDefault(row, "ICB"),
-            RegionalName = headers.Contains("RegionalName")
-            ? dataTable.GetRowValueOrDefault(row, "RegionalName")
-            : null,
-            IntegratedCareBoardName = headers.Contains("ICBName")
-            ? dataTable.GetRowValueOrDefault(row, "ICBName")
-            : null,
             InformationForCitizens = dataTable.GetRowValueOrDefault(row, "InformationForCitizens"),
             DocumentType = "site",
             Accessibilities = ParseAccessibilities(dataTable.GetRowValueOrDefault(row, "Accessibilities")),
@@ -1044,12 +1031,6 @@ public abstract partial class BaseFeatureSteps : Feature
             OdsCode = dataTable.GetRowValueOrDefault(row, "OdsCode"),
             Region = dataTable.GetRowValueOrDefault(row, "Region"),
             IntegratedCareBoard = dataTable.GetRowValueOrDefault(row, "ICB"),
-            RegionalName = headers.Contains("RegionalName")
-            ? dataTable.GetRowValueOrDefault(row, "RegionalName")
-            : null,
-            IntegratedCareBoardName = headers.Contains("ICBName")
-            ? dataTable.GetRowValueOrDefault(row, "ICBName")
-            : null,
             InformationForCitizens = dataTable.GetRowValueOrDefault(row, "InformationForCitizens"),
             DocumentType = "site",
             Accessibilities = ParseAccessibilities(dataTable.GetRowValueOrDefault(row, "Accessibilities")),

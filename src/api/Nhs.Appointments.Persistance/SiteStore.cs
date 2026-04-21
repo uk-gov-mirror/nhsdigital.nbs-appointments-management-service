@@ -2,11 +2,12 @@ using System.Net;
 using Microsoft.Azure.Cosmos;
 using Nhs.Appointments.Core;
 using Nhs.Appointments.Core.Sites;
+using Nhs.Appointments.Core.OdsCodes;
 using Nhs.Appointments.Persistance.Models;
 
 namespace Nhs.Appointments.Persistance;
 
-public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore) : ISiteStore
+public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore, IWellKnownOdsCodesStore odsCodeStore) : ISiteStore
 {
     public async Task<Site> GetSiteById(string siteId)
     {
@@ -16,7 +17,9 @@ public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore) : IS
     public async Task<IEnumerable<Site>> GetAllSites()
     {
         var siteDocuments = await cosmosStore.RunQueryAsync(sd => sd.DocumentType == "site");
-        return siteDocuments?.Select(MapToSite) ?? [];
+        // Fetch lookup data first
+        var lookup = await odsCodeStore.GetWellKnownOdsCodesDocument();
+        return siteDocuments?.Select(sd => MapToSite(sd, lookup)) ?? [];
     }
 
     public async Task<int> GetReferenceNumberGroup(string site)
@@ -117,13 +120,15 @@ public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore) : IS
         await cosmosStore.PatchDocument(documentType, siteId, [.. detailsPatchOperations]);
         return new OperationResult(true);
     }
-    
+
     private async Task<Site> GetOrDefault(string siteId)
     {
         try
         {
             var siteDocument = await cosmosStore.GetDocument(siteId);
-            return MapToSite(siteDocument);
+            // Fetch lookup data for mapping
+            var lookup = await odsCodeStore.GetWellKnownOdsCodesDocument();
+            return MapToSite(siteDocument, lookup);
         }
         catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
         {
@@ -178,7 +183,8 @@ public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore) : IS
     public async Task<IEnumerable<Site>> GetSitesInRegionAsync(string region)
     {
         var siteDocuments = await cosmosStore.RunQueryAsync(sd => sd.DocumentType == "site" && sd.Region == region);
-        return siteDocuments?.Select(MapToSite) ?? [];
+        var lookup = await odsCodeStore.GetWellKnownOdsCodesDocument();
+        return siteDocuments?.Select(sd => MapToSite(sd, lookup)) ?? [];
     }
 
     public async Task<OperationResult> UpdateSiteStatusAsync(string siteId, SiteStatus status)
@@ -205,7 +211,8 @@ public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore) : IS
     public async Task<IEnumerable<Site>> GetSitesInIcbAsync(string icb)
     {
         var siteDocuments = await cosmosStore.RunQueryAsync(sd => sd.DocumentType == "site" && sd.IntegratedCareBoard == icb);
-        return siteDocuments?.Select(MapToSite) ?? [];
+        var lookup = await odsCodeStore.GetWellKnownOdsCodesDocument();
+        return siteDocuments?.Select(sd => MapToSite(sd, lookup)) ?? [];
     }
 
     public async Task<OperationResult> ToggleSiteSoftDeletionAsync(string siteId)
@@ -226,7 +233,7 @@ public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore) : IS
         return new OperationResult(true);        
     }
 
-    private static Site MapToSite(SiteDocument siteDocument)
+    private static Site MapToSite(SiteDocument siteDocument, IEnumerable<WellKnownOdsEntry> lookupEntries)
     {
         return siteDocument is null ? null : new Site(
             siteDocument.Id,
@@ -236,8 +243,9 @@ public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore) : IS
             siteDocument.OdsCode,
             siteDocument.Region,
             siteDocument.IntegratedCareBoard,
-            siteDocument.RegionalName,
-            siteDocument.IntegratedCareBoardName,
+            // Match the code to the DisplayName in the well-known document
+            lookupEntries?.FirstOrDefault(e => e.OdsCode == siteDocument.Region)?.DisplayName,
+            lookupEntries?.FirstOrDefault(e => e.OdsCode == siteDocument.IntegratedCareBoard)?.DisplayName,
             siteDocument.InformationForCitizens,
             siteDocument.Accessibilities ?? [],
             siteDocument.Location,

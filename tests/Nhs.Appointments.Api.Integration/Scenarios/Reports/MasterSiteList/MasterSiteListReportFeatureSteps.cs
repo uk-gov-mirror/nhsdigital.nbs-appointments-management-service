@@ -82,11 +82,14 @@ public abstract class GetMasterSiteListReportFeatureSteps(string flag, bool enab
             Region = r.Cells.ElementAt(3).Value,
             ICB = r.Cells.ElementAt(4).Value,
             GUID = r.Cells.ElementAt(5).Value,
-            IsDeleted = r.Cells.ElementAt(6).Value,
-            Status = r.Cells.ElementAt(7).Value,
-            Long = r.Cells.ElementAt(8).Value,
-            Lat = r.Cells.ElementAt(9).Value,
-            Address = r.Cells.ElementAt(10).Value
+            IsDeleted = r.Cells.ElementAt(6).Value, 
+            Status = r.Cells.ElementAt(7).Value, 
+            Long = r.Cells.ElementAt(8).Value, 
+            Lat = r.Cells.ElementAt(9).Value, 
+            Address = r.Cells.ElementAt(10).Value, 
+            RegionalName = r.Cells.ElementAt(11).Value, 
+            IcbName = r.Cells.ElementAt(12).Value, 
+            Accessibility = r.Cells.ElementAt(13).Value 
         });
 
         var actualReport = actualData.ToList();
@@ -98,12 +101,15 @@ public abstract class GetMasterSiteListReportFeatureSteps(string flag, bool enab
             realReport.OdsCode.Should().Be(expectedRow.OdsCode);
             realReport.SiteType.Should().Be(expectedRow.SiteType);
             realReport.Region.Should().Be(expectedRow.Region);
+            realReport.RegionalName.Should().Be(expectedRow.RegionalName);
             realReport.ICB.Should().Be(expectedRow.ICB);
+            realReport.IcbName.Should().Be(expectedRow.IcbName);
             realReport.IsDeleted.Should().Be(expectedRow.IsDeleted);
             realReport.Status.Should().Be(expectedRow.Status);
             realReport.Lat.Should().Be(expectedRow.Lat);
             realReport.Long.Should().Be(expectedRow.Long);
             realReport.Address.Should().Be(expectedRow.Address);
+            realReport.Accessibility.Should().Be(expectedRow.Accessibility);
         }
     }
 
@@ -117,8 +123,12 @@ public abstract class GetMasterSiteListReportFeatureSteps(string flag, bool enab
         public string SiteType { get; set; }
         [Name("Region")]
         public string Region { get; set; }
+        [Name("Regional Name")]
+        public string RegionalName { get; set; }
         [Name("ICB")]
         public string ICB { get; set; }
+        [Name("ICB Name")] 
+        public string IcbName { get; set; }
         [Name("GUID")]
         public string GUID { get; set; }
         [Name("IsDeleted")]
@@ -131,5 +141,7 @@ public abstract class GetMasterSiteListReportFeatureSteps(string flag, bool enab
         public string Lat { get; set; }
         [Name("Address")]
         public string Address { get; set; }
+        [Name("accessibility/attr_one")]
+        public string Accessibility { get; set; }
     }
 }

@@ -38,7 +38,7 @@ public class UserRolesChangedNotifierTests
         ]));
         _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
-                "R1", "ICB1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty)));
+                "R1", "ICB1", "Regional Name 1", "ICB Name 1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty)));
 
         _notificationClient.Setup(x => x.SendEmailAsync(Email, TemplateId,
             It.Is<Dictionary<string, dynamic>>(dic =>
@@ -57,7 +57,7 @@ public class UserRolesChangedNotifierTests
             new Role { Id = "newRole", Name = "New Role" }, new Role { Id = "removedRole", Name = "Removed Role" }
         ]));
         _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>())).Returns(
-            Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N", "R1", "ICB1", "Information For Citizens 123",
+            Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N", "R1", "ICB1", "Regional Name 1", "ICB Name 1", "Information For Citizens 123",
                 Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty))).Verifiable();
 
         await _sut.Notify(nameof(UserRolesChanged), Email, Site, ["newRole"], ["removedRole"]);
@@ -74,7 +74,7 @@ public class UserRolesChangedNotifierTests
         ])).Verifiable();
         _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
-                "R1", "ICB1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty)));
+                "R1", "ICB1", "Regional Name 1", "ICB Name 1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty)));
 
         await _sut.Notify(nameof(UserRolesChanged), Email, Site, ["newRole"], ["removedRole"]);
         _rolesStore.Verify();
@@ -90,7 +90,7 @@ public class UserRolesChangedNotifierTests
         ]));
         _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
-                "R1", "ICB1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty)));
+                "R1", "ICB1", "Regional Name 1", "ICB Name 1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty)));
 
         await _sut.Notify(nameof(UserRolesChanged), Email, Site, [], []);
         _notificationClient.Verify(x =>
@@ -108,7 +108,7 @@ public class UserRolesChangedNotifierTests
         ]));
         _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
-                "R1", "ICB1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty)));
+                "R1", "ICB1", "Regional Name 1", "ICB Name 1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty)));
 
         _notificationClient.Setup(x => x.SendEmailAsync(Email, TemplateId,
             It.Is<Dictionary<string, dynamic>>(dic =>
@@ -129,7 +129,7 @@ public class UserRolesChangedNotifierTests
         ]));
         _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
-                "R1", "ICB1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty)));
+                "R1", "ICB1", "Regional Name 1", "ICB Name 1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty)));
 
         _notificationClient.Setup(x => x.SendEmailAsync(Email, TemplateId,
             It.Is<Dictionary<string, dynamic>>(dic =>
@@ -151,7 +151,7 @@ public class UserRolesChangedNotifierTests
         ]));
         _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
-                "R1", "ICB1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty)));
+                "R1", "ICB1", "Regional Name 1", "ICB Name 1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty)));
 
         await _sut.Notify(nameof(UserRolesChanged), Email, Site, ["newRole"], ["removedRole"]);
         _notificationConfigurationService.Verify();

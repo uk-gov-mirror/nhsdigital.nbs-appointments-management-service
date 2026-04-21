@@ -56,6 +56,8 @@ public class SetSiteAccessibilitiesFunctionTests
                     "ODS1",
                     "R1",
                     "ICB1",
+                    "Regional Name 1",
+                    "ICB Name 1",
                     string.Empty,
                     accessibilities,
                     new Location("Coords", [1.234, 5.678]),

@@ -70,6 +70,8 @@ public abstract class SiteManagementBaseFeatureSteps : AuditFeatureSteps
             OdsCode: row.Cells.ElementAt(3).Value,
             Region: row.Cells.ElementAt(4).Value,
             IntegratedCareBoard: row.Cells.ElementAt(5).Value,
+            RegionalName: "Test Regional Name", 
+            IntegratedCareBoardName: "Test ICB Name",
             InformationForCitizens: row.Cells.ElementAt(6).Value,
             Accessibilities: ParseAccessibilities(row.Cells.ElementAt(7).Value),
             new Location(
@@ -83,7 +85,10 @@ public abstract class SiteManagementBaseFeatureSteps : AuditFeatureSteps
         
         var actualResult =
             await CosmosReadItem<Site>("core_data", GetSiteId(), new PartitionKey("site"), CancellationToken.None);
-        
-        actualResult.Resource.Should().BeEquivalentTo(expectedSite, opts => opts.WithStrictOrdering());
+
+        actualResult.Resource.Should().BeEquivalentTo(expectedSite, opts => opts
+            .WithStrictOrdering()
+            .Excluding(x => x.RegionalName)
+            .Excluding(x => x.IntegratedCareBoardName));
     }
 }

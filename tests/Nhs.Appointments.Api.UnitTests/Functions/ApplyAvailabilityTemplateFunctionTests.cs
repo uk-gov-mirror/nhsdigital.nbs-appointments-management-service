@@ -98,6 +98,8 @@ public class ApplyAvailabilityTemplateFunctionTests
                     "ODS1",
                     "R1",
                     "ICB1",
+                    "Regional Name 1",
+                    "ICB Name 1",
                     string.Empty,
                     new List<Accessibility>
                     {

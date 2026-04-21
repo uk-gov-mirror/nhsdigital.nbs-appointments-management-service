@@ -236,6 +236,8 @@ public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore) : IS
             siteDocument.OdsCode,
             siteDocument.Region,
             siteDocument.IntegratedCareBoard,
+            siteDocument.RegionalName,
+            siteDocument.IntegratedCareBoardName,
             siteDocument.InformationForCitizens,
             siteDocument.Accessibilities ?? [],
             siteDocument.Location,

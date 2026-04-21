@@ -611,7 +611,8 @@ public class UserDataImportHandlerTests
 
         foreach (var row in InputRows)
         {
-            sites.Add(new Site(row.Split(',')[3], "Test", "Test Address", "07777777777", "ABC123", "Test Region", "ICB", "", [], new Location("Test", [1.0, 60.0]), SiteStatus.Online, null, string.Empty));
+            sites.Add(new Site(row.Split(',')[3], "Test", "Test Address", "07777777777", "ABC123", "Test Region", "ICB", "", "Regional Name 1",
+                "ICB Name 1", [], new Location("Test", [1.0, 60.0]), SiteStatus.Online, null, string.Empty));
         }
 
         return sites;

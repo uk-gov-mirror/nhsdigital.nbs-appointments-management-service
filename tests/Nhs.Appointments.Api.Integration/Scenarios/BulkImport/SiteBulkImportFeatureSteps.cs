@@ -58,6 +58,8 @@ public class SiteBulkImportFeatureSteps : BaseBulkImportFeatureSteps, IAsyncLife
             OdsCode: row.Cells.ElementAt(4).Value,
             Region: row.Cells.ElementAt(5).Value,
             IntegratedCareBoard: row.Cells.ElementAt(6).Value,
+            RegionalName: "Test Regional Name",
+            IntegratedCareBoardName: "Test ICB Name",
             InformationForCitizens: row.Cells.ElementAt(7).Value,
             Accessibilities: ParseAccessibilities(row.Cells.ElementAt(8).Value),
             location: new Location("Point", [double.Parse(row.Cells.ElementAt(9).Value), double.Parse(row.Cells.ElementAt(10).Value)]),
@@ -68,7 +70,10 @@ public class SiteBulkImportFeatureSteps : BaseBulkImportFeatureSteps, IAsyncLife
         Response.StatusCode.Should().Be(HttpStatusCode.OK);
         (_, ActualResponse) =
             await JsonRequestReader.ReadRequestAsync<Site>(await Response.Content.ReadAsStreamAsync());
-        ActualResponse.Should().BeEquivalentTo(expectedSite, opts => opts.Excluding(x => x.isDeleted));
+        ActualResponse.Should().BeEquivalentTo(expectedSite, opts => opts
+            .Excluding(x => x.isDeleted)
+            .Excluding(x => x.RegionalName)
+            .Excluding(x => x.IntegratedCareBoardName));
     }
 
     public Task InitializeAsync()

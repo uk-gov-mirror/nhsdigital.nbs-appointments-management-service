@@ -51,7 +51,7 @@ public class BookingNotifierTests
                 new NotificationConfiguration { EmailTemplateId = EmailTemplateId, SmsTemplateId = SmsTemplateId });
         _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
-                "R1", "ICB1", "Information For Citizens 123", null, null, SiteStatus.Online, null, string.Empty)));
+                "R1", "ICB1", "Regional Name 1", "ICB Name 1", "Information For Citizens 123", null, null, SiteStatus.Online, null, string.Empty)));
         _clinicalServiceProviderMock.Setup(x => x.Get(Service)).ReturnsAsync(clinicalService);
         _notificationClient.Setup(x => x.SendEmailAsync(Email, EmailTemplateId, It.Is<Dictionary<string, dynamic>>(
             dic =>
@@ -84,7 +84,7 @@ public class BookingNotifierTests
                 new NotificationConfiguration { EmailTemplateId = EmailTemplateId, SmsTemplateId = SmsTemplateId });
         _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
-                "R1", "ICB1", "Information For Citizens 123", null, null, SiteStatus.Online, null, string.Empty)));
+                "R1", "ICB1", "Regional Name 1", "ICB Name 1", "Information For Citizens 123", null, null, SiteStatus.Online, null, string.Empty)));
         _clinicalServiceProviderMock.Setup(x => x.Get(Service)).ReturnsAsync(clinicalService);
         _notificationClient.Setup(x => x.SendSmsAsync(PhoneNumber, SmsTemplateId, It.Is<Dictionary<string, dynamic>>(
             dic =>
@@ -132,7 +132,7 @@ public class BookingNotifierTests
                 new NotificationConfiguration { EmailTemplateId = EmailTemplateId, SmsTemplateId = SmsTemplateId });
         _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
-                "R1", "ICB1", informationForCitizens, null, null, SiteStatus.Online, null, string.Empty)));
+                "R1", "ICB1", "Regional Name 1", "ICB Name 1", informationForCitizens, null, null, SiteStatus.Online, null, string.Empty)));
         _clinicalServiceProviderMock.Setup(x => x.Get(Service)).ReturnsAsync(clinicalService);
         _notificationClient.Setup(x => x.SendEmailAsync(Email, EmailTemplateId, It.Is<Dictionary<string, dynamic>>(
             dic =>
@@ -170,7 +170,7 @@ public class BookingNotifierTests
             .Setup(x => x.GetNotificationConfigurationsAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(
                 new NotificationConfiguration { EmailTemplateId = EmailTemplateId, SmsTemplateId = SmsTemplateId });
         _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>())).Returns(
-            Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N", "R1", "ICB1", "Information For Citizens 123",
+            Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N", "R1", "ICB1", "Regional Name 1", "ICB Name 1", "Information For Citizens 123",
                 Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty))).Verifiable();
         _clinicalServiceProviderMock.Setup(x => x.Get(Service)).ReturnsAsync(clinicalService);
         _notificationClient.Setup(
@@ -194,7 +194,7 @@ public class BookingNotifierTests
             .Setup(x => x.GetNotificationConfigurationsAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(
                 new NotificationConfiguration { EmailTemplateId = EmailTemplateId, SmsTemplateId = SmsTemplateId });
         _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(
-            Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N", "R1", "ICB1", "Information For Citizens 123",
+            Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N", "R1", "ICB1", "Regional Name 1", "ICB Name 1", "Information For Citizens 123",
                 Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty)));
         _clinicalServiceProviderMock.Setup(x => x.Get(Service)).ReturnsAsync(clinicalService);
         _notificationClient.Setup(

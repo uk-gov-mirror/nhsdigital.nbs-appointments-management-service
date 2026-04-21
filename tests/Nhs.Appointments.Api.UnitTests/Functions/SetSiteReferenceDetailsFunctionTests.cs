@@ -55,6 +55,8 @@ public class SetSiteReferenceDetailsFunctionTests
                     odsCode,
                     region,
                     icb,
+                    "Regional Name 1",
+                    "ICB Name 1",
                     string.Empty,
                     new List<Accessibility>
                     {

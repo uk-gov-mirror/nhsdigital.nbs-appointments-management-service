@@ -92,9 +92,11 @@ public class SiteLocationDependentFeatureSteps : BaseFeatureSteps, IAsyncLifetim
             OdsCode: row.Cells.ElementAt(3).Value,
             Region: row.Cells.ElementAt(4).Value,
             IntegratedCareBoard: row.Cells.ElementAt(5).Value,
+            RegionalName: "Test Regional Name",
+            IntegratedCareBoardName: "Test ICB Name",
             InformationForCitizens: row.Cells.ElementAt(6).Value,
             Accessibilities: ParseAccessibilities(row.Cells.ElementAt(7).Value),
-            new Location(
+            location: new Location(
                 Type: "Point",
                 Coordinates: [double.Parse(row.Cells.ElementAt(8).Value), double.Parse(row.Cells.ElementAt(9).Value)]),
             status: null,
@@ -106,7 +108,10 @@ public class SiteLocationDependentFeatureSteps : BaseFeatureSteps, IAsyncLifetim
         var actualResult =
             await CosmosReadItem<Site>("core_data", siteId, new PartitionKey("site"), CancellationToken.None);
 
-        actualResult.Resource.Should().BeEquivalentTo(expectedSite, opts => opts.WithStrictOrdering());
+        actualResult.Resource.Should().BeEquivalentTo(expectedSite, opts => opts
+            .WithStrictOrdering()
+            .Excluding(x => x.RegionalName)
+            .Excluding(x => x.IntegratedCareBoardName));
     }
 
     [When("I query sites by site type and ODS code")]
@@ -379,18 +384,21 @@ public class SiteLocationDependentFeatureSteps : BaseFeatureSteps, IAsyncLifetim
         var expectedSites = dataTable.Rows.Skip(1).Select(row => new SiteWithDistance(
             new Site(
                 Id: GetSiteId(row.Cells.ElementAt(0).Value),
-                Name: row.Cells.ElementAt(1).Value,
-                Address: row.Cells.ElementAt(2).Value,
-                PhoneNumber: row.Cells.ElementAt(3).Value,
-                OdsCode: row.Cells.ElementAt(4).Value,
-                Region: row.Cells.ElementAt(5).Value,
-                IntegratedCareBoard: row.Cells.ElementAt(6).Value,
-                InformationForCitizens: row.Cells.ElementAt(7).Value,
-                Accessibilities: ParseAccessibilities(row.Cells.ElementAt(8).Value),
-                new Location("Point",
-                    Coordinates:
+                Name: row.Cells.ElementAt(1).Value, 
+                Address: row.Cells.ElementAt(2).Value, 
+                PhoneNumber: row.Cells.ElementAt(3).Value, 
+                OdsCode: row.Cells.ElementAt(4).Value, 
+                Region: row.Cells.ElementAt(5).Value, 
+                IntegratedCareBoard: row.Cells.ElementAt(6).Value, 
+                RegionalName: "Test Regional Name",
+                IntegratedCareBoardName: "Test ICB Name",
+                InformationForCitizens: row.Cells.ElementAt(7).Value, 
+                Accessibilities: ParseAccessibilities(row.Cells.ElementAt(8).Value), 
+                location: new Nhs.Appointments.Core.Sites.Location(
+                    "Point",
+                    Coordinates: 
                     [
-                        double.Parse(row.Cells.ElementAt(9).Value), double.Parse(row.Cells.ElementAt(10).Value)
+                        double.Parse(row.Cells.ElementAt(9).Value), double.Parse(row.Cells.ElementAt(10).Value) 
                     ]),
                 status: null,
                 isDeleted: dataTable.GetBoolRowValueOrDefault(row, "IsDeleted"),
@@ -401,7 +409,10 @@ public class SiteLocationDependentFeatureSteps : BaseFeatureSteps, IAsyncLifetim
         _sitesWithDistanceResponse.Should().HaveCount(dataTable.Rows.Count() - 1);
 
         Response.StatusCode.Should().Be(HttpStatusCode.OK);
-        _sitesWithDistanceResponse.Should().BeEquivalentTo(expectedSites);
+        _sitesWithDistanceResponse.Should().BeEquivalentTo(expectedSites, opts => opts
+            .Excluding(x => x.Site.RegionalName)
+            .Excluding(x => x.Site.IntegratedCareBoardName));
+
         _sitesWithDistanceResponse.Select(s => s.Distance).Should().BeInAscendingOrder();
     }
 
@@ -413,7 +424,7 @@ public class SiteLocationDependentFeatureSteps : BaseFeatureSteps, IAsyncLifetim
     }
 
     [Then(@"the call should fail with (\d*)")]
-    public void AssertFailureCode(int statusCode) => StatusCode.Should().Be((HttpStatusCode)statusCode);
+    public new void AssertFailureCode(int statusCode) => StatusCode.Should().Be((HttpStatusCode)statusCode);
 
     [When("I make the 'query sites' request with access needs")]
     public async Task QuerySitesWithAccessNeeds(DataTable dataTable)

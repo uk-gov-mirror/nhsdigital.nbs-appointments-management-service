@@ -55,6 +55,8 @@ public class GetSiteMetaDataFunctionTests
                 OdsCode: "15N",
                 Region: "R1",
                 IntegratedCareBoard: "ICB1",
+                RegionalName: "Regional Name 1",
+                IntegratedCareBoardName: "ICB Name 1",
                 InformationForCitizens: "InformationForCitizens 123",
                 Accessibilities: [new(attrId, attrVal)],
                 new Location("Test", [123.1, 321.3]),

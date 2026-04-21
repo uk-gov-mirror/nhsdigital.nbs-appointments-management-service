@@ -86,12 +86,14 @@ public class GetReportMasterSiteListFunctionTests
         var csvLines = contentString.Split(Environment.NewLine);
         var headers = csvLines[0].Split(',');
 
-        headers.Length.Should().Be(11);
+        headers.Length.Should().Be(13);
         headers.Should().Contain("Site Name");
         headers.Should().Contain("ODS Code");
         headers.Should().Contain("Site Type");
         headers.Should().Contain("Region");
+        headers.Should().Contain("Regional Name");
         headers.Should().Contain("ICB");
+        headers.Should().Contain("ICB Name");
         headers.Should().Contain("GUID");
         headers.Should().Contain("IsDeleted");
         headers.Should().Contain("Status");

@@ -20,31 +20,36 @@ public class MasterSiteListReportCsvWriter(TimeProvider timeProvider) : IMasterS
 
     private async Task CompileCsv(TextWriter csvWriter, IEnumerable<Site> sites)
     {
-        await csvWriter.WriteLineAsync(string.Join(',', MasterSiteListReportMap.Headers()));
+        var headers = MasterSiteListReportMap.Headers();
+        await csvWriter.WriteLineAsync(string.Join(',', headers));
 
         foreach (var site in sites)
         {
-            try
+            var row = new List<string>
             {
-                await csvWriter.WriteLineAsync(string.Join(',',
-                    CsvFormatter.FormatValue(MasterSiteListReportMap.SiteName(site)),
-                    CsvFormatter.FormatValue(MasterSiteListReportMap.OdsCode(site)), 
-                    CsvFormatter.FormatValue(MasterSiteListReportMap.SiteType(site)),
-                    CsvFormatter.FormatValue(MasterSiteListReportMap.Region(site)),
-                    CsvFormatter.FormatValue(MasterSiteListReportMap.ICB(site)),
-                    CsvFormatter.FormatValue(MasterSiteListReportMap.Guid(site)),
-                    MasterSiteListReportMap.IsDeleted(site),
-                    CsvFormatter.FormatValue(MasterSiteListReportMap.Status(site)),
-                    MasterSiteListReportMap.Longitude(site),
-                    MasterSiteListReportMap.Latitude(site),
-                    CsvFormatter.FormatValue(MasterSiteListReportMap.Address(site))
-                   ));
+                CsvFormatter.FormatValue(MasterSiteListReportMap.SiteName(site)),
+                CsvFormatter.FormatValue(MasterSiteListReportMap.OdsCode(site)),
+                CsvFormatter.FormatValue(MasterSiteListReportMap.SiteType(site)),
+                CsvFormatter.FormatValue(MasterSiteListReportMap.Region(site)),
+                CsvFormatter.FormatValue(MasterSiteListReportMap.RegionalName(site)),
+                CsvFormatter.FormatValue(MasterSiteListReportMap.ICB(site)),
+                CsvFormatter.FormatValue(MasterSiteListReportMap.IcbName(site)),
+                CsvFormatter.FormatValue(MasterSiteListReportMap.Guid(site)),
+                MasterSiteListReportMap.IsDeleted(site).ToString().ToLower(),
+                CsvFormatter.FormatValue(MasterSiteListReportMap.Status(site)),
+                MasterSiteListReportMap.Longitude(site).ToString(),
+                MasterSiteListReportMap.Latitude(site).ToString(),
+                CsvFormatter.FormatValue(MasterSiteListReportMap.Address(site))
+            };
 
-            }
-            catch(Exception ex)
+            // Dynamically add the accessibility values for the remaining headers
+            var accessibilityHeaders = headers.Skip(13);
+            foreach (var id in accessibilityHeaders)
             {
-
+                row.Add(MasterSiteListReportMap.GetAccessibilityValue(site, id));
             }
+
+            await csvWriter.WriteLineAsync(string.Join(',', row));
         }
     }
 }

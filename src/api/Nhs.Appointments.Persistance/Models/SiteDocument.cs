@@ -16,7 +16,11 @@ public class SiteDocument : CoreDataCosmosDocument
 
     [JsonProperty("region")] public string Region { get; set; }
 
+    [JsonProperty("regionalName")] public string RegionalName { get; set; }
+
     [JsonProperty("integratedCareBoard")] public string IntegratedCareBoard { get; set; }
+
+    [JsonProperty("integratedCareBoardName")] public string IntegratedCareBoardName { get; set; }
 
     [JsonProperty("location")] public Location Location { get; set; }
 

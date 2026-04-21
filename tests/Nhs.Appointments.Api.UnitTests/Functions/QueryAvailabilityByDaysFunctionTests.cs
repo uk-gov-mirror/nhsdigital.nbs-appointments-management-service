@@ -94,7 +94,8 @@ public class QueryAvailabilityByDaysFunctionTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     null,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     )
             });
         _bookingAvailabilityStateService.Setup(x => x.GetAvailableSlots(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
@@ -153,7 +154,8 @@ public class QueryAvailabilityByDaysFunctionTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     null,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     )
             });
         _bookingAvailabilityStateService.Setup(x => x.GetAvailableSlots(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
@@ -222,7 +224,8 @@ public class QueryAvailabilityByDaysFunctionTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     null,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     )
             });
         _bookingAvailabilityStateService.Setup(x => x.GetAvailableSlots(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))

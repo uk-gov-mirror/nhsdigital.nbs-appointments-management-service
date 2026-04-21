@@ -116,7 +116,8 @@ public class QueryAvailabilityByHoursFunctionTests
                 new Location("Coords", [1.234, 5.678]),
                 null,
                 null,
-                string.Empty));
+                string.Empty,
+                ReferenceNumberGroup: 0));
         _bookingAvailabilityStateService.Setup(x => x.GetAvailableSlots(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
             .ReturnsAsync(slots);
         _availableSlotsFilter.Setup(x => x.FilterAvailableSlots(It.IsAny<List<SessionInstance>>(), It.IsAny<List<Attendee>>()))
@@ -170,7 +171,8 @@ public class QueryAvailabilityByHoursFunctionTests
                 new Location("Coords", [1.234, 5.678]),
                 null,
                 null,
-                string.Empty));
+                string.Empty,
+                ReferenceNumberGroup: 0));
         _bookingAvailabilityStateService.Setup(x => x.GetAvailableSlots(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
             .ReturnsAsync(slots);
         _availableSlotsFilter.Setup(x => x.FilterAvailableSlots(It.IsAny<List<SessionInstance>>(), It.IsAny<List<Attendee>>()))
@@ -220,7 +222,8 @@ public class QueryAvailabilityByHoursFunctionTests
                 new Location("Coords", [1.234, 5.678]),
                 null,
                 null,
-                string.Empty));
+                string.Empty,
+                ReferenceNumberGroup: 0));
         _bookingAvailabilityStateService.Setup(x => x.GetAvailableSlots(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
             .ReturnsAsync(slots);
         _availableSlotsFilter.Setup(x => x.FilterAvailableSlots(It.IsAny<List<SessionInstance>>(), It.IsAny<List<Attendee>>()))

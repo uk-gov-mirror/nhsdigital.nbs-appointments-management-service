@@ -106,7 +106,8 @@ public class GetSitesPreviewFunctionTests
             new Location("point", [0.1, 10]),
             status: SiteStatus.Online,
             isDeleted: null,
-            Type: null
+            Type: null,
+            ReferenceNumberGroup: 0
         );
 
         var site2 = new Site(
@@ -122,7 +123,8 @@ public class GetSitesPreviewFunctionTests
             new Location("point", [0.1, 10]),
             status: SiteStatus.Online,
             isDeleted: null,
-            Type: null
+            Type: null,
+            ReferenceNumberGroup: 0
         );
 
         var icbs = new List<WellKnownOdsEntry>

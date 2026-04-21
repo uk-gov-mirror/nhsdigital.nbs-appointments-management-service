@@ -68,7 +68,8 @@ public class CancelBookingFunctionTests : FeatureToggledTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     false,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     ));
 
         var request = BuildRequest(bookingRef, site);
@@ -103,7 +104,8 @@ public class CancelBookingFunctionTests : FeatureToggledTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     false,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     ));
 
         var request = BuildRequest(bookingRef, site);
@@ -138,7 +140,8 @@ public class CancelBookingFunctionTests : FeatureToggledTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     false,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     ));
 
         var request = BuildRequest(bookingRef, site);
@@ -174,7 +177,8 @@ public class CancelBookingFunctionTests : FeatureToggledTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     false,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     ));
 
         var request = BuildRequest(bookingRef, site);
@@ -214,7 +218,8 @@ public class CancelBookingFunctionTests : FeatureToggledTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     false,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     ));
 
         var request = BuildRequest(bookingRef, site, cancellationReason);

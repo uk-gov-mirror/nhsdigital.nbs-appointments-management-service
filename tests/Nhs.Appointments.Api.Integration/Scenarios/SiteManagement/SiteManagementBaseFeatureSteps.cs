@@ -77,7 +77,8 @@ public abstract class SiteManagementBaseFeatureSteps : AuditFeatureSteps
                 Coordinates: [double.Parse(row.Cells.ElementAt(8).Value), double.Parse(row.Cells.ElementAt(9).Value)]),
             status: null,
             isDeleted: dataTable.GetBoolRowValueOrDefault(row, "IsDeleted"),
-            Type: dataTable.GetRowValueOrDefault(row, "Type")
+            Type: dataTable.GetRowValueOrDefault(row, "Type"),
+            ReferenceNumberGroup: 0
         );
         Response.StatusCode.Should().Be(HttpStatusCode.OK);
         

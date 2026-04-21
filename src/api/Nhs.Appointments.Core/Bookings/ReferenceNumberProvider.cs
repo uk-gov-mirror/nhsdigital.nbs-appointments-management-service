@@ -9,32 +9,32 @@ public interface IReferenceNumberProvider
 
 public class ReferenceNumberProvider : IReferenceNumberProvider
 {
-    private readonly ISiteStore _siteStore;
+    private readonly ISiteService _siteService;
     private readonly IReferenceNumberDocumentStore _referenceNumberDocumentStore;
     private readonly TimeProvider _timeProvider;
     public ReferenceNumberProvider(
-        ISiteStore siteStore,
+        ISiteService siteService,
         IReferenceNumberDocumentStore referenceNumberDocumentStore,
         TimeProvider timeProvider)
     {
-        _siteStore = siteStore;
+        _siteService = siteService;
         _referenceNumberDocumentStore = referenceNumberDocumentStore;
         _timeProvider = timeProvider;
     }
     public async Task<string> GetReferenceNumber(string siteId)
     {        
-        var referenceGroup = await _siteStore.GetReferenceNumberGroup(siteId);
-        if (referenceGroup == 0)
+        var site = await _siteService.GetSiteByIdAsync(siteId);
+        if (site.ReferenceNumberGroup == 0)
         {
-            referenceGroup = await _referenceNumberDocumentStore.AssignReferenceGroup();
-            await _siteStore.AssignPrefix(siteId, referenceGroup);
+            var referenceGroup = await _referenceNumberDocumentStore.AssignReferenceGroup();
+            await _siteService.AssignPrefix(siteId, referenceGroup);
         }
 
-        var sequence = await _referenceNumberDocumentStore.GetNextSequenceNumber(referenceGroup);
+        var sequence = await _referenceNumberDocumentStore.GetNextSequenceNumber(site.ReferenceNumberGroup);
         var now = _timeProvider.GetUtcNow();
         var rng = now.Day + now.Second;
 
-        return $"{referenceGroup:00}-{rng:00}-{sequence:000000}";
+        return $"{site.ReferenceNumberGroup:00}-{rng:00}-{sequence:000000}";
     }
 }
 

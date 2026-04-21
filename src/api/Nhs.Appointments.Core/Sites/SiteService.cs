@@ -30,6 +30,8 @@ public interface ISiteService
     Task<IEnumerable<Site>> GetSitesInIcbAsync(string icb);
     Task<IEnumerable<SiteWithDistance>> QuerySitesAsync(SiteFilter[] filters, int maxRecords, bool ignoreCache);
     Task<OperationResult> ToggleSiteSoftDeletionAsync(string siteId);
+    
+    Task AssignPrefix(string site, int prefix);
 }
 
 public class SiteService(
@@ -237,6 +239,11 @@ public class SiteService(
     public async Task<OperationResult> ToggleSiteSoftDeletionAsync(string siteId)
     {
         return await siteStore.ToggleSiteSoftDeletionAsync(siteId);
+    }
+
+    public async Task AssignPrefix(string site, int prefix)
+    {
+        await siteStore.AssignPrefix(site, prefix);
     }
 
     public async Task<IEnumerable<SiteWithDistance>> QuerySitesAsync(SiteFilter[] filters, int maxRecords,

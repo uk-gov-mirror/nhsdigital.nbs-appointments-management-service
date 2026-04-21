@@ -44,7 +44,8 @@ public class SiteStatusDataImportHandlerTests
                 new Location("Test", [1.123, 3.321]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
             new(
                 id2.ToString(),
                 "Test Site 2",
@@ -58,7 +59,8 @@ public class SiteStatusDataImportHandlerTests
                 new Location("Test", [1.123, 3.321]),
                 null,
                 null,
-                string.Empty)
+                string.Empty,
+                ReferenceNumberGroup: 0)
         };
 
         var input = CsvFileBuilder.BuildInputCsv(Headers, inputRows);
@@ -146,7 +148,8 @@ public class SiteStatusDataImportHandlerTests
                 new Location("Test", [1.123, 3.321]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
             new(
                 Guid.NewGuid().ToString(),
                 "Test Site 2",
@@ -160,7 +163,8 @@ public class SiteStatusDataImportHandlerTests
                 new Location("Test", [1.123, 3.321]),
                 null,
                 null,
-                string.Empty)
+                string.Empty,
+                ReferenceNumberGroup: 0)
         };
 
         var input = CsvFileBuilder.BuildInputCsv(Headers, inputRows);
@@ -207,7 +211,8 @@ public class SiteStatusDataImportHandlerTests
                 new Location("Test", [1.123, 3.321]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
             new(
                 id2.ToString(),
                 "Test Site 2",
@@ -221,7 +226,8 @@ public class SiteStatusDataImportHandlerTests
                 new Location("Test", [1.123, 3.321]),
                 null,
                 null,
-                string.Empty)
+                string.Empty,
+                ReferenceNumberGroup: 0)
         };
 
         var input = CsvFileBuilder.BuildInputCsv(Headers, inputRows);

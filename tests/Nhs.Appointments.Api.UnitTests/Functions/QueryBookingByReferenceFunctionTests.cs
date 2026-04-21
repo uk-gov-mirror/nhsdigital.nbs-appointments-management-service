@@ -78,7 +78,8 @@ public class QueryBookingByReferenceFunctionTests
                 new Location("Coords", [1.234, 5.678]),
                 null,
                 false,
-                string.Empty
+                string.Empty,
+                ReferenceNumberGroup: 0
             ));
 
         var request = new QueryBookingByReferenceRequest(bookingRef, site);
@@ -128,7 +129,8 @@ public class QueryBookingByReferenceFunctionTests
                 new Location("Coords", [1.234, 5.678]),
                 null,
                 false,
-                string.Empty
+                string.Empty,
+                ReferenceNumberGroup: 0
             ));
 
         var request = new QueryBookingByReferenceRequest(bookingRef, "TEST03");

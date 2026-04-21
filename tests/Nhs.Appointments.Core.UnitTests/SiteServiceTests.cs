@@ -53,7 +53,8 @@ public class SiteServiceTests
             InformationForCitizens: "",
             Accessibilities: new List<Accessibility> { new Accessibility(Id: "Accessibility 1", Value: "true") },
             status: SiteStatus.Online, isDeleted: null,
-            Type: string.Empty);
+            Type: string.Empty,
+            ReferenceNumberGroup: 0);
 
         var expectedSite = new Site(
             Id: siteId,
@@ -67,7 +68,8 @@ public class SiteServiceTests
             InformationForCitizens: "",
             Accessibilities: new List<Accessibility> { new Accessibility(Id: "Accessibility 1", Value: "true") },
             status: SiteStatus.Online, isDeleted: null,
-            Type: string.Empty);
+            Type: string.Empty,
+            ReferenceNumberGroup: 0);
         _siteStore.Setup(x => x.GetSiteById("6877d86e-c2df-4def-8508-e1eccf0ea6ba")).ReturnsAsync(site);
 
         var result = await _sut.GetSiteByIdAsync(siteId);
@@ -103,7 +105,8 @@ public class SiteServiceTests
                     InformationForCitizens: "",
                     Accessibilities: new List<Accessibility>() {new (Id: "accessibility/access_need_1", Value: "true")},
                     status: SiteStatus.Online, isDeleted: null,
-                    Type: string.Empty),
+                    Type: string.Empty,
+                    ReferenceNumberGroup: 0),
             new Site(
                     Id: "ABC02",
                     Name: "Site 2",
@@ -116,7 +119,8 @@ public class SiteServiceTests
                     InformationForCitizens: "",
                     Accessibilities: new List<Accessibility>() {new (Id: "accessibility/access_need_1", Value: "false")},
                     status: SiteStatus.Online, isDeleted: null,
-                    Type: string.Empty)
+                    Type: string.Empty,
+                    ReferenceNumberGroup: 0)
         };
         object outSites = new CacheService.CacheObject<IEnumerable<Site>>(sites);
         _memoryCache.Setup(x => x.TryGetValue("sites", out outSites)).Returns(true);
@@ -144,7 +148,8 @@ public class SiteServiceTests
                     InformationForCitizens: "",
                     Accessibilities: new List<Accessibility>() {new (Id: "accessibility/access_need_1", Value: "true")},
                     status: SiteStatus.Online, isDeleted: null,
-                    Type: string.Empty),
+                    Type: string.Empty,
+                    ReferenceNumberGroup: 0),
             new Site(
                     Id: "ABC02",
                     Name: "Site 2",
@@ -157,7 +162,8 @@ public class SiteServiceTests
                     InformationForCitizens: "",
                     Accessibilities: new List<Accessibility>() {new (Id: "accessibility/access_need_1", Value: "false")},
                     status: SiteStatus.Online, isDeleted: null,
-                    Type: string.Empty)
+                    Type: string.Empty,
+                    ReferenceNumberGroup: 0)
         };
         object outSites = null;
         _memoryCache.Setup(x => x.TryGetValue("sites", out outSites)).Returns(false);
@@ -188,7 +194,8 @@ public class SiteServiceTests
                 InformationForCitizens: "",
                 Accessibilities: new List<Accessibility>() {new (Id: "accessibility/access_need_1", Value: "true")},
                 status: SiteStatus.Online, isDeleted: null,
-                Type: string.Empty),
+                Type: string.Empty,
+                ReferenceNumberGroup: 0),
         };
 
         _siteStore.Setup(x => x.GetSitesInRegionAsync("R1")).ReturnsAsync(sites);
@@ -230,7 +237,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -245,7 +253,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
             new("test456",
                 "Test Site 3",
                 string.Empty,
@@ -260,7 +269,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
         };
 
         _siteStore.Setup(x => x.GetAllSites())
@@ -298,7 +308,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -309,7 +320,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
             new("test456",
                 "Test Site 3",
                 string.Empty,
@@ -320,7 +332,8 @@ public class SiteServiceTests
                 new Location("Point", [1.6610648, 45.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
         };
 
         _siteStore.Setup(x => x.GetAllSites())
@@ -364,7 +377,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -375,7 +389,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
             new("test456",
                 "Test Site 3",
                 string.Empty,
@@ -386,7 +401,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
         };
 
         _siteStore.Setup(x => x.GetAllSites())
@@ -439,7 +455,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -454,7 +471,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -469,7 +487,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
         };
 
         _siteStore.Setup(x => x.GetAllSites())
@@ -525,7 +544,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -540,7 +560,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
             new("test456",
                 "Test Site 3",
                 string.Empty,
@@ -555,7 +576,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
         };
 
         _siteStore.Setup(x => x.GetAllSites())
@@ -611,7 +633,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -626,7 +649,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
             new("test456",
                 "Test Site 3",
                 string.Empty,
@@ -641,7 +665,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
             new("test654",
                 "Test Site 4",
                 string.Empty,
@@ -656,7 +681,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                string.Empty),
+                string.Empty,
+                ReferenceNumberGroup: 0),
         };
 
         _siteStore.Setup(x => x.GetAllSites())
@@ -699,7 +725,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy"),
+                "Pharmacy",
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -710,7 +737,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "gp PrActiCE"), // Ensure the filter is case insensitive
+                "gp PrActiCE",
+                ReferenceNumberGroup: 0), // Ensure the filter is case insensitive
             new("test456",
                 "Test Site 3",
                 string.Empty,
@@ -721,7 +749,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "PCN Site"),
+                "PCN Site",
+                ReferenceNumberGroup: 0),
             new("test654",
                 "Test Site 4",
                 string.Empty,
@@ -732,7 +761,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Some other site type"),
+                "Some other site type",
+                ReferenceNumberGroup: 0),
         };
 
         _siteStore.Setup(x => x.GetAllSites())
@@ -771,7 +801,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy"),
+                "Pharmacy",
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -782,7 +813,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "gp PrActiCE"), // Ensure the filter is case insensitive
+                "gp PrActiCE",
+                ReferenceNumberGroup: 0), // Ensure the filter is case insensitive
             new("test456",
                 "Test Site 3",
                 string.Empty,
@@ -793,7 +825,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "PCN Site"),
+                "PCN Site",
+                ReferenceNumberGroup: 0),
             new("test654",
                 "Test Site 4",
                 string.Empty,
@@ -804,7 +837,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Some other site type"),
+                "Some other site type",
+                ReferenceNumberGroup: 0),
         };
 
         _siteStore.Setup(x => x.GetAllSites())
@@ -843,7 +877,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy"),
+                "Pharmacy",
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -854,7 +889,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "gp PrActiCE"), // Ensure the filter is case insensitive
+                "gp PrActiCE",
+                ReferenceNumberGroup: 0), // Ensure the filter is case insensitive
             new("test456",
                 "Test Site 3",
                 string.Empty,
@@ -865,7 +901,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "PCN Site"),
+                "PCN Site",
+                ReferenceNumberGroup: 0),
             new("test654",
                 "Test Site 4",
                 string.Empty,
@@ -876,7 +913,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Some other site type"),
+                "Some other site type",
+                ReferenceNumberGroup: 0),
         };
 
         _siteStore.Setup(x => x.GetAllSites())
@@ -914,7 +952,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy"),
+                "Pharmacy",
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -925,7 +964,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "gp PrActiCE"), // Ensure the filter is case insensitive
+                "gp PrActiCE",
+                ReferenceNumberGroup: 0), // Ensure the filter is case insensitive
             new("test456",
                 "Test Site 3",
                 string.Empty,
@@ -936,7 +976,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "PCN Site"),
+                "PCN Site",
+                ReferenceNumberGroup: 0),
             new("test654",
                 "Test Site 4",
                 string.Empty,
@@ -947,7 +988,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Some other site type"),
+                "Some other site type",
+                ReferenceNumberGroup: 0),
         };
 
         _siteStore.Setup(x => x.GetAllSites())
@@ -997,7 +1039,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "GP Practice"));
+                "GP Practice",
+                ReferenceNumberGroup: 0));
         }
 
         sites.Add(new(
@@ -1015,7 +1058,8 @@ public class SiteServiceTests
             new Location("Point", [-1.6610648, 53.795467]),
             null,
             null,
-            "Pharmacy"));
+            "Pharmacy",
+            ReferenceNumberGroup: 0));
 
         _siteStore.Setup(x => x.GetAllSites())
             .ReturnsAsync(sites);
@@ -1053,7 +1097,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy"),
+                "Pharmacy",
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -1064,7 +1109,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "GP Practice"),
+                "GP Practice",
+                ReferenceNumberGroup: 0),
             new("test456",
                 "Test Site 3",
                 string.Empty,
@@ -1075,7 +1121,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "PCN Site"),
+                "PCN Site",
+                ReferenceNumberGroup: 0),
             new("test654",
                 "Test Site 4",
                 string.Empty,
@@ -1086,7 +1133,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Some other site type"),
+                "Some other site type",
+                ReferenceNumberGroup: 0),
         };
 
         _siteStore.Setup(x => x.GetAllSites())
@@ -1120,7 +1168,8 @@ public class SiteServiceTests
                         new(Id: "accessibility/access_need_1", Value: "true")
                     },
                     status: SiteStatus.Online, isDeleted: null,
-                    Type: string.Empty),
+                    Type: string.Empty,
+                    ReferenceNumberGroup: 0),
                 Distance: 2858),
             new(new Site(
                     Id: "6877d86e-c2df-4def-8508-e1eccf0ea6bb",
@@ -1137,7 +1186,8 @@ public class SiteServiceTests
                         new(Id: "accessibility/access_need_1", Value: "false")
                     },
                     status: SiteStatus.Online, isDeleted: null,
-                    Type: string.Empty),
+                    Type: string.Empty,
+                    ReferenceNumberGroup: 0),
                 Distance: 3573)
         };
         _siteStore.Setup(x => x.GetAllSites()).ReturnsAsync(sites.Select(s => s.Site));
@@ -1208,7 +1258,8 @@ public class SiteServiceTests
                         new(Id: "accessibility/access_need_1", Value: "true")
                     },
                     status: SiteStatus.Online, isDeleted: null,
-                    Type: string.Empty),
+                    Type: string.Empty,
+                    ReferenceNumberGroup: 0),
                 Distance: 2858),
             new(new Site(
                     Id: "6877d86e-c2df-4def-8508-e1eccf0ea6bb",
@@ -1225,7 +1276,8 @@ public class SiteServiceTests
                         new(Id: "accessibility/access_need_1", Value: "false")
                     },
                     status: SiteStatus.Online, isDeleted: null,
-                    Type: string.Empty),
+                    Type: string.Empty,
+                    ReferenceNumberGroup: 0),
                 Distance: 3573)
         };
         _siteStore.Setup(x => x.GetAllSites()).ReturnsAsync(sites.Select(s => s.Site));
@@ -1315,7 +1367,8 @@ public class SiteServiceTests
                         new(Id: "accessibility/access_need_1", Value: "false")
                     },
                     status: SiteStatus.Online, isDeleted: null,
-                    Type: string.Empty),
+                    Type: string.Empty,
+                    ReferenceNumberGroup: 0),
                 Distance: 3500+i));
             
             //invalid site results happen to not be cached
@@ -1344,7 +1397,8 @@ public class SiteServiceTests
                         new(Id: "accessibility/access_need_1", Value: "false")
                     },
                     status: SiteStatus.Online, isDeleted: null,
-                    Type: string.Empty),
+                    Type: string.Empty,
+                    ReferenceNumberGroup: 0),
                 Distance: (int)(3700+i)));
             
             //valid site results happen to be cached
@@ -1438,7 +1492,8 @@ public class SiteServiceTests
             InformationForCitizens: "",
             Accessibilities: new List<Accessibility> { new(Id: "Accessibility 1", Value: "true") },
             status: SiteStatus.Online, isDeleted: true,
-            Type: string.Empty);
+            Type: string.Empty,
+            ReferenceNumberGroup: 0);
         _siteStore.Setup(x => x.GetSiteById(siteId)).ReturnsAsync(site);
 
         var result = await _sut.GetSiteByIdAsync(siteId);
@@ -1509,7 +1564,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy"));
+                "Pharmacy",
+                ReferenceNumberGroup: 0));
         }
 
         sites.Add(new(
@@ -1523,7 +1579,8 @@ public class SiteServiceTests
             new Location("Point", [-1.6610648, 53.795467]),
             null,
             null,
-            "GP Practice"));
+            "GP Practice",
+            ReferenceNumberGroup: 0));
 
         _siteStore.Setup(x => x.GetAllSites())
             .ReturnsAsync(sites);
@@ -1572,7 +1629,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "GP Practice"));
+                "GP Practice",
+                ReferenceNumberGroup: 0));
         }
 
         sites.Add(new(
@@ -1590,7 +1648,8 @@ public class SiteServiceTests
             new Location("Point", [-1.6610648, 53.795467]),
             null,
             null,
-            "Pharmacy"));
+            "Pharmacy",
+            ReferenceNumberGroup: 0));
 
         _siteStore.Setup(x => x.GetAllSites())
             .ReturnsAsync(sites);
@@ -1635,7 +1694,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy"),
+                "Pharmacy",
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -1650,7 +1710,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "GP Practice"),
+                "GP Practice",
+                ReferenceNumberGroup: 0),
             new("test456",
                 "Test Site 3",
                 string.Empty,
@@ -1661,7 +1722,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "PCN Site"),
+                "PCN Site",
+                ReferenceNumberGroup: 0),
             new("test654",
                 "Test Site 4",
                 string.Empty,
@@ -1672,7 +1734,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Some other site type"),
+                "Some other site type",
+                ReferenceNumberGroup: 0),
         };
         _siteStore.Setup(x => x.GetAllSites())
             .ReturnsAsync(sites);
@@ -1716,7 +1779,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy"),
+                "Pharmacy",
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -1731,7 +1795,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "GP Practice"),
+                "GP Practice",
+                ReferenceNumberGroup: 0),
             new("test456",
                 "Test Site 3",
                 string.Empty,
@@ -1742,7 +1807,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "PCN Site"),
+                "PCN Site",
+                ReferenceNumberGroup: 0),
             new("test654",
                 "Test Site 4",
                 string.Empty,
@@ -1753,7 +1819,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Some other site type"),
+                "Some other site type",
+                ReferenceNumberGroup: 0),
         };
         _siteStore.Setup(x => x.GetAllSites())
             .ReturnsAsync(sites);
@@ -1811,7 +1878,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy")
+                "Pharmacy",
+                ReferenceNumberGroup: 0)
         };
         _siteStore.Setup(x => x.GetAllSites())
             .ReturnsAsync(sites);
@@ -1886,7 +1954,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy"),
+                "Pharmacy",
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -1901,7 +1970,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "GP Practice"),
+                "GP Practice",
+                ReferenceNumberGroup: 0),
             new("test456",
                 "Test Site 3",
                 string.Empty,
@@ -1912,7 +1982,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "PCN Site"),
+                "PCN Site",
+                ReferenceNumberGroup: 0),
             new("test654",
                 "Test Site 4",
                 string.Empty,
@@ -1923,7 +1994,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Some other site type"),
+                "Some other site type",
+                ReferenceNumberGroup: 0),
         };
         _siteStore.Setup(x => x.GetAllSites())
             .ReturnsAsync(sites);
@@ -1975,7 +2047,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy"),
+                "Pharmacy",
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -1990,7 +2063,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "GP Practice"),
+                "GP Practice",
+                ReferenceNumberGroup: 0),
             new("test456",
                 "Test Site 3",
                 string.Empty,
@@ -2001,7 +2075,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "PCN Site"),
+                "PCN Site",
+                ReferenceNumberGroup: 0),
             new("test654",
                 "Test Site 4",
                 string.Empty,
@@ -2012,7 +2087,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Some other site type"),
+                "Some other site type",
+                ReferenceNumberGroup: 0),
         };
         _siteStore.Setup(x => x.GetAllSites())
             .ReturnsAsync(sites);
@@ -2064,7 +2140,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy"),
+                "Pharmacy",
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -2079,7 +2156,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "GP Practice"),
+                "GP Practice",
+                ReferenceNumberGroup: 0),
             new("test456",
                 "Test Site 3",
                 string.Empty,
@@ -2090,7 +2168,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "PCN Site"),
+                "PCN Site",
+                ReferenceNumberGroup: 0),
             new("test654",
                 "Test Site 4",
                 string.Empty,
@@ -2101,7 +2180,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Some other site type"),
+                "Some other site type",
+                ReferenceNumberGroup: 0),
         };
         _siteStore.Setup(x => x.GetAllSites())
             .ReturnsAsync(sites);
@@ -2153,7 +2233,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy"),
+                "Pharmacy",
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -2168,7 +2249,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "GP Practice"),
+                "GP Practice",
+                ReferenceNumberGroup: 0),
             new("test456",
                 "Test Site 3",
                 string.Empty,
@@ -2179,7 +2261,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "PCN Site"),
+                "PCN Site",
+                ReferenceNumberGroup: 0),
             new("test654",
                 "Test Site 4",
                 string.Empty,
@@ -2190,7 +2273,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Some other site type"),
+                "Some other site type",
+                ReferenceNumberGroup: 0),
         };
         _siteStore.Setup(x => x.GetAllSites())
             .ReturnsAsync(sites);
@@ -2226,7 +2310,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy"),
+                "Pharmacy",
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -2241,7 +2326,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "GP Practice"),
+                "GP Practice",
+                ReferenceNumberGroup: 0),
         };
 
         object outResult = new CacheService.CacheObject<IEnumerable<Site>>(sites);
@@ -2276,7 +2362,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy"),
+                "Pharmacy",
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -2291,7 +2378,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "GP Practice"),
+                "GP Practice",
+                ReferenceNumberGroup: 0),
         };
 
         object outResult = new CacheService.LazySlideCacheObject(sites, DateTime.UtcNow);
@@ -2328,7 +2416,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy"),
+                "Pharmacy",
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -2343,7 +2432,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "GP Practice"),
+                "GP Practice",
+                ReferenceNumberGroup: 0),
         };
 
         object outResult = null;
@@ -2379,7 +2469,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy"),
+                "Pharmacy",
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -2394,7 +2485,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "GP Practice"),
+                "GP Practice",
+                ReferenceNumberGroup: 0),
         };
 
         object outResult = new CacheService.CacheObject<IEnumerable<Site>>(null);
@@ -2430,7 +2522,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "Pharmacy"),
+                "Pharmacy",
+                ReferenceNumberGroup: 0),
             new("test321",
                 "Test Site 2",
                 string.Empty,
@@ -2445,7 +2538,8 @@ public class SiteServiceTests
                 new Location("Point", [-1.6610648, 53.795467]),
                 null,
                 null,
-                "GP Practice"),
+                "GP Practice",
+                ReferenceNumberGroup: 0),
         };
 
         object outResult = null;

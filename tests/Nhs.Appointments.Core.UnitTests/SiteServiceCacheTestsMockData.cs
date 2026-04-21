@@ -18,7 +18,8 @@ public static class SiteServiceCacheTestsMockData
             InformationForCitizens: "",
             Accessibilities: new List<Accessibility> { new("accessibility/access_need_1", "true") },
             status: SiteStatus.Online, isDeleted: false,
-            Type: string.Empty),
+            Type: string.Empty,
+            ReferenceNumberGroup: 0),
         new(
             "3ad2deb1-791b-452d-95dc-7090edd97f9a",
             "Site 2",
@@ -31,7 +32,8 @@ public static class SiteServiceCacheTestsMockData
             InformationForCitizens: "",
             Accessibilities: new List<Accessibility> { new("accessibility/access_need_1", "true") },
             status: SiteStatus.Offline, isDeleted: true,
-            Type: string.Empty),
+            Type: string.Empty,
+            ReferenceNumberGroup: 0),
         new(
             "0c06c137-2f8a-4334-a594-0632d0407966",
             "Site 3",
@@ -44,7 +46,8 @@ public static class SiteServiceCacheTestsMockData
             InformationForCitizens: "",
             Accessibilities: new List<Accessibility> { new("accessibility/access_need_1", "true") },
             status: SiteStatus.Offline, isDeleted: null,
-            Type: string.Empty),
+            Type: string.Empty,
+            ReferenceNumberGroup: 0),
         new(
             "b40d5219-e1c5-4f28-a2c4-d40f68bcde36",
             "Site 4",
@@ -57,7 +60,8 @@ public static class SiteServiceCacheTestsMockData
             InformationForCitizens: "",
             Accessibilities: new List<Accessibility> { new("accessibility/access_need_1", "true") },
             status: SiteStatus.Online, isDeleted: true,
-            Type: string.Empty)
+            Type: string.Empty,
+            ReferenceNumberGroup: 0)
     ];
 
     public static readonly Site[] MockOnlyNonDeletedSites =
@@ -74,7 +78,8 @@ public static class SiteServiceCacheTestsMockData
             InformationForCitizens: "",
             Accessibilities: new List<Accessibility> { new("accessibility/access_need_1", "true") },
             status: SiteStatus.Online, isDeleted: false,
-            Type: string.Empty),
+            Type: string.Empty,
+            ReferenceNumberGroup: 0),
         new(
             "0c06c137-2f8a-4334-a594-0632d0407966",
             "Site 3",
@@ -87,7 +92,8 @@ public static class SiteServiceCacheTestsMockData
             InformationForCitizens: "",
             Accessibilities: new List<Accessibility> { new("accessibility/access_need_1", "true") },
             status: SiteStatus.Offline, isDeleted: null,
-            Type: string.Empty)
+            Type: string.Empty,
+            ReferenceNumberGroup: 0)
     ];
 
     public static Site CreateMockSite(string id, string name)
@@ -104,6 +110,7 @@ public static class SiteServiceCacheTestsMockData
             InformationForCitizens: "",
             Accessibilities: new List<Accessibility> { new("accessibility/access_need_1", "true") },
             status: SiteStatus.Offline, isDeleted: null,
-            Type: string.Empty);
+            Type: string.Empty,
+            ReferenceNumberGroup: 0);
     }
 }

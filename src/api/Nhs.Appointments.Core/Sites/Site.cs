@@ -18,13 +18,17 @@ public record Site(
     [JsonProperty("location")] Location location,
     [JsonProperty("status")] SiteStatus? status,
     [JsonProperty("isDeleted")] bool? isDeleted,
-    [JsonProperty("type")] string Type
+    [JsonProperty("type")] string Type,
+    int ReferenceNumberGroup
 )
 {
     public IEnumerable<Accessibility> Accessibilities { get; set; } = Accessibilities?.Select(a => new Accessibility(a.Id, a.Value.ToLower()));
 
     private Location Location { get; } = location;
 
+    [JsonIgnore] 
+    public int ReferenceNumberGroup { get; } = ReferenceNumberGroup;
+    
     public Coordinates Coordinates
     {
         get

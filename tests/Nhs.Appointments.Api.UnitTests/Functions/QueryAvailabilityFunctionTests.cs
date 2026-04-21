@@ -84,7 +84,8 @@ public class QueryAvailabilityFunctionTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     null,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     ),
                 new(
                     "34e990af-5dc9-43a6-8895-b9123216d699",
@@ -102,7 +103,8 @@ public class QueryAvailabilityFunctionTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     null,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     )
             });
 
@@ -163,7 +165,8 @@ public class QueryAvailabilityFunctionTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     null,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     )
             });
 
@@ -210,7 +213,8 @@ public class QueryAvailabilityFunctionTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     null,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     )
             });
 
@@ -267,7 +271,8 @@ public class QueryAvailabilityFunctionTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     null,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     )
             });
 
@@ -322,7 +327,8 @@ public class QueryAvailabilityFunctionTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     null,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     )
             });
 
@@ -379,7 +385,8 @@ public class QueryAvailabilityFunctionTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     null,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     )
             });
 
@@ -422,7 +429,8 @@ public class QueryAvailabilityFunctionTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     true,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     ),
                 new(
                     "34e990af-5dc9-43a6-8895-b9123216d699",
@@ -440,7 +448,8 @@ public class QueryAvailabilityFunctionTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     true,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     )
             });
 
@@ -492,7 +501,8 @@ public class QueryAvailabilityFunctionTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     false,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     ),
                 new(
                     "34e990af-5dc9-43a6-8895-b9123216d699",
@@ -510,7 +520,8 @@ public class QueryAvailabilityFunctionTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     true,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     )
             });
 

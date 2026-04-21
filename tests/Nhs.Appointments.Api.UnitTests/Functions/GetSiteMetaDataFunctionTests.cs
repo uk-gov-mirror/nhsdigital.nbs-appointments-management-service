@@ -60,7 +60,8 @@ public class GetSiteMetaDataFunctionTests
                 new Location("Test", [123.1, 321.3]),
                 status: SiteStatus.Online,
                 isDeleted: null,
-                Type: null
+                Type: null,
+                ReferenceNumberGroup: 0
             ));
         var request = CreateRequest();
 

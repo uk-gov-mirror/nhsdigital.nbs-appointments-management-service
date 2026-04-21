@@ -16,12 +16,6 @@ public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore) : IS
     public async Task<IEnumerable<Site>> GetAllSites()
         => await cosmosStore.RunQueryAsync<Site>(sd => sd.DocumentType == "site");
 
-    public async Task<int> GetReferenceNumberGroup(string site)
-    {
-        var siteDocument = await cosmosStore.GetDocument<SiteDocument>(site);
-        return siteDocument.ReferenceNumberGroup;
-    }
-
     public async Task<OperationResult> UpdateSiteReferenceDetails(string siteId, string odsCode, string icb, string region)
     {
         var originalDocument = await GetOrDefault(siteId);

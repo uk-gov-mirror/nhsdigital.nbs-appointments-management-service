@@ -45,7 +45,8 @@ public abstract class GetSiteByIdFeatureSteps : SiteManagementBaseFeatureSteps
             OutOfTheWayLocation,
             status: null, 
             isDeleted: dataTable.GetBoolRowValueOrDefault(row, "IsDeleted"),
-            Type: dataTable.GetRowValueOrDefault(row, "Type")
+            Type: dataTable.GetRowValueOrDefault(row, "Type"),
+            ReferenceNumberGroup: 0
         );
         Response.StatusCode.Should().Be(HttpStatusCode.OK);
         (_, ActualResponse) =

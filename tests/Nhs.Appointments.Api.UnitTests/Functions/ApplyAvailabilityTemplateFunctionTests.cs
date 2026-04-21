@@ -106,7 +106,8 @@ public class ApplyAvailabilityTemplateFunctionTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     false,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     )); 
         
         var sessions = new List<Session>

@@ -63,7 +63,8 @@ public class SiteBulkImportFeatureSteps : BaseBulkImportFeatureSteps, IAsyncLife
             location: new Location("Point", [double.Parse(row.Cells.ElementAt(9).Value), double.Parse(row.Cells.ElementAt(10).Value)]),
             status: SiteStatus.Online,
             isDeleted: dataTable.GetBoolRowValueOrDefault(row, "IsDeleted"),
-            Type: dataTable.GetRowValueOrDefault(row, "Type")
+            Type: dataTable.GetRowValueOrDefault(row, "Type"),
+            ReferenceNumberGroup: 0
         );
         Response.StatusCode.Should().Be(HttpStatusCode.OK);
         (_, ActualResponse) =

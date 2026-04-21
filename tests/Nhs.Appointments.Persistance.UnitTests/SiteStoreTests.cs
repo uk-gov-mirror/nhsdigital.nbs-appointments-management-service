@@ -46,7 +46,8 @@ public class SiteStoreTests
                 [],
                 new Location("Coordinates", [-1.75, 52.76]),
                 null, null,
-                string.Empty));
+                string.Empty,
+                ReferenceNumberGroup: 0));
         _siteStore.Setup(x => x.PatchDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<PatchOperation[]>()))
             .Callback<string, string, PatchOperation[]>((site, reference, patches)
                 => patchOperations = [.. patches])
@@ -81,7 +82,8 @@ public class SiteStoreTests
                 [],
                 new Location("Coordinates", [-1.75, 52.76]),
                 SiteStatus.Online, null,
-                string.Empty));
+                string.Empty,
+                ReferenceNumberGroup: 0));
         _siteStore.Setup(x => x.PatchDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<PatchOperation[]>()))
             .Callback<string, string, PatchOperation[]>((site, reference, patches)
                 => patchOperations = [.. patches])
@@ -116,7 +118,8 @@ public class SiteStoreTests
                 [],
                 new Location("Coordinates", [-1.75, 52.76]),
                 SiteStatus.Online, false,
-                string.Empty));
+                string.Empty,
+                ReferenceNumberGroup: 0));
         _siteStore.Setup(x => x.PatchDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<PatchOperation[]>()))
             .Callback<string, string, PatchOperation[]>((site, reference, patches)
                 => patchOperations = [.. patches])
@@ -151,7 +154,8 @@ public class SiteStoreTests
                 [],
                 new Location("Coordinates", [-1.75, 52.76]),
                 SiteStatus.Online, null,
-                string.Empty));
+                string.Empty,
+                ReferenceNumberGroup: 0));
         _siteStore.Setup(x => x.PatchDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<PatchOperation[]>()))
             .Callback<string, string, PatchOperation[]>((site, reference, patches)
                 => patchOperations = [.. patches])
@@ -211,7 +215,8 @@ public class SiteStoreTests
                 new Location("Coordinates", [-1.75, 52.76]),
                 SiteStatus.Online,
                 true,
-                string.Empty));
+                string.Empty,
+                ReferenceNumberGroup: 0));
 
         var result = await _sut.UpdateSiteDetails("some-site-id", "Site Name", "1 Site Lane", "N", (decimal)-0.751, (decimal)50.369);
 
@@ -238,7 +243,8 @@ public class SiteStoreTests
                 [],
                 new Location("Coordinates", [-1.75, 52.76]),
                 SiteStatus.Online, null,
-                string.Empty));
+                string.Empty,
+                ReferenceNumberGroup: 0));
         _siteStore.Setup(x => x.PatchDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<PatchOperation[]>()))
             .Callback<string, string, PatchOperation[]>((site, reference, patches)
                 => patchOperations = [.. patches])
@@ -272,7 +278,8 @@ public class SiteStoreTests
                 [],
                 new Location("Coordinates", [-1.75, 52.76]),
                 SiteStatus.Online, null,
-                null));
+                null,
+                ReferenceNumberGroup: 0));
         _siteStore.Setup(x => x.PatchDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<PatchOperation[]>()))
             .Callback<string, string, PatchOperation[]>((site, reference, patches)
                 => patchOperations = [.. patches])
@@ -307,7 +314,8 @@ public class SiteStoreTests
                 [],
                 new Location("Coordinates", [-1.75, 52.76]),
                 SiteStatus.Online, null,
-                "GP Practice"));
+                "GP Practice",
+                ReferenceNumberGroup: 0));
         _siteStore.Setup(x => x.PatchDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<PatchOperation[]>()))
             .Callback<string, string, PatchOperation[]>((site, reference, patches)
                 => patchOperations = [.. patches])

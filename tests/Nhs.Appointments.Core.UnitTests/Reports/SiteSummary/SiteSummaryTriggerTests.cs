@@ -40,7 +40,8 @@ public class SiteSummaryTriggerTests
                 new Location("test", [0.0]),
                 SiteStatus.Online, 
                 null,
-                string.Empty)
+                string.Empty,
+                ReferenceNumberGroup: 0)
         });
         
         await _sut.Trigger();
@@ -78,7 +79,8 @@ public class SiteSummaryTriggerTests
                 new Location("test", [0.0]),
                 SiteStatus.Online,
                 null,
-                string.Empty)
+                string.Empty,
+                ReferenceNumberGroup: 0)
         });
 
         var site = "site-1";
@@ -121,7 +123,8 @@ public class SiteSummaryTriggerTests
                 new Location("test", [0.0]),
                 null, 
                 null,
-                string.Empty)
+                string.Empty,
+                ReferenceNumberGroup: 0)
         });
 
         var site = "site-1";
@@ -235,7 +238,8 @@ public class SiteSummaryTriggerTests
                 "INFO",
                 new Accessibility[] { },
                 new Location("test", [0.0]),
-                null, null, string.Empty)
+                null, null, string.Empty,
+                ReferenceNumberGroup: 0)
         });
 
         var site = "site-1";
@@ -276,7 +280,8 @@ public class SiteSummaryTriggerTests
                 "INFO",
                 new Accessibility[] { },
                 new Location("test", [0.0]),
-                null, null, string.Empty)
+                null, null, string.Empty,
+                ReferenceNumberGroup: 0)
         });
 
         var site = "site-1";
@@ -338,7 +343,8 @@ public class SiteSummaryTriggerTests
                 "INFO",
                 new Accessibility[] { },
                 new Location("test", [0.0]),
-                SiteStatus.Online, null, string.Empty),
+                SiteStatus.Online, null, string.Empty,
+                ReferenceNumberGroup: 0),
             new (
                 "site-2",
                 "site-name-2",
@@ -350,7 +356,8 @@ public class SiteSummaryTriggerTests
                 "INFO",
                 new Accessibility[] { },
                 new Location("test", [0.0]),
-                SiteStatus.Online, null, string.Empty)
+                SiteStatus.Online, null, string.Empty,
+                ReferenceNumberGroup: 0)
         });
 
         var site1 = "site-1";

@@ -61,7 +61,8 @@ public class SetSiteAccessibilitiesFunctionTests
                     new Location("Coords", [1.234, 5.678]),
                     null,
                     false,
-                    string.Empty
+                    string.Empty,
+                    ReferenceNumberGroup: 0
                     ));
 
         var result = await _sut.Invoke(request);

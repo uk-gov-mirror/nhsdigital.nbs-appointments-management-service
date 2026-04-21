@@ -38,36 +38,6 @@
       "type": "region"
     },
     {
-      "odsCode": "QJG",
-      "displayName": "Suffolk And North East Essex Integrated Care Board",
-      "type": "icb"
-    },
-    {
-      "odsCode": "QUE",
-      "displayName": "Cambridgeshire And Peterborough Integrated Care Board",
-      "type": "icb"
-    },
-    {
-      "odsCode": "QM7",
-      "displayName": "Hertfordshire And West Essex Integrated Care Board",
-      "type": "icb"
-    },
-    {
-      "odsCode": "QHG",
-      "displayName": "Bedfordshire, Luton And Milton Keynes Integrated Care Board",
-      "type": "icb"
-    },
-    {
-      "odsCode": "QH8",
-      "displayName": "Mid And South Essex Integrated Care Board",
-      "type": "icb"
-    },
-    {
-      "odsCode": "QMM",
-      "displayName": "Norfolk And Waveney Integrated Care Board",
-      "type": "icb"
-    },
-    {
       "odsCode": "QWE",
       "displayName": "South West London Integrated Care Board",
       "type": "icb"
@@ -80,16 +50,6 @@
     {
       "odsCode": "QMF",
       "displayName": "North East London Integrated Care Board",
-      "type": "icb"
-    },
-    {
-      "odsCode": "QRV",
-      "displayName": "North West London Integrated Care Board",
-      "type": "icb"
-    },
-    {
-      "odsCode": "QMJ",
-      "displayName": "North Central London Integrated Care Board",
       "type": "icb"
     },
     {
@@ -190,26 +150,6 @@
     {
       "odsCode": "QKS",
       "displayName": "Kent And Medway Integrated Care Board",
-      "type": "icb"
-    },
-    {
-      "odsCode": "QNX",
-      "displayName": "Sussex Integrated Care Board",
-      "type": "icb"
-    },
-    {
-      "odsCode": "QXU",
-      "displayName": "Surrey Heartlands Integrated Care Board",
-      "type": "icb"
-    },
-    {
-      "odsCode": "QU9",
-      "displayName": "Buckinghamshire, Oxfordshire Berkshire West Integrated Care Board",
-      "type": "icb"
-    },
-    {
-      "odsCode": "QNQ",
-      "displayName": "Frimley Integrated Care Board",
       "type": "icb"
     },
     {

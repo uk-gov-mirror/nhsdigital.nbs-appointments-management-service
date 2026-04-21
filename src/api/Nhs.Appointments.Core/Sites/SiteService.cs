@@ -135,7 +135,22 @@ public class SiteService(
 
     public async Task<Site> GetSiteByIdAsync(string siteId, string scope = "*")
     {
-        var site = await siteStore.GetSiteById(siteId);
+        Site site;
+        if (options.Value.DisableSiteCache)
+        {
+            site = await siteStore.GetSiteById(siteId);
+        }
+        else 
+        {
+            site = await cacheService.GetLazySlidingCacheValue($"site:{siteId}",
+                new LazySlideCacheOptions<Site>(
+                    async () => 
+                        await siteStore.GetSiteById(siteId), 
+                    TimeSpan.FromMinutes(options.Value.SiteSlideCacheDurationMinutes),
+                    TimeSpan.FromMinutes(options.Value.SiteCacheDurationMinutes)));
+        }
+
+        
         if (site is null || site.isDeleted is true)
         {
             return default;

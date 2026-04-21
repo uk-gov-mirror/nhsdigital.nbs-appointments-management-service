@@ -54,6 +54,8 @@ resource "azurerm_windows_function_app" "nbs_mya_service_bus_func_app" {
     ALLSITES_SLIDING_CACHE_ENABLED                                         = var.allsites_sliding_cache_enabled
     ALLSITES_CACHE_DURATION_MINUTES                                        = var.allsites_cache_duration_minutes
     ALLSITES_SLIDING_CACHE_DURATION_MINUTES                                = var.allsites_sliding_cache_duration_minutes
+    SITE_CACHE_DURATION_MINUTES                                            = var.site_cache_duration_minutes
+    SITE_SLIDING_CACHE_DURATION_MINUTES                                    = var.site_sliding_cache_duration_minutes
     DISABLE_SITE_CACHE                                                     = var.disable_site_cache
     CANCEL_A_DATE_RANGE_MAXIMUM_DAYS                                       = var.cancel_a_date_range_maximum_days
     APPLICATION_NAME                                                       = "Service Bus Function App"
@@ -185,6 +187,8 @@ resource "azurerm_windows_function_app_slot" "nbs_mya_service_bus_func_app_previ
     ALLSITES_SLIDING_CACHE_ENABLED                                         = var.allsites_sliding_cache_enabled
     ALLSITES_CACHE_DURATION_MINUTES                                        = var.allsites_sliding_cache_duration_minutes
     ALLSITES_SLIDING_CACHE_DURATION_MINUTES                                = var.allsites_cache_duration_minutes
+    SITE_CACHE_DURATION_MINUTES                                            = var.site_cache_duration_minutes
+    SITE_SLIDING_CACHE_DURATION_MINUTES                                    = var.site_sliding_cache_duration_minutes
     DISABLE_SITE_CACHE                                                     = var.disable_site_cache
     SITE_SUMMARY_DAYS_FORWARD                                              = var.site_summary_days_forward
     SITE_SUMMARY_DAYS_CHUNK_SIZE                                           = var.site_summary_days_chunk_size

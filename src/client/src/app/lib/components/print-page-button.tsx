@@ -8,11 +8,7 @@ const PrintPageButton = () => {
   };
 
   return (
-    <Button
-      className="no-print nhsuk-button--small"
-      secondary
-      onClick={() => onClick()}
-    >
+    <Button className="no-print" small secondarySolid onClick={() => onClick()}>
       Print page
     </Button>
   );

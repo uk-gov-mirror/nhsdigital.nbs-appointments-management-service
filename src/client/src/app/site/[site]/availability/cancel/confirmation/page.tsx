@@ -30,7 +30,7 @@ const Page = async ({ searchParams, params }: PageProps) => {
   await assertPermission(siteFromPath, 'availability:setup');
 
   const parsedDate = parseToUkDatetime(date);
-  const site = await fromServer(fetchSite(siteFromPath));
+  const site = await fromServer(fetchSite(siteFromPath, false));
   const sessionSummary: SessionSummary = JSON.parse(atob(session));
   const availabilityRequest: AvailabilityChangeProposalRequest = {
     from: date,

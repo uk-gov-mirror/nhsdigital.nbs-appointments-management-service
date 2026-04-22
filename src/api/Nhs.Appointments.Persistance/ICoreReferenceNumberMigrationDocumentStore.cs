@@ -2,7 +2,7 @@
 
 namespace Nhs.Appointments.Persistance;
 
-public interface ICoreReferenceMigrationNumberDocumentStore
+public interface ICoreReferenceNumberMigrationDocumentStore
 {
     Task<CoreReferenceGroupDocument> Get();
 }

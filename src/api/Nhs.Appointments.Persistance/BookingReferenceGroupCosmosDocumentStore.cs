@@ -8,14 +8,14 @@ namespace Nhs.Appointments.Persistance
     {
         private const string DocumentId = "main";
         private readonly ITypedDocumentCosmosStore<BookingReferenceGroupDocument> _cosmosStore;
-        private readonly ICoreReferenceMigrationNumberDocumentStore _migrationDocumentStore;
+        private readonly ICoreReferenceNumberMigrationDocumentStore _numberMigrationDocumentStore;
 
         public BookingReferenceGroupCosmosDocumentStore(
             ITypedDocumentCosmosStore<BookingReferenceGroupDocument> cosmosStore, 
-            ICoreReferenceMigrationNumberDocumentStore migrationDocumentStore)
+            ICoreReferenceNumberMigrationDocumentStore numberMigrationDocumentStore)
         {
             _cosmosStore = cosmosStore;
-            _migrationDocumentStore = migrationDocumentStore;
+            _numberMigrationDocumentStore = numberMigrationDocumentStore;
         }
 
         public async Task<int> AssignReferenceGroup()
@@ -58,7 +58,7 @@ namespace Nhs.Appointments.Persistance
         private async Task<BookingReferenceGroupDocument> MigrateFromOldDocument()
         {
             var docType = _cosmosStore.GetDocumentType();
-            var oldDocument = await _migrationDocumentStore.Get();
+            var oldDocument = await _numberMigrationDocumentStore.Get();
 
             var referenceGroupDocument = new BookingReferenceGroupDocument
             {

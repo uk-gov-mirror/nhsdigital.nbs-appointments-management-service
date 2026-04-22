@@ -20,7 +20,7 @@ namespace Nhs.Appointments.Persistance
         public async Task<int> AssignReferenceGroup()
         {
             var docType = _cosmosStore.GetDocumentType();
-            CoreReferenceGroupDocument referenceGroupDocument = await Get();
+            var referenceGroupDocument = await Get();
             
             var target = referenceGroupDocument!.Groups.Where(g => g.Prefix > 0).OrderBy(g => g.SiteCount).ThenBy(g => g.Prefix).First();
             var siteCountIncrement = PatchOperation.Increment($"/Groups/{target.Prefix}/SiteCount", 1);

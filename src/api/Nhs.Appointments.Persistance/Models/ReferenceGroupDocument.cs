@@ -9,7 +9,8 @@ public class CoreReferenceGroupDocument : CoreDataCosmosDocument
 [CosmosDocumentType("reference_group")]
 public class BookingReferenceGroupDocument : BookingReferenceDataCosmosDocument
 {
-    public ReferenceGroup[] Groups { get; set; }
+    public int SiteCount { get; set; }
+    public int Sequence { get; set; }
 }
 
 public class ReferenceGroup

@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const EditDetailsPage = async ({ siteId }: Props) => {
-  const siteDetails = await fromServer(fetchSite(siteId));
+  const siteDetails = await fromServer(fetchSite(siteId, true));
 
   return (
     <>

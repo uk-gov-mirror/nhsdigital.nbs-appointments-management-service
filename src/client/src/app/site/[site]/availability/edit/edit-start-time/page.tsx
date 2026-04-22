@@ -32,7 +32,7 @@ const Page = async ({ searchParams, params }: PageProps) => {
   await fromServer(assertPermission(siteFromPath, 'availability:setup'));
 
   const parsedDate = parseToUkDatetime(date);
-  const site = await fromServer(fetchSite(siteFromPath));
+  const site = await fromServer(fetchSite(siteFromPath, false));
 
   const existing: SessionSummary = JSON.parse(atob(existingSession));
   const updated: AvailabilitySession = JSON.parse(atob(updatedSession));

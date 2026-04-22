@@ -24,7 +24,7 @@ const Page = async ({ params }: PageProps) => {
   await fromServer(assertPermission(siteFromPath, 'booking:cancel'));
 
   const [site, booking, clinicalServices] = await Promise.all([
-    fromServer(fetchSite(siteFromPath)),
+    fromServer(fetchSite(siteFromPath, false)),
     fromServer(fetchBooking(reference, siteFromPath)),
     fromServer(fetchClinicalServices()),
   ]);

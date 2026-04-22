@@ -43,7 +43,7 @@ const Page = async ({ params, searchParams }: PageProps) => {
   };
 
   const [site, cancelledBookings, clinicalServices] = await Promise.all([
-    fromServer(fetchSite(siteFromPath)),
+    fromServer(fetchSite(siteFromPath, false)),
     fromServer(fetchBookings(fetchBookingsRequest, ['Cancelled'])),
     fromServer(fetchClinicalServices()),
   ]);

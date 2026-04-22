@@ -26,7 +26,7 @@ const Page = async ({ searchParams, params }: PageProps) => {
 
   await fromServer(assertPermission(siteFromPath, 'availability:setup'));
   const parsedDate = parseToUkDatetime(date);
-  const site = await fromServer(fetchSite(siteFromPath));
+  const site = await fromServer(fetchSite(siteFromPath, false));
 
   const sessionSummary: SessionSummary = JSON.parse(atob(session));
 

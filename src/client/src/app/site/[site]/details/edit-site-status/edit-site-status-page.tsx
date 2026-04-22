@@ -9,7 +9,7 @@ type Props = {
 };
 
 export const EditSiteStatusPage = async ({ siteId }: Props) => {
-  const siteDetails = await fromServer(fetchSite(siteId));
+  const siteDetails = await fromServer(fetchSite(siteId, true));
   const siteStatus = siteDetails.status;
 
   const summaryList: SummaryListItem[] = [

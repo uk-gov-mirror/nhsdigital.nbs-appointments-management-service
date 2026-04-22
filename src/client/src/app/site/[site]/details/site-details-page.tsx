@@ -23,7 +23,7 @@ const SiteDetailsPage = async ({
 }: Props) => {
   const [accessibilityDefinitions, site] = await Promise.all([
     fromServer(fetchAccessibilityDefinitions()),
-    fromServer(fetchSite(siteId)),
+    fromServer(fetchSite(siteId, true)),
   ]);
 
   const siteReferenceSummaryData = mapSiteReferenceSummaryData(

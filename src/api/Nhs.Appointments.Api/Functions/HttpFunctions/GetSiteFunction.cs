@@ -47,7 +47,7 @@ public class GetSiteFunction(
 
     protected override async Task<ApiResult<Site>> HandleRequest(SiteBasedResourceRequest request, ILogger logger)
     {
-        var site = await siteService.GetSiteByIdAsync(request.Site, false, request.Scope);
+        var site = await siteService.GetSiteByIdAsync(request.Site, request.IgnoreCache, request.Scope);
         if (site != null)
         {
             return ApiResult<Site>.Success(site);

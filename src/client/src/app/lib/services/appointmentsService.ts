@@ -141,9 +141,10 @@ export const fetchUsers = async (
 
 export const fetchSite = async (
   siteId: string,
+  ignoreCache: boolean,
 ): Promise<ServerActionResult<Site>> =>
   appointmentsApi
-    .get<Site>(`sites/${siteId}?scope=*`, {
+    .get<Site>(`sites/${siteId}?ignoreCache=${ignoreCache}&scope=*`, {
       next: { tags: ['site'] },
     })
     .then(response => handleBodyResponse(response));

@@ -29,7 +29,7 @@ const Page = async ({ searchParams, params }: PageProps) => {
   await fromServer(assertPermission(siteFromPath, 'availability:setup'));
 
   const [site, clinicalServices] = await Promise.all([
-    fromServer(fetchSite(siteFromPath)),
+    fromServer(fetchSite(siteFromPath, false)),
     fromServer(fetchClinicalServices()),
   ]);
 

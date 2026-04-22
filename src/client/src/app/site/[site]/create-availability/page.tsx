@@ -18,7 +18,7 @@ const Page = async ({ params }: PageProps) => {
   const { site: siteFromPath } = { ...(await params) };
 
   const [site, cancelADateRange, sitePermissions] = await Promise.all([
-    fromServer(fetchSite(siteFromPath)),
+    fromServer(fetchSite(siteFromPath, false)),
     fromServer(fetchFeatureFlag('CancelADateRange')),
     fromServer(fetchPermissions(siteFromPath)),
   ]);

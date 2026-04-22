@@ -28,7 +28,7 @@ const Page = async ({ params }: PageProps) => {
       fromServer(fetchUserProfile()),
       fromServer(fetchUsers(siteFromPath)),
       fromServer(fetchRoles()),
-      fromServer(fetchSite(siteFromPath)),
+      fromServer(fetchSite(siteFromPath, false)),
       fromServer(fetchPermissions(siteFromPath)),
     ]);
 

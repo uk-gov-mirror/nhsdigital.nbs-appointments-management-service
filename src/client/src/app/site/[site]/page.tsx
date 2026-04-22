@@ -29,7 +29,7 @@ const Page = async ({ params }: PageProps) => {
 
   const [site, wellKnownOdsCodeEntries, sitePermissions, permissionsAtAnySite] =
     await Promise.all([
-      fromServer(fetchSite(siteFromPath)),
+      fromServer(fetchSite(siteFromPath, true)),
       fromServer(fetchWellKnownOdsCodeEntries()),
       fromServer(fetchPermissions(siteFromPath)),
       fromServer(fetchPermissions('*')),

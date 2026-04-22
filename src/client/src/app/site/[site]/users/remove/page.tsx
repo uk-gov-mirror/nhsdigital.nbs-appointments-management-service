@@ -30,7 +30,7 @@ const Page = async ({ params, searchParams }: UserPageProps) => {
   await fromServer(assertPermission(siteFromPath, 'users:manage'));
 
   const [site, users, userProfile] = await Promise.all([
-    fromServer(fetchSite(siteFromPath)),
+    fromServer(fetchSite(siteFromPath, false)),
     fromServer(fetchUsers(siteFromPath)),
     fromServer(fetchUserProfile()),
   ]);

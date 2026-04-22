@@ -28,7 +28,7 @@ const AssignRolesPage = async ({ params, searchParams }: UserPageProps) => {
   const email = userFromParams?.toLowerCase();
 
   const [site, userProfile, roleOptions, userToEdit] = await Promise.all([
-    fromServer(fetchSite(siteFromPath)),
+    fromServer(fetchSite(siteFromPath, false)),
     fromServer(fetchUserProfile()),
     fromServer(fetchRoles()),
     fromServer(fetchUsers(siteFromPath)).then(users =>

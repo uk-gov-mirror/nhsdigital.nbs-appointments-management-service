@@ -50,7 +50,7 @@ const Page = async ({ params, searchParams }: PageProps) => {
 
   const [site, bookings, clinicalServices, cancelADateRange, sitePermissions] =
     await Promise.all([
-      fromServer(fetchSite(siteFromPath)),
+      fromServer(fetchSite(siteFromPath, false)),
       fromServer(fetchBookings(fetchBookingsRequest, ['Booked', 'Cancelled'])),
       fromServer(fetchClinicalServices()),
       fromServer(fetchFeatureFlag('CancelADateRange')),

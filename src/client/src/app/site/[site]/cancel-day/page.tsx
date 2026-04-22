@@ -30,7 +30,7 @@ const Page = async ({ searchParams, params }: PageProps) => {
 
   const [daySummary, site, clinicalServices] = await Promise.all([
     fromServer(fetchDaySummary(siteFromPath, date)),
-    fromServer(fetchSite(siteFromPath)),
+    fromServer(fetchSite(siteFromPath, false)),
     fromServer(fetchClinicalServices()),
   ]);
 

@@ -1,3 +1,3 @@
 ﻿namespace Nhs.Appointments.Api.Models;
 
-public record SiteBasedResourceRequest(string Site, string Scope);
+public record SiteBasedResourceRequest(string Site, bool IgnoreCache, string Scope);

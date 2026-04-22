@@ -12,7 +12,7 @@ type Props = {
 
 export const EditReferenceDetailsPage = async ({ siteId }: Props) => {
   const [siteDetails, wellKnownOdsCodeEntries] = await Promise.all([
-    fromServer(fetchSite(siteId)),
+    fromServer(fetchSite(siteId, true)),
     fromServer(fetchWellKnownOdsCodeEntries()),
   ]);
 

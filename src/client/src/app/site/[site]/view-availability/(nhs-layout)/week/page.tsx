@@ -32,7 +32,7 @@ const Page = async ({ searchParams, params }: PageProps) => {
 
   const [cancelADateRange, site, sitePermissions] = await Promise.all([
     fromServer(fetchFeatureFlag('CancelADateRange')),
-    fromServer(fetchSite(siteFromPath)),
+    fromServer(fetchSite(siteFromPath, false)),
     fromServer(fetchPermissions(siteFromPath)),
   ]);
 

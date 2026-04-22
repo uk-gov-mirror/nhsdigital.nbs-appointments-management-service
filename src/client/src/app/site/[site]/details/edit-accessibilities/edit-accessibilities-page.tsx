@@ -17,7 +17,7 @@ const EditAccessibilitiesPage = async ({ site }: Props) => {
   const accessibilityAccessibilityDefinitions = AccessibilityDefinitions.filter(
     ad => ad.id.startsWith('accessibility'),
   );
-  const siteDetails = await fromServer(fetchSite(site));
+  const siteDetails = await fromServer(fetchSite(site, true));
 
   return (
     <>

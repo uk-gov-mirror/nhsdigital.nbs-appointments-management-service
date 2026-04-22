@@ -12,7 +12,7 @@ type LayoutProps = {
 
 export default async function Layout({ children, params }: LayoutProps) {
   const { site: siteFromPath } = { ...(await params) };
-  const site = await fromServer(fetchSite(siteFromPath));
+  const site = await fromServer(fetchSite(siteFromPath, false));
 
   return (
     <NhsPage

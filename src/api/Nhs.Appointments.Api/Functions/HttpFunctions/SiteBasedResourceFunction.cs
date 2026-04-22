@@ -15,14 +15,15 @@ public abstract class SiteBasedResourceFunction<TResponse>(IValidator<SiteBasedR
     protected override Task<(IReadOnlyCollection<ErrorMessageResponseItem> errors, SiteBasedResourceRequest request)> ReadRequestAsync(HttpRequest req)
     {
         var requestedScope = req.Query.Keys.Contains("scope") ? req.Query["scope"].ToString() : "*";
+        var requestedIgnoreCache = req.Query.Keys.Contains("ignoreCache") && bool.Parse(req.Query["ignoreCache"]);
 
         if (req.Query.Keys.Contains("site"))
         {
             var site = req.Query["site"];
-            return Task.FromResult((ErrorMessageResponseItem.None, new SiteBasedResourceRequest(site, requestedScope)));
+            return Task.FromResult((ErrorMessageResponseItem.None, new SiteBasedResourceRequest(site, requestedIgnoreCache, requestedScope)));
         }
 
         var siteId = RestUriHelper.GetResourceIdFromPath(req.Path.ToUriComponent(), "sites");
-        return Task.FromResult((ErrorMessageResponseItem.None, new SiteBasedResourceRequest(siteId, requestedScope)));
+        return Task.FromResult((ErrorMessageResponseItem.None, new SiteBasedResourceRequest(siteId, requestedIgnoreCache, requestedScope)));
     }
 }

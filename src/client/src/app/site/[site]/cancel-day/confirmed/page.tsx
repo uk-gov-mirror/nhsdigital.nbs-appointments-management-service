@@ -28,7 +28,7 @@ const Page = async ({ searchParams, params }: PageProps) => {
     notFound();
   }
 
-  const site = await fromServer(fetchSite(siteFromPath));
+  const site = await fromServer(fetchSite(siteFromPath, false));
 
   const dayCancellationSummary: CancelDayResponse = {
     cancelledBookingCount: cancelledBookingCount ?? 0,

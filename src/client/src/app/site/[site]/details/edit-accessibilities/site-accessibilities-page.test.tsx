@@ -79,7 +79,7 @@ describe('Manage Accessibilities Page', () => {
       permissions: mockPermissions,
     });
     render(jsx);
-    expect(fetchSite).toHaveBeenCalledWith('TEST');
+    expect(fetchSite).toHaveBeenCalledWith('TEST', true);
   });
 
   it('passes props to form component', async () => {

@@ -5,38 +5,40 @@ using Nhs.Appointments.Persistance.Models;
 
 namespace Nhs.Appointments.Persistance
 {
-    public class ReferenceGroupCosmosDocumentStore : IReferenceNumberDocumentStore
+    public class BookingReferenceGroupCosmosDocumentStore : IBookingReferenceNumberDocumentStore
     {
         private const string DocumentId = "main";
-        private readonly ITypedDocumentCosmosStore<ReferenceGroupDocument> _cosmosStore;
+        private readonly ITypedDocumentCosmosStore<BookingReferenceGroupDocument> _cosmosStore;
+        private readonly ICoreReferenceMigrationNumberDocumentStore _migrationDocumentStore;
         private readonly ReferenceGroupOptions _options;
 
-        public ReferenceGroupCosmosDocumentStore(ITypedDocumentCosmosStore<ReferenceGroupDocument> cosmosStore, IOptions<ReferenceGroupOptions> options)
+        public BookingReferenceGroupCosmosDocumentStore(
+            ITypedDocumentCosmosStore<BookingReferenceGroupDocument> cosmosStore, 
+            ICoreReferenceMigrationNumberDocumentStore migrationDocumentStore, 
+            IOptions<ReferenceGroupOptions> options)
         {
             _cosmosStore = cosmosStore;
+            _migrationDocumentStore = migrationDocumentStore;
             _options = options.Value;
         }
 
         public async Task<int> AssignReferenceGroup()
         {
-            ReferenceGroupDocument referenceGroupDocument;
+            BookingReferenceGroupDocument referenceGroupDocument;
             var docType = _cosmosStore.GetDocumentType();
             try
             {
-                referenceGroupDocument = await _cosmosStore.GetByIdAsync<ReferenceGroupDocument>("main");
+                referenceGroupDocument = await _cosmosStore.GetByIdAsync<BookingReferenceGroupDocument>("main");
             }
             catch(CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                referenceGroupDocument = new ReferenceGroupDocument
+                var oldDocument = await _migrationDocumentStore.Get();
+
+                referenceGroupDocument = new BookingReferenceGroupDocument
                 {
                     DocumentType = docType,
                     Id = DocumentId,
-                    Groups = Enumerable.Range(0, _options.InitialGroupCount).Select(x => new ReferenceGroup
-                    {
-                        Prefix = x,
-                        Sequence = 0,
-                        SiteCount = 0
-                    }).ToArray()
+                    Groups = oldDocument.Groups,
                 };
 
                 await _cosmosStore.WriteAsync(referenceGroupDocument);
@@ -56,10 +58,5 @@ namespace Nhs.Appointments.Persistance
             var referenceGroupDocument = await _cosmosStore.PatchDocument(docType, DocumentId, incrementSequencePatch);
             return referenceGroupDocument.Groups.Single(gr => gr.Prefix == prefix).Sequence;
         }
-    }
-
-    public class ReferenceGroupOptions
-    {
-        public int InitialGroupCount { get; set; }
     }
 }

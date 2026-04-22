@@ -12,12 +12,12 @@ public class ReferenceNumberProvider : IReferenceNumberProvider
 {
     private readonly ISiteService _siteService;
     private readonly ICacheService _cacheService;
-    private readonly IReferenceNumberDocumentStore _referenceNumberDocumentStore;
+    private readonly IBookingReferenceNumberDocumentStore _referenceNumberDocumentStore;
     private readonly TimeProvider _timeProvider;
     public ReferenceNumberProvider(
         ISiteService siteService,
         ICacheService cacheService,
-        IReferenceNumberDocumentStore referenceNumberDocumentStore,
+        IBookingReferenceNumberDocumentStore referenceNumberDocumentStore,
         TimeProvider timeProvider)
     {
         _siteService = siteService;
@@ -59,7 +59,7 @@ public class ReferenceNumberProvider : IReferenceNumberProvider
     private static bool SiteHasNotBeenAssignedReferenceGroup(Site site) => site.ReferenceNumberGroup == 0;
 }
 
-public interface IReferenceNumberDocumentStore
+public interface ICoreReferenceNumberDocumentStore
 {
     Task<int> AssignReferenceGroup();
     Task<int> GetNextSequenceNumber(int prefix);

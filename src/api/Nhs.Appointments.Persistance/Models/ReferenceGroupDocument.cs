@@ -1,7 +1,13 @@
 ﻿namespace Nhs.Appointments.Persistance.Models;
 
 [CosmosDocumentType("reference_group")]
-public class ReferenceGroupDocument : CoreDataCosmosDocument
+public class CoreReferenceGroupDocument : CoreDataCosmosDocument
+{
+    public ReferenceGroup[] Groups { get; set; }
+}
+
+[CosmosDocumentType("reference_group")]
+public class BookingReferenceGroupDocument : BookingReferenceDataCosmosDocument
 {
     public ReferenceGroup[] Groups { get; set; }
 }

@@ -21,7 +21,7 @@ public class SiteBasedRequestValidatorTests
     [Fact]
     public void Validate_ReturnsSuccess_WhenSiteBasedRequestIsValid()
     {
-        var testRequest = new SiteBasedResourceRequest("", false,"*");
+        var testRequest = new SiteBasedResourceRequest("test", false,"*");
         var result = _sut.Validate(testRequest);
         result.IsValid.Should().BeTrue();
         result.Errors.Should().HaveCount(0);

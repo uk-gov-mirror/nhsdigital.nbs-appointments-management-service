@@ -48,7 +48,8 @@ namespace Nhs.Appointments.Persistance
             }
             catch(CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                referenceGroupDocument = await MigrateFromOldDocument(prefix);
+                await MigrateFromAllOldDocument();
+                referenceGroupDocument = await _cosmosStore.PatchDocument(docType, prefix.ToString(), incrementSequencePatch);
             }
             
             return referenceGroupDocument.Sequence;
@@ -74,25 +75,6 @@ namespace Nhs.Appointments.Persistance
 
             
             return referenceGroupDocuments;
-        }
-        
-        private async Task<BookingReferenceGroupDocument> MigrateFromOldDocument(int prefix)
-        {
-            var docType = _cosmosStore.GetDocumentType();
-            var oldDocument = await _numberMigrationDocumentStore.Get();
-
-            var oldReferenceGroup = oldDocument.Groups.Single(x => x.Prefix == prefix);
-            var newDocument = new BookingReferenceGroupDocument()
-            {
-                DocumentType = docType,
-                Id = oldReferenceGroup.Prefix.ToString(),
-                Sequence = oldReferenceGroup.Prefix,
-                SiteCount = oldReferenceGroup.SiteCount,
-            };
-            
-            await _cosmosStore.WriteAsync(newDocument);
-            
-            return newDocument;
         }
     }
 }

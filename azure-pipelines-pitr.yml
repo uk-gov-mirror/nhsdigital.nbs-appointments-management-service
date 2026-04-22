@@ -1,2 +1,19 @@
 trigger: none
 
+pool:
+  vmImage: "ubuntu-latest"
+
+stages:
+  - stage: StopWebApp
+    displayName: "Stop MYA Web App and Function Apps"
+    jobs:
+      - job: StopApps
+        steps:
+          - task: AzureCLI@2
+            displayName: "Stop Applications"
+            inputs:
+              azureSubscription: "Vaccs MYA - Dev"
+              scriptType: "ps"
+              scriptLocation: scriptPath
+              scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/stop-dev-app-services.ps1"
+              arguments: "-resourceGroup vaccs-mya-dev-uks -region uks"

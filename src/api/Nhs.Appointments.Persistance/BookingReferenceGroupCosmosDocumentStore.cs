@@ -1,5 +1,4 @@
 using Microsoft.Azure.Cosmos;
-using Microsoft.Extensions.Options;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Persistance.Models;
 
@@ -10,16 +9,13 @@ namespace Nhs.Appointments.Persistance
         private const string DocumentId = "main";
         private readonly ITypedDocumentCosmosStore<BookingReferenceGroupDocument> _cosmosStore;
         private readonly ICoreReferenceMigrationNumberDocumentStore _migrationDocumentStore;
-        private readonly ReferenceGroupOptions _options;
 
         public BookingReferenceGroupCosmosDocumentStore(
             ITypedDocumentCosmosStore<BookingReferenceGroupDocument> cosmosStore, 
-            ICoreReferenceMigrationNumberDocumentStore migrationDocumentStore, 
-            IOptions<ReferenceGroupOptions> options)
+            ICoreReferenceMigrationNumberDocumentStore migrationDocumentStore)
         {
             _cosmosStore = cosmosStore;
             _migrationDocumentStore = migrationDocumentStore;
-            _options = options.Value;
         }
 
         public async Task<int> AssignReferenceGroup()
@@ -32,16 +28,7 @@ namespace Nhs.Appointments.Persistance
             }
             catch(CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                var oldDocument = await _migrationDocumentStore.Get();
-
-                referenceGroupDocument = new BookingReferenceGroupDocument
-                {
-                    DocumentType = docType,
-                    Id = DocumentId,
-                    Groups = oldDocument.Groups,
-                };
-
-                await _cosmosStore.WriteAsync(referenceGroupDocument);
+                referenceGroupDocument = await MigrateFromOldDocument();
             }
             
             var target = referenceGroupDocument!.Groups.Where(g => g.Prefix > 0).OrderBy(g => g.SiteCount).ThenBy(g => g.Prefix).First();
@@ -55,8 +42,34 @@ namespace Nhs.Appointments.Persistance
         {
             var incrementSequencePatch = PatchOperation.Increment($"/Groups/{prefix}/Sequence", 1);
             var docType = _cosmosStore.GetDocumentType();
-            var referenceGroupDocument = await _cosmosStore.PatchDocument(docType, DocumentId, incrementSequencePatch);
+            BookingReferenceGroupDocument referenceGroupDocument;
+            try
+            {
+                referenceGroupDocument = await _cosmosStore.PatchDocument(docType, DocumentId, incrementSequencePatch);
+            }
+            catch(CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                referenceGroupDocument = await MigrateFromOldDocument();
+            }
+            
             return referenceGroupDocument.Groups.Single(gr => gr.Prefix == prefix).Sequence;
+        }
+
+        private async Task<BookingReferenceGroupDocument> MigrateFromOldDocument()
+        {
+            var docType = _cosmosStore.GetDocumentType();
+            var oldDocument = await _migrationDocumentStore.Get();
+
+            var referenceGroupDocument = new BookingReferenceGroupDocument
+            {
+                DocumentType = docType,
+                Id = DocumentId,
+                Groups = oldDocument.Groups,
+            };
+
+            await _cosmosStore.WriteAsync(referenceGroupDocument);
+            
+            return referenceGroupDocument;
         }
     }
 }

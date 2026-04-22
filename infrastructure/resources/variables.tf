@@ -483,12 +483,12 @@ variable "allsites_sliding_cache_duration_minutes" {
 
 variable "site_cache_duration_minutes" {
   type = number
-  default = 5
+  default = 20
 }
 
 variable "site_sliding_cache_duration_minutes" {
   type = number
-  default = 1
+  default = 10
 }
 
 variable "auditor_enable" {

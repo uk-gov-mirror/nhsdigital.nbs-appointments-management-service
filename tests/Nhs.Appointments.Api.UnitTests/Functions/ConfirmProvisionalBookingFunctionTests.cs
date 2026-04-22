@@ -51,7 +51,7 @@ public class ConfirmProvisionalBookingFunctionTests
                 Reference = "booking-ref",
                 Site = "test-site"
             });
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(new Site(
                     "test-site",
                     "test site",
@@ -90,7 +90,7 @@ public class ConfirmProvisionalBookingFunctionTests
                 Reference = "booking-ref",
                 Site = "test-site"
             });
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(new Site(
                     "test-site",
                     "test site",
@@ -127,7 +127,7 @@ public class ConfirmProvisionalBookingFunctionTests
                 Reference = "booking-ref",
                 Site = "test-site"
             });
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(null as Site);
 
         var request = CreateRequest([]);

@@ -61,7 +61,7 @@ public class QueryBookingByReferenceFunctionTests
 
         _bookingQueryService.Setup(x => x.GetBookingByReference(It.IsAny<string>()))
             .ReturnsAsync(booking);
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(new Site(
                 site,
                 "Test Site",
@@ -112,7 +112,7 @@ public class QueryBookingByReferenceFunctionTests
 
         _bookingQueryService.Setup(x => x.GetBookingByReference(It.IsAny<string>()))
             .ReturnsAsync(booking);
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(new Site(
                 "Test Site",
                 "Test Site",
@@ -161,7 +161,7 @@ public class QueryBookingByReferenceFunctionTests
         _bookingQueryService.Setup(x => x.GetBookingByReference(It.IsAny<string>()))
             .ReturnsAsync(booking);
 
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(null as Site);
         
         var request = new QueryBookingByReferenceRequest(bookingRef, "TEST03");
@@ -188,7 +188,7 @@ public class QueryBookingByReferenceFunctionTests
         var result = await _sut.RunAsync(httpRequest) as ContentResult;
         result.StatusCode.Should().Be(404);
 
-        _siteService.Verify(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+        _siteService.Verify(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()), Times.Never);
     }
 
     private static HttpRequest CreateRequest(string site)

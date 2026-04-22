@@ -47,7 +47,7 @@ public class SetSiteDetailsFunctionTests
 
         _siteService.Setup(x => x.UpdateSiteDetailsAsync(site, name, address, phoneNo, decimal.Parse($"{longitude}"), decimal.Parse($"{latitude}")))
             .ReturnsAsync(operationalResult);
-        _siteService.Setup(x => x.GetSiteByIdAsync(site, It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(site, It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(new Site(
                     site,
                     name,
@@ -88,7 +88,7 @@ public class SetSiteDetailsFunctionTests
         var latitude = 4.567;
         var request = new SetSiteDetailsRequest(site, name, address, phoneNo, $"{longitude}", $"{latitude}");
 
-        _siteService.Setup(x => x.GetSiteByIdAsync("test-site", It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync("test-site", It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(null as Site);
 
         var result = await _sut.Invoke(request);

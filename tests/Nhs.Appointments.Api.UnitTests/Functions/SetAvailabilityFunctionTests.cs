@@ -41,7 +41,7 @@ public class SetAvailabilityFunctionTests
         var userPrincipal = UserDataGenerator.CreateUserPrincipal("test.user3@nhs.net");
         _userContext.Setup(x => x.UserPrincipal)
             .Returns(userPrincipal);
-        _siteService.Setup(x => x.GetSiteByIdAsync("test-site", It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync("test-site", It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(new Site(
                     "test-site",
                     "Test Site",
@@ -92,7 +92,7 @@ public class SetAvailabilityFunctionTests
     [Fact]
     public async Task DoesNotInvokeAvailabilityService_WhenSiteIsInactive()
     {
-        _siteService.Setup(x => x.GetSiteByIdAsync("test-site", It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync("test-site", It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(null as Site);
         
         var sessions = new List<Session>

@@ -84,7 +84,7 @@ public class SiteServiceTests
         const string siteId = "9a06bacd-e916-4c10-8263-21451ca751b8";
         _siteStore.Setup(x => x.GetSiteById(siteId)).ReturnsAsync((Site)null!);
 
-        var result = await _sut.GetSiteByIdAsync(siteId, scope);
+        var result = await _sut.GetSiteByIdAsync(siteId, true, scope);
         result.Should().BeNull();
     }
 

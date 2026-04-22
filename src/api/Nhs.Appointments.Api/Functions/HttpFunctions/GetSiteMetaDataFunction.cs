@@ -53,7 +53,7 @@ public class GetSiteMetaDataFunction(
         ILogger logger)
     {
         const string scope = "site_details";
-        var site = await siteService.GetSiteByIdAsync(request.Site, scope);
+        var site = await siteService.GetSiteByIdAsync(request.Site, false, scope);
         if (site != null)
         {
             var patientInformation = site.Accessibilities.Any()

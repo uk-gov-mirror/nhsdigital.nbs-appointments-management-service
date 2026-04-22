@@ -44,7 +44,7 @@ public class ApplyAvailabilityTemplateFunctionTests
     [Fact]
     public async Task RunAsync_ReturnsNotFound_WhenSiteIsNull()
     {
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(null as Site);
 
         var sessions = new List<Session>
@@ -89,7 +89,7 @@ public class ApplyAvailabilityTemplateFunctionTests
         var userPrincipal = UserDataGenerator.CreateUserPrincipal("test.user3@nhs.net");
         _userContextProvider.Setup(x => x.UserPrincipal)
             .Returns(userPrincipal);
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(new Site(
                     "test-site",
                     "Test Site",

@@ -48,7 +48,7 @@ public class SetSiteInformationForCitizensFunctionTests
         _userContext.Setup(x => x.UserPrincipal).Returns(userPrincipal);
         _siteService.Setup(x => x.UpdateInformationForCitizens(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(operationalResult);
-        _siteService.Setup(x => x.GetSiteByIdAsync(site, It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(site, It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(new Site(
                     site,
                     "Test Site",
@@ -84,7 +84,7 @@ public class SetSiteInformationForCitizensFunctionTests
         var infoForCitizens = "Some information for citizens.";
         var request = new SetSiteInformationForCitizensRequest(site, infoForCitizens);
 
-        _siteService.Setup(x => x.GetSiteByIdAsync("test-site", It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync("test-site", It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(null as Site);
 
         var result = await _sut.Invoke(request);

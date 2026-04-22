@@ -40,7 +40,7 @@ public class MakeBookingFunctionTests
     {
         var slots = AvailabilityHelper.CreateTestSlots(Date, new TimeOnly(10, 0), new TimeOnly(11, 0),
             TimeSpan.FromMinutes(5));
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>())).ReturnsAsync(
             new Site("6877d86e-c2df-4def-8508-e1eccf0ea6ba", "Test Site", "Nowhere", "2929292", "15N", "North",
                 "Test Board", "Information For Citizen 123", Enumerable.Empty<Accessibility>(),
                 new Location("Point", [0, 0]), SiteStatus.Online, null, string.Empty, ReferenceNumberGroup: 0));
@@ -59,7 +59,7 @@ public class MakeBookingFunctionTests
     [Fact]
     public async Task RunAsync_ReturnsError_WhenSiteDoesNotExist()
     {
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Site)null);
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>())).ReturnsAsync((Site)null);
 
         var request = CreateRequest("34e990af-5dc9-43a6-8895-b9123216d699", "2077-01-01 09:30", "COVID", "9999999999",
             "FirstName", "LastName",
@@ -74,7 +74,7 @@ public class MakeBookingFunctionTests
     [Fact]
     public async Task RunAsync_ReturnsError_WhenAppointmentSlotIsNotAvailable()
     {
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>())).ReturnsAsync(
             new Site("6877d86e-c2df-4def-8508-e1eccf0ea6ba", "Test Site", "Nowhere", "2929292", "15N", "North",
                 "Test Board", "Information For Citizens 123", Enumerable.Empty<Accessibility>(),
                 new Location("Point", [0, 0]), SiteStatus.Online, null, string.Empty, ReferenceNumberGroup: 0));
@@ -94,7 +94,7 @@ public class MakeBookingFunctionTests
     [Fact]
     public void RunAsync_InvokesBookingService_WithCorrectDetails()
     {
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>())).ReturnsAsync(
             new Site("6877d86e-c2df-4def-8508-e1eccf0ea6ba", "Test Site", "Nowhere", "2929292", "15N", "North",
                 "Test Board", "Information For Citizens 123", Enumerable.Empty<Accessibility>(),
                 new Location("Point", [0, 0]), SiteStatus.Online, null, string.Empty, ReferenceNumberGroup: 0));

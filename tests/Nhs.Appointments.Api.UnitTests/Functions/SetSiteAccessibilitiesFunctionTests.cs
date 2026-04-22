@@ -47,7 +47,7 @@ public class SetSiteAccessibilitiesFunctionTests
 
         _siteService.Setup(x => x.UpdateAccessibilities(site, accessibilities))
             .ReturnsAsync(operationalResult);
-        _siteService.Setup(x => x.GetSiteByIdAsync(site, It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(site, It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(new Site(
                     site,
                     "test site",
@@ -85,7 +85,7 @@ public class SetSiteAccessibilitiesFunctionTests
         };
         var request = new SetSiteAccessibilitiesRequest(site, accessibilities);
 
-        _siteService.Setup(x => x.GetSiteByIdAsync("test-site", It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync("test-site", It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(null as Site);
 
         var result = await _sut.Invoke(request);

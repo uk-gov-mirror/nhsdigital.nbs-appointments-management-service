@@ -49,7 +49,7 @@ public class BookingNotifierTests
         _notificationConfigurationService
             .Setup(x => x.GetNotificationConfigurationsAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(
                 new NotificationConfiguration { EmailTemplateId = EmailTemplateId, SmsTemplateId = SmsTemplateId });
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<bool>(), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
                 "R1", "ICB1", "Information For Citizens 123", null, null, SiteStatus.Online, null, string.Empty,
                 ReferenceNumberGroup: 0)));
@@ -83,7 +83,7 @@ public class BookingNotifierTests
         _notificationConfigurationService
             .Setup(x => x.GetNotificationConfigurationsAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(
                 new NotificationConfiguration { EmailTemplateId = EmailTemplateId, SmsTemplateId = SmsTemplateId });
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<bool>(), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
                 "R1", "ICB1", "Information For Citizens 123", null, null, SiteStatus.Online, null, string.Empty,
                 ReferenceNumberGroup: 0)));
@@ -132,7 +132,7 @@ public class BookingNotifierTests
         _notificationConfigurationService
             .Setup(x => x.GetNotificationConfigurationsAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(
                 new NotificationConfiguration { EmailTemplateId = EmailTemplateId, SmsTemplateId = SmsTemplateId });
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<bool>(), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
                 "R1", "ICB1", informationForCitizens, null, null, SiteStatus.Online, null, string.Empty,
                 ReferenceNumberGroup: 0)));
@@ -172,7 +172,7 @@ public class BookingNotifierTests
         _notificationConfigurationService
             .Setup(x => x.GetNotificationConfigurationsAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(
                 new NotificationConfiguration { EmailTemplateId = EmailTemplateId, SmsTemplateId = SmsTemplateId });
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>())).Returns(
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<bool>(), It.IsAny<string>())).Returns(
             Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N", "R1", "ICB1", "Information For Citizens 123",
                 Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty,
                 ReferenceNumberGroup: 0))).Verifiable();
@@ -197,7 +197,7 @@ public class BookingNotifierTests
         _notificationConfigurationService
             .Setup(x => x.GetNotificationConfigurationsAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(
                 new NotificationConfiguration { EmailTemplateId = EmailTemplateId, SmsTemplateId = SmsTemplateId });
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>())).Returns(
             Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N", "R1", "ICB1", "Information For Citizens 123",
                 Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty,
                 ReferenceNumberGroup: 0)));

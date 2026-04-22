@@ -1,4 +1,6 @@
+using Microsoft.Extensions.Caching.Memory;
 using Nhs.Appointments.Core.Bookings;
+using Nhs.Appointments.Core.Caching;
 using Nhs.Appointments.Core.Sites;
 
 namespace Nhs.Appointments.Core.UnitTests;
@@ -9,16 +11,18 @@ public class ReferenceNumberProviderTests
     private readonly Mock<ISiteService> _siteService = new();
     private readonly Mock<IReferenceNumberDocumentStore> _referenceNumberDocumentStore = new();
     private readonly Mock<TimeProvider> _timeProvider = new();
-
+    private readonly Mock<IMemoryCache> _memoryCache = new();
+    private readonly Mock<ICacheEntry> _cacheEntry = new();
     public ReferenceNumberProviderTests()
     {
-        _sut = new ReferenceNumberProvider(_siteService.Object, _referenceNumberDocumentStore.Object, _timeProvider.Object);
+        _sut = new ReferenceNumberProvider(_siteService.Object, new CacheService(_memoryCache.Object, TimeProvider.System), _referenceNumberDocumentStore.Object, _timeProvider.Object);
     }
 
     [Fact]
     public async Task GetReferenceNumber_AssignsRefGroup_WhenNotCurrentAssigned()
     {
-        _siteService.Setup(x => x.GetSiteByIdAsync("test", It.IsAny<string>())).ReturnsAsync(new Site("test", "NAME", "ADDRESS", 
+        _memoryCache.Setup(x => x.CreateEntry(It.IsAny<object>())).Returns(_cacheEntry.Object);
+        _siteService.Setup(x => x.GetSiteByIdAsync("test", It.IsAny<bool>(), It.IsAny<string>())).ReturnsAsync(new Site("test", "NAME", "ADDRESS", 
             "PHONENUMBER", "ODSCODE", "REGION", "ICB", "INFO", 
             new List<Accessibility>(), new Location("",[0, 0]), SiteStatus.Online, false, "TYPE", 0));
         _referenceNumberDocumentStore.Setup(x => x.AssignReferenceGroup()).ReturnsAsync(14);
@@ -32,7 +36,8 @@ public class ReferenceNumberProviderTests
     [Fact]
     public async Task GetReferenceNumber_DoesNotAssignsRefGroup_WhenAlreadyAssigned()
     {
-        _siteService.Setup(x => x.GetSiteByIdAsync("test", It.IsAny<string>())).ReturnsAsync(new Site(
+        _memoryCache.Setup(x => x.CreateEntry(It.IsAny<object>())).Returns(_cacheEntry.Object);
+        _siteService.Setup(x => x.GetSiteByIdAsync("test", It.IsAny<bool>(), It.IsAny<string>())).ReturnsAsync(new Site(
             "test", "NAME", "ADDRESS", "PHONENUMBER", "ODSCODE", "REGION", 
             "ICB", "INFO", new List<Accessibility>(), new Location("",
             [0, 0]), SiteStatus.Online, false, "TYPE", 14));
@@ -46,15 +51,17 @@ public class ReferenceNumberProviderTests
     [Fact]
     public async Task GetReferenceNumber_GeneratesCorrectlyFormattedNumber()
     {
+        _memoryCache.Setup(x => x.CreateEntry(It.IsAny<object>())).Returns(_cacheEntry.Object);
         _timeProvider.Setup(x => x.GetUtcNow()).Returns(new DateTime(2077, 1, 31, 9, 0, 59));
         _referenceNumberDocumentStore.Setup(x => x.GetNextSequenceNumber(14)).ReturnsAsync(2345);
 
-        _siteService.Setup(x => x.GetSiteByIdAsync("test", It.IsAny<string>())).ReturnsAsync(new Site(
+        _siteService.Setup(x => x.GetSiteByIdAsync("test", It.IsAny<bool>(), It.IsAny<string>())).ReturnsAsync(new Site(
             "test", "NAME", "ADDRESS", "PHONENUMBER", "ODSCODE", "REGION", 
             "ICB", "INFO", new List<Accessibility>(), new Location("",
                 [0, 0]), SiteStatus.Online, false, "TYPE", 14));
 
         var result = await _sut.GetReferenceNumber("test");
+        
         result.Should().Be("14-90-002345");
     }
 }

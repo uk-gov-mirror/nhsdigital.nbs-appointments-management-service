@@ -39,7 +39,7 @@ public class UserDataImportHandlerTests
         var file = new FormFile(stream, 0, stream.Length, "Test", "test.csv");
         var sites = GetSites();
 
-        _siteServiceMock.SetupSequence(s => s.GetSiteByIdAsync(It.IsAny<string>(), "*"))
+        _siteServiceMock.SetupSequence(s => s.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(sites[0])
             .ReturnsAsync(sites[1])
             .ReturnsAsync(sites[2])
@@ -77,7 +77,7 @@ public class UserDataImportHandlerTests
 
         var sites = GetSites();
 
-        _siteServiceMock.SetupSequence(s => s.GetSiteByIdAsync(It.IsAny<string>(), "*"))
+        _siteServiceMock.SetupSequence(s => s.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(sites[0])
             .ReturnsAsync(sites[1]);
         _userServiceMock.Setup(x => x.UpdateUserRoleAssignmentsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<RoleAssignment>>(), false))
@@ -108,7 +108,7 @@ public class UserDataImportHandlerTests
 
         var sites = GetSites();
 
-        _siteServiceMock.SetupSequence(s => s.GetSiteByIdAsync(It.IsAny<string>(), "*"))
+        _siteServiceMock.SetupSequence(s => s.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(sites[0])
             .ReturnsAsync(sites[1]);
         _userServiceMock.Setup(x => x.UpdateUserRoleAssignmentsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<RoleAssignment>>(), false))
@@ -147,7 +147,7 @@ public class UserDataImportHandlerTests
 
         var sites = GetSites();
 
-        _siteServiceMock.SetupSequence(s => s.GetSiteByIdAsync(It.IsAny<string>(), "*"))
+        _siteServiceMock.SetupSequence(s => s.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(sites[0])
             .ReturnsAsync(sites[1])
             .ReturnsAsync(sites[2])
@@ -173,7 +173,7 @@ public class UserDataImportHandlerTests
 
         var sites = GetSites();
 
-        _siteServiceMock.Setup(s => s.GetSiteByIdAsync(It.IsAny<string>(), "*"))
+        _siteServiceMock.Setup(s => s.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(null as Site);
         _emailWhitelistStore.Setup(x => x.GetWhitelistedEmails())
             .ReturnsAsync(["@nhs.net"]);
@@ -195,7 +195,7 @@ public class UserDataImportHandlerTests
 
         var sites = GetSites();
 
-        _siteServiceMock.SetupSequence(s => s.GetSiteByIdAsync(It.IsAny<string>(), "*"))
+        _siteServiceMock.SetupSequence(s => s.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(sites[0])
             .ReturnsAsync(sites[1])
             .ReturnsAsync(sites[2])
@@ -276,7 +276,7 @@ public class UserDataImportHandlerTests
 
         var sites = GetSites();
 
-        _siteServiceMock.SetupSequence(s => s.GetSiteByIdAsync(It.IsAny<string>(), "*"))
+        _siteServiceMock.SetupSequence(s => s.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(sites[0])
             .ReturnsAsync(sites[1]);
         _userServiceMock.Setup(x => x.UpdateUserRoleAssignmentsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<RoleAssignment>>(), false))
@@ -312,7 +312,7 @@ public class UserDataImportHandlerTests
 
         var sites = GetSites();
 
-        _siteServiceMock.SetupSequence(s => s.GetSiteByIdAsync(It.IsAny<string>(), "*"))
+        _siteServiceMock.SetupSequence(s => s.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(sites[0])
             .ReturnsAsync(sites[1]);
         _userServiceMock.Setup(x => x.UpdateUserRoleAssignmentsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<RoleAssignment>>(), false))
@@ -349,7 +349,7 @@ public class UserDataImportHandlerTests
 
         var sites = GetSites();
 
-        _siteServiceMock.SetupSequence(s => s.GetSiteByIdAsync(It.IsAny<string>(), "*"))
+        _siteServiceMock.SetupSequence(s => s.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(sites[0])
             .ReturnsAsync(sites[1]);
         _userServiceMock.Setup(x => x.UpdateUserRoleAssignmentsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<RoleAssignment>>(), false))

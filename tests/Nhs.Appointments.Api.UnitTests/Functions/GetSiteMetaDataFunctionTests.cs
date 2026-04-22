@@ -45,7 +45,7 @@ public class GetSiteMetaDataFunctionTests
     [InlineData("attr_one/test_attr", "Another test", "")]
     public async Task RunAsync_ReturnsInformationForCitizen(string attrId, string attrVal, string expectedInformation)
     {
-        _siteService.Setup(x => x.GetSiteByIdAsync("6877d86e-c2df-4def-8508-e1eccf0ea6ba", "site_details"))
+        _siteService.Setup(x => x.GetSiteByIdAsync("6877d86e-c2df-4def-8508-e1eccf0ea6ba", It.IsAny<bool>(), "site_details"))
             .ReturnsAsync(new Site
             (
                 Id: "6877d86e-c2df-4def-8508-e1eccf0ea6ba",

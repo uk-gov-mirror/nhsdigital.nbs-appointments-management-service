@@ -10,7 +10,7 @@ namespace Nhs.Appointments.Core.Sites;
 
 public interface ISiteService
 {
-    Task<Site> GetSiteByIdAsync(string siteId, string scope = "*");
+    Task<Site> GetSiteByIdAsync(string siteId, bool ignoreCache = false, string scope = "*");
     Task<IEnumerable<SitePreview>> GetSitesPreview(bool includeDeleted = false);
     Task<IEnumerable<Site>> GetAllSites(bool includeDeleted = false, bool ignoreCache = false);
     Task<OperationResult> UpdateAccessibilities(string siteId, IEnumerable<Accessibility> accessibilities);
@@ -135,10 +135,10 @@ public class SiteService(
         return result;
     }
 
-    public async Task<Site> GetSiteByIdAsync(string siteId, string scope = "*")
+    public async Task<Site> GetSiteByIdAsync(string siteId, bool ignoreCache = false, string scope = "*")
     {
         Site site;
-        if (options.Value.DisableSiteCache)
+        if (options.Value.DisableSiteCache || ignoreCache)
         {
             site = await siteStore.GetSiteById(siteId);
         }

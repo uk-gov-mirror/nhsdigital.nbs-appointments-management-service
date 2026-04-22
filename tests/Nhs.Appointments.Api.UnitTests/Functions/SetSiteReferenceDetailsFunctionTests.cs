@@ -46,7 +46,7 @@ public class SetSiteReferenceDetailsFunctionTests
 
         _siteService.Setup(x => x.UpdateSiteReferenceDetailsAsync(site, odsCode, icb, region))
             .ReturnsAsync(operationalResult);
-        _siteService.Setup(x => x.GetSiteByIdAsync(site, It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(site, It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(new Site(
                     site,
                     "Test Site",
@@ -84,7 +84,7 @@ public class SetSiteReferenceDetailsFunctionTests
         var region = "R1";
         var request = new SetSiteReferenceDetailsRequest(site, odsCode, icb, region);
 
-        _siteService.Setup(x => x.GetSiteByIdAsync("test-site", It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync("test-site", It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(null as Site);
 
         var result = await _sut.Invoke(request);

@@ -68,7 +68,7 @@ public class QueryAvailabilityBySlotsFunctionTests
     {
         _featureToggleHelper.Setup(x => x.IsFeatureEnabled(Flags.MultiServiceJointBookings))
             .ReturnsAsync(true);
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(null as Site);
 
         var payload = new AvailabilityQueryBySlotsRequest(
@@ -94,7 +94,7 @@ public class QueryAvailabilityBySlotsFunctionTests
 
         _featureToggleHelper.Setup(x => x.IsFeatureEnabled(Flags.MultiServiceJointBookings))
             .ReturnsAsync(true);
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(new Site(
                 "2de5bb57-060f-4cb5-b14d-16587d0c2e8f",
                 "Test Site",
@@ -149,7 +149,7 @@ public class QueryAvailabilityBySlotsFunctionTests
 
         _featureToggleHelper.Setup(x => x.IsFeatureEnabled(Flags.MultiServiceJointBookings))
             .ReturnsAsync(true);
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>()))
             .ReturnsAsync(new Site(
                 "2de5bb57-060f-4cb5-b14d-16587d0c2e8f",
                 "Test Site",

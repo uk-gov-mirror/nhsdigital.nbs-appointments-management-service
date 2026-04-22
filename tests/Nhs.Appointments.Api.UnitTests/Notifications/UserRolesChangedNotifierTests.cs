@@ -36,7 +36,7 @@ public class UserRolesChangedNotifierTests
         _rolesStore.Setup(x => x.GetRoles()).Returns(Task.FromResult<IEnumerable<Role>>([
             new Role { Id = "newRole", Name = "New Role" }, new Role { Id = "removedRole", Name = "Removed Role" }
         ]));
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<bool>(), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
                 "R1", "ICB1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty,
                 ReferenceNumberGroup: 0)));
@@ -57,7 +57,7 @@ public class UserRolesChangedNotifierTests
         _rolesStore.Setup(x => x.GetRoles()).Returns(Task.FromResult<IEnumerable<Role>>([
             new Role { Id = "newRole", Name = "New Role" }, new Role { Id = "removedRole", Name = "Removed Role" }
         ]));
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>())).Returns(
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<bool>(), It.IsAny<string>())).Returns(
             Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N", "R1", "ICB1", "Information For Citizens 123",
                 Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty,
                 ReferenceNumberGroup: 0))).Verifiable();
@@ -74,7 +74,7 @@ public class UserRolesChangedNotifierTests
         _rolesStore.Setup(x => x.GetRoles()).Returns(Task.FromResult<IEnumerable<Role>>([
             new Role { Id = "newRole", Name = "New Role" }, new Role { Id = "removedRole", Name = "Removed Role" }
         ])).Verifiable();
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<bool>(), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
                 "R1", "ICB1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty,
                 ReferenceNumberGroup: 0)));
@@ -91,7 +91,7 @@ public class UserRolesChangedNotifierTests
         _rolesStore.Setup(x => x.GetRoles()).Returns(Task.FromResult<IEnumerable<Role>>([
             new Role { Id = "newRole", Name = "New Role" }, new Role { Id = "removedRole", Name = "Removed Role" }
         ]));
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<bool>(), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
                 "R1", "ICB1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty,
                 ReferenceNumberGroup: 0)));
@@ -110,7 +110,7 @@ public class UserRolesChangedNotifierTests
         _rolesStore.Setup(x => x.GetRoles()).Returns(Task.FromResult<IEnumerable<Role>>([
             new Role { Id = "newRole", Name = "New Role" }, new Role { Id = "removedRole", Name = "Removed Role" }
         ]));
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<bool>(), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
                 "R1", "ICB1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty,
                 ReferenceNumberGroup: 0)));
@@ -132,7 +132,7 @@ public class UserRolesChangedNotifierTests
         _rolesStore.Setup(x => x.GetRoles()).Returns(Task.FromResult<IEnumerable<Role>>([
             new Role { Id = "newRole", Name = "New Role" }, new Role { Id = "removedRole", Name = "Removed Role" }
         ]));
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<bool>(), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
                 "R1", "ICB1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty,
                 ReferenceNumberGroup: 0)));
@@ -155,7 +155,7 @@ public class UserRolesChangedNotifierTests
         _rolesStore.Setup(x => x.GetRoles()).Returns(Task.FromResult<IEnumerable<Role>>([
             new Role { Id = "newRole", Name = "New Role" }, new Role { Id = "removedRole", Name = "Removed Role" }
         ]));
-        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<string>()))
+        _siteService.Setup(x => x.GetSiteByIdAsync(It.Is<string>(s => s == Site), It.IsAny<bool>(), It.IsAny<string>()))
             .Returns(Task.FromResult(new Site(Site, "A Clinical Site", "123 Surgery Street", "0113 1111111", "15N",
                 "R1", "ICB1", "Information For Citizens 123", Array.Empty<Accessibility>(), new Location("point", [0, 0]), SiteStatus.Online, null, string.Empty,
                 ReferenceNumberGroup: 0)));

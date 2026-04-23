@@ -5,13 +5,13 @@ using Nhs.Appointments.Persistance.Models;
 
 namespace Nhs.Appointments.Persistance
 {
-    public class CoreCoreReferenceNumberGroupCosmosDocumentStore : ICoreReferenceNumberDocumentStore, ICoreReferenceNumberMigrationDocumentStore
+    public class CoreReferenceNumberGroupCosmosDocumentStore : IReferenceNumberDocumentStore, ICoreReferenceNumberMigrationDocumentStore
     {
         private const string DocumentId = "main";
         private readonly ITypedDocumentCosmosStore<CoreReferenceGroupDocument> _cosmosStore;
         private readonly ReferenceGroupOptions _options;
 
-        public CoreCoreReferenceNumberGroupCosmosDocumentStore(ITypedDocumentCosmosStore<CoreReferenceGroupDocument> cosmosStore, IOptions<ReferenceGroupOptions> options)
+        public CoreReferenceNumberGroupCosmosDocumentStore(ITypedDocumentCosmosStore<CoreReferenceGroupDocument> cosmosStore, IOptions<ReferenceGroupOptions> options)
         {
             _cosmosStore = cosmosStore;
             _options = options.Value;
@@ -43,7 +43,7 @@ namespace Nhs.Appointments.Persistance
             var docType = _cosmosStore.GetDocumentType();
             try
             {
-                referenceGroupDocument = await _cosmosStore.GetByIdAsync<CoreReferenceGroupDocument>("main");
+                referenceGroupDocument = await _cosmosStore.GetByIdAsync<CoreReferenceGroupDocument>(DocumentId);
             }
             catch(CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {

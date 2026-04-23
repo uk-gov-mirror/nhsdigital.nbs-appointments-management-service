@@ -1,6 +1,6 @@
 ﻿namespace Nhs.Appointments.Core.Bookings;
 
-public interface IBookingReferenceNumberDocumentStore
+public interface IReferenceNumberDocumentStore
 {
     Task<int> AssignReferenceGroup();
     Task<int> GetNextSequenceNumber(int prefix);

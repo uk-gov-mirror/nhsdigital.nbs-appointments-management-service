@@ -4,12 +4,12 @@ using Nhs.Appointments.Persistance.Models;
 
 namespace Nhs.Appointments.Persistance
 {
-    public class BookingReferenceGroupCosmosDocumentStore : IBookingReferenceNumberDocumentStore
+    public class ReferenceGroupCosmosDocumentStore : IReferenceNumberDocumentStore
     {
         private readonly ITypedDocumentCosmosStore<BookingReferenceGroupDocument> _cosmosStore;
         private readonly ICoreReferenceNumberMigrationDocumentStore _numberMigrationDocumentStore;
 
-        public BookingReferenceGroupCosmosDocumentStore(
+        public ReferenceGroupCosmosDocumentStore(
             ITypedDocumentCosmosStore<BookingReferenceGroupDocument> cosmosStore, 
             ICoreReferenceNumberMigrationDocumentStore numberMigrationDocumentStore)
         {
@@ -56,6 +56,11 @@ namespace Nhs.Appointments.Persistance
 
         private async Task<IEnumerable<BookingReferenceGroupDocument>> MigrateFromAllOldDocument()
         {
+            // Acquire a lock
+            // Check has migration happened already?
+                // YES - return
+                // No - migrate
+            // Release lock
             var docType = _cosmosStore.GetDocumentType();
             var oldDocument = await _numberMigrationDocumentStore.Get();
 

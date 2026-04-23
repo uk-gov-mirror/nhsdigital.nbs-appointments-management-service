@@ -9,7 +9,7 @@ public class ReferenceNumberProviderTests
 {
     private readonly ReferenceNumberProvider _sut;
     private readonly Mock<ISiteService> _siteService = new();
-    private readonly Mock<IBookingReferenceNumberDocumentStore> _referenceNumberDocumentStore = new();
+    private readonly Mock<IReferenceNumberDocumentStore> _referenceNumberDocumentStore = new();
     private readonly Mock<TimeProvider> _timeProvider = new();
     private readonly Mock<IMemoryCache> _memoryCache = new();
     private readonly Mock<ICacheEntry> _cacheEntry = new();

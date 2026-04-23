@@ -26,7 +26,7 @@ stages:
               arguments: >
                 -sourceAccount "vaccs-mya-cdb-dev-uks" 
                 -resourceGroup "vaccs-mya-dev-uks"  
-                -restoreTimeStr "${{ parameters.RestoreDateTime }}"
+                -restoreDateAndTimeStr "${{ parameters.RestoreDateTime }}"
 
   - stage: StopWebApp
     displayName: "Stop MYA Web App and Function Apps"

@@ -1,3 +1,4 @@
+using Nhs.Appointments.Core.Reports.Helpers;
 using Nhs.Appointments.Core.Sites;
 
 namespace Nhs.Appointments.Core.Reports.MasterSiteList;
@@ -17,8 +18,6 @@ public class MasterSiteListReportCsvWriter(TimeProvider timeProvider) : IMasterS
     private string BuildFileName() =>
     $"MasterSiteListReport_{timeProvider.GetUtcNow():yyyyMMddhhmmss}.csv";
 
-    private static string CsvStringValue(string value) => "\"" + value + "\"";
-
     private async Task CompileCsv(TextWriter csvWriter, IEnumerable<Site> sites)
     {
         await csvWriter.WriteLineAsync(string.Join(',', MasterSiteListReportMap.Headers()));
@@ -27,18 +26,18 @@ public class MasterSiteListReportCsvWriter(TimeProvider timeProvider) : IMasterS
         {
             try
             {
-                await csvWriter.WriteLineAsync(string.Join(',', 
-                    CsvStringValue(MasterSiteListReportMap.SiteName(site)),
-                    CsvStringValue(MasterSiteListReportMap.OdsCode(site)), 
-                    CsvStringValue(MasterSiteListReportMap.SiteType(site)),
-                    CsvStringValue(MasterSiteListReportMap.Region(site)),
-                    CsvStringValue(MasterSiteListReportMap.ICB(site)),
-                    CsvStringValue(MasterSiteListReportMap.Guid(site)),
+                await csvWriter.WriteLineAsync(string.Join(',',
+                    CsvFormatter.FormatValue(MasterSiteListReportMap.SiteName(site)),
+                    CsvFormatter.FormatValue(MasterSiteListReportMap.OdsCode(site)), 
+                    CsvFormatter.FormatValue(MasterSiteListReportMap.SiteType(site)),
+                    CsvFormatter.FormatValue(MasterSiteListReportMap.Region(site)),
+                    CsvFormatter.FormatValue(MasterSiteListReportMap.ICB(site)),
+                    CsvFormatter.FormatValue(MasterSiteListReportMap.Guid(site)),
                     MasterSiteListReportMap.IsDeleted(site),
-                    CsvStringValue(MasterSiteListReportMap.Status(site)),
+                    CsvFormatter.FormatValue(MasterSiteListReportMap.Status(site)),
                     MasterSiteListReportMap.Longitude(site),
                     MasterSiteListReportMap.Latitude(site),
-                    CsvStringValue(MasterSiteListReportMap.Address(site))
+                    CsvFormatter.FormatValue(MasterSiteListReportMap.Address(site))
                    ));
 
             }

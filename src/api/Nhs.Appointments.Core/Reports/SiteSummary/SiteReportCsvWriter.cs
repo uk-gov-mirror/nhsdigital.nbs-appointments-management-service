@@ -1,3 +1,4 @@
+using Nhs.Appointments.Core.Reports.Helpers;
 using Nhs.Appointments.Core.Sites;
 
 namespace Nhs.Appointments.Core.Reports.SiteSummary;
@@ -21,8 +22,6 @@ public class SiteReportCsvWriter(TimeProvider timeProvider) : ISiteReportCsvWrit
         DateOnly endDate) =>
         $"SiteReport_{startDate:yyyy-MM-dd}_{endDate:yyyy-MM-dd}_{timeProvider.GetUtcNow():yyyyMMddhhmmss}.csv";
 
-    private static string CsvStringValue(string value) => "\"" + value + "\"";
-
     private async Task CompileCsv(TextWriter csvWriter, List<SiteReport> siteReports)
     {
         var distinctServices = siteReports.SelectMany(x => x.Bookings.Keys)
@@ -33,18 +32,22 @@ public class SiteReportCsvWriter(TimeProvider timeProvider) : ISiteReportCsvWrit
 
         foreach (var siteReport in siteReports)
         {
-            await csvWriter.WriteLineAsync(string.Join(',', CsvStringValue(SiteReportMap.SiteName(siteReport)),
-                CsvStringValue(SiteReportMap.Status(siteReport)),
-                CsvStringValue(SiteReportMap.SiteType(siteReport)),
-                CsvStringValue(SiteReportMap.ICB(siteReport)), CsvStringValue(SiteReportMap.ICBName(siteReport)),
-                CsvStringValue(SiteReportMap.Region(siteReport)), CsvStringValue(SiteReportMap.RegionName(siteReport)),
-                CsvStringValue(SiteReportMap.OdsCode(siteReport)), SiteReportMap.Longitude(siteReport),
+            await csvWriter.WriteLineAsync(string.Join(',', 
+                CsvFormatter.FormatValue(SiteReportMap.SiteName(siteReport)),
+                CsvFormatter.FormatValue(SiteReportMap.Status(siteReport)),
+                CsvFormatter.FormatValue(SiteReportMap.SiteType(siteReport)),
+                CsvFormatter.FormatValue(SiteReportMap.ICB(siteReport)), 
+                CsvFormatter.FormatValue(SiteReportMap.ICBName(siteReport)),
+                CsvFormatter.FormatValue(SiteReportMap.Region(siteReport)), 
+                CsvFormatter.FormatValue(SiteReportMap.RegionName(siteReport)),
+                CsvFormatter.FormatValue(SiteReportMap.OdsCode(siteReport)), 
+                SiteReportMap.Longitude(siteReport),
                 SiteReportMap.Latitude(siteReport),
                 string.Join(',', distinctServices.Select(service => SiteReportMap.BookingsCount(siteReport, service))),
                 SiteReportMap.TotalBookings(siteReport).ToString(), SiteReportMap.Cancelled(siteReport).ToString(),
                 SiteReportMap.MaximumCapacity(siteReport).ToString(),
-                string.Join(',',
-                    distinctServices.Select(service => SiteReportMap.CapacityCount(siteReport, service)))));
+                string.Join(',',distinctServices.Select(service => SiteReportMap.CapacityCount(siteReport, service)))
+            ));
         }
     }
 }

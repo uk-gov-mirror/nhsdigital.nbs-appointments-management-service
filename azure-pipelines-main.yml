@@ -54,9 +54,8 @@ stages:
 
   - ${{ each env in parameters.environments }}:
       - template: "features/scripts/deploy-feature-toggles.yml"
-        dependsOn:
-          - Deploy${{env}}
         parameters:
           env: ${{env}}
+          dependOnDeployment: true
           # no restrictions on branch name for dev and perf
           isValidBranch: true

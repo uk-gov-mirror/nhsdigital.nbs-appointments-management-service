@@ -23,6 +23,7 @@ namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 public class GetReportMasterSiteListFunction(
     ISiteService siteService,
     IWellKnowOdsCodesService wellKnowOdsCodesService,
+    IAccessibilityDefinitionsService accessibilityDefinitionsService,
     IMasterSiteListReportCsvWriter masterSiteListReportCsvWriter,
     IFeatureToggleHelper featureToggleHelper,
     IValidator<EmptyRequest> validator,
@@ -58,6 +59,8 @@ public class GetReportMasterSiteListFunction(
         var sites = await siteService.GetAllSites(includeDeleted: true, ignoreCache: true);
 
         //TODO fetch ODS code and map to siteForReport
+        
+        //TODO pass in accessibilities to create the headers
         
         var csv = await masterSiteListReportCsvWriter.CompileMasterSiteListReportCsv(sites);
 

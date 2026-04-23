@@ -4,20 +4,6 @@ namespace Nhs.Appointments.Core.Reports.MasterSiteList;
 
 public static class MasterSiteListReportMap
 {
-    // These are the exact IDs from your CSV mapped to the "Wanted" names
-    private static readonly Dictionary<string, string> AccessibilityMapping = new()
-    {
-        { "accessibility/accessible_toilet", "Accessible toilet" },
-        { "accessibility/braille_translation_service", "Braille translation service" },
-        { "accessibility/disabled_car_parking", "Disabled car parking" },
-        { "accessibility/car_parking", "Car parking" },
-        { "accessibility/induction_loop", "Induction loop" },
-        { "accessibility/sign_language_service", "Sign language service" },
-        { "accessibility/step_free_access", "Step free access" },
-        { "accessibility/text_relay", "Text relay" },
-        { "accessibility/wheelchair_access", "Wheelchair access" }
-    };
-
     public static string[] Headers()
     {
         var headers = new List<string>

@@ -19,7 +19,7 @@ stages:
           - task: AzureCLI@2
             displayName: "Validate Restore Window"
             inputs:
-              azureSubscription: "Vaccs MYA - Dev"
+              azureSubscription: "vaccs-mya-dev-uks"
               scriptType: "ps"
               scriptLocation: "scriptPath"
               scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/validate-cosmos-pitr.ps1"
@@ -37,7 +37,7 @@ stages:
           - task: AzureCLI@2
             displayName: "Stop Applications"
             inputs:
-              azureSubscription: "Vaccs MYA - Dev"
+              azureSubscription: "vaccs-mya-dev-uks"
               scriptType: "ps"
               scriptLocation: scriptPath
               scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/stop-dev-app-services.ps1"
@@ -52,7 +52,7 @@ stages:
           - task: AzureCLI@2
             displayName: "Execute Restore"
             inputs:
-              azureSubscription: "Vaccs MYA - Dev"
+              azureSubscription: "vaccs-mya-dev-uks"
               scriptType: "ps"
               scriptLocation: "inlineScript"
               inlineScript: |

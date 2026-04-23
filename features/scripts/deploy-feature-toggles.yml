@@ -11,7 +11,7 @@ stages:
     displayName: Deploy Features ${{parameters.env}}
     condition: and(succeeded(), eq(${{parameters.isValidBranch}}, true))
     dependsOn: 
-       - ${{ if (parameters.dependOnDeployment) }}:
+       - ${{ if parameters.dependOnDeployment }}:
           - Deploy${{parameters.env}}
     jobs:
       - deployment: ApplyFeatureToggles

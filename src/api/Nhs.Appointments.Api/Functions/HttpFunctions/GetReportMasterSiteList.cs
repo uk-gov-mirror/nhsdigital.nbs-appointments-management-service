@@ -16,11 +16,13 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using Nhs.Appointments.Core.OdsCodes;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 
 public class GetReportMasterSiteListFunction(
     ISiteService siteService,
+    IWellKnowOdsCodesService wellKnowOdsCodesService,
     IMasterSiteListReportCsvWriter masterSiteListReportCsvWriter,
     IFeatureToggleHelper featureToggleHelper,
     IValidator<EmptyRequest> validator,
@@ -55,6 +57,8 @@ public class GetReportMasterSiteListFunction(
     {
         var sites = await siteService.GetAllSites(includeDeleted: true, ignoreCache: true);
 
+        //TODO fetch ODS code and map to siteForReport
+        
         var csv = await masterSiteListReportCsvWriter.CompileMasterSiteListReportCsv(sites);
 
         return ApiResult<FileResponse>.Success(new FileResponse(csv.fileName, csv.fileContent));

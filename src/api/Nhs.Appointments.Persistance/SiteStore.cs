@@ -243,9 +243,9 @@ public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore, IWel
             siteDocument.OdsCode,
             siteDocument.Region,
             siteDocument.IntegratedCareBoard,
-            // Match the code to the DisplayName in the well-known document
-            lookupEntries?.FirstOrDefault(e => e.OdsCode == siteDocument.Region)?.DisplayName,
-            lookupEntries?.FirstOrDefault(e => e.OdsCode == siteDocument.IntegratedCareBoard)?.DisplayName,
+            //TODO move
+            // lookupEntries?.FirstOrDefault(e => e.OdsCode == siteDocument.Region)?.DisplayName,
+            // lookupEntries?.FirstOrDefault(e => e.OdsCode == siteDocument.IntegratedCareBoard)?.DisplayName,
             siteDocument.InformationForCitizens,
             siteDocument.Accessibilities ?? [],
             siteDocument.Location,

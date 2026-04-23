@@ -5,7 +5,7 @@ namespace Nhs.Appointments.Core.Reports.MasterSiteList;
 
 public class MasterSiteListReportCsvWriter(TimeProvider timeProvider) : IMasterSiteListReportCsvWriter
 {
-    public async Task<(string fileName, MemoryStream fileContent)> CompileMasterSiteListReportCsv(IEnumerable<Site> sites)
+    public async Task<(string fileName, MemoryStream fileContent)> CompileMasterSiteListReportCsv(IEnumerable<SiteForReport> sites)
     {
         var fileName = BuildFileName();
 
@@ -18,7 +18,7 @@ public class MasterSiteListReportCsvWriter(TimeProvider timeProvider) : IMasterS
     private string BuildFileName() =>
     $"MasterSiteListReport_{timeProvider.GetUtcNow():yyyyMMddhhmmss}.csv";
 
-    private async Task CompileCsv(TextWriter csvWriter, IEnumerable<Site> sites)
+    private async Task CompileCsv(TextWriter csvWriter, IEnumerable<SiteForReport> sites)
     {
         var headers = MasterSiteListReportMap.Headers();
         await csvWriter.WriteLineAsync(string.Join(',', headers));

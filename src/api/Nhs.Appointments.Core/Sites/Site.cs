@@ -13,8 +13,6 @@ public record Site(
     [JsonProperty("odsCode")] string OdsCode,
     [JsonProperty("region")] string Region,
     [JsonProperty("integratedCareBoard")] string IntegratedCareBoard,
-    [JsonProperty("regionalName")] string RegionalName,
-    [JsonProperty("integratedCareBoardName")] string IntegratedCareBoardName,
     [JsonProperty("informationForCitizens")] string InformationForCitizens,
     [JsonProperty("accessibilities")] IEnumerable<Accessibility> Accessibilities,
     [JsonProperty("location")] Location location,

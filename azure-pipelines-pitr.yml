@@ -18,7 +18,7 @@ stages:
           - task: AzureCLI@2
             displayName: "Validate Restore Window"
             inputs:
-              azureSubscription: "nhsuk-integration"
+              azureSubscription: "Vaccs MYA - Dev"
               scriptType: "ps"
               scriptLocation: "scriptPath"
               scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/validate-cosmos-pitr.ps1"
@@ -51,7 +51,7 @@ stages:
           - task: AzureCLI@2
             displayName: "Execute Restore"
             inputs:
-              azureSubscription: "nhsuk-integration"
+              azureSubscription: "Vaccs MYA - Dev"
               scriptType: "ps"
               scriptLocation: "inlineScript"
               inlineScript: |

@@ -3,9 +3,33 @@ trigger: none
 pool:
   vmImage: "ubuntu-latest"
 
+parameters:
+  - name: RestoreDateTime
+    displayName: "Target Restore Date/Time (UTC)"
+    type: string
+    default: "2026-04-23T10:00:00Z" # a template for the user
+    
 stages:
+  - stage: Validation
+    displayName: "Pre-Flight Validation"
+    jobs:
+      - job: ValidateInput
+        steps:
+          - task: AzureCLI@2
+            displayName: "Validate Restore Window"
+            inputs:
+              azureSubscription: "nhsuk-integration"
+              scriptType: "ps"
+              scriptLocation: "scriptPath"
+              scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/validate-cosmos-pitr.ps1"
+              arguments: >
+                -sourceAccount "nbs-mya-cdb-dev-uks" 
+                -resourceGroup "nbs-myadev-rg-int-uks"  
+                -restoreTimeStr "${{ parameters.RestoreDateTime }}"
+
   - stage: StopWebApp
     displayName: "Stop MYA Web App and Function Apps"
+    dependsOn: Validation
     jobs:
       - job: StopApps
         steps:
@@ -17,3 +41,23 @@ stages:
               scriptLocation: scriptPath
               scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/stop-dev-app-services.ps1"
               arguments: "-resourceGroup vaccs-mya-dev-uks -region uks"
+
+  - stage: CosmosPITR
+    displayName: "Perform Cosmos DB PITR"
+    dependsOn: StopWebApp
+    jobs:
+      - job: RestoreCosmos
+        steps:
+          - task: AzureCLI@2
+            displayName: "Execute Restore"
+            inputs:
+              azureSubscription: "nhsuk-integration"
+              scriptType: "ps"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                az cosmosdb restore `
+                  --account-name "nbs-mya-cdb-dev-uks" `
+                  --resource-group "nbs-myadev-rg-int-uks" `
+                  --target-database-account-name "nbs-mya-cdb-dev-uks-secondary" `
+                  --location "uksouth" `
+                  --restore-timestamp "${{ parameters.RestoreDateTime }}"

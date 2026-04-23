@@ -23,8 +23,8 @@ stages:
               scriptLocation: "scriptPath"
               scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/validate-cosmos-pitr.ps1"
               arguments: >
-                -sourceAccount "nbs-mya-cdb-dev-uks" 
-                -resourceGroup "nbs-myadev-rg-int-uks"  
+                -sourceAccount "vaccs-mya-cdb-dev-uks" 
+                -resourceGroup "vaccs-mya-dev-uks"  
                 -restoreTimeStr "${{ parameters.RestoreDateTime }}"
 
   - stage: StopWebApp
@@ -56,8 +56,8 @@ stages:
               scriptLocation: "inlineScript"
               inlineScript: |
                 az cosmosdb restore `
-                  --account-name "nbs-mya-cdb-dev-uks" `
-                  --resource-group "nbs-myadev-rg-int-uks" `
-                  --target-database-account-name "nbs-mya-cdb-dev-uks-secondary" `
+                  --account-name "vaccs-mya-cdb-dev-uks" `
+                  --resource-group "vaccs-mya-dev-uks" `
+                  --target-database-account-name "vaccs-mya-cdb-dev-uks-secondary" `
                   --location "uksouth" `
                   --restore-timestamp "${{ parameters.RestoreDateTime }}"

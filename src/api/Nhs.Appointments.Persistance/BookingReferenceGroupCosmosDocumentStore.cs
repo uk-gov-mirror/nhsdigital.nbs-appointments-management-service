@@ -21,11 +21,10 @@ namespace Nhs.Appointments.Persistance
         {
             IEnumerable<BookingReferenceGroupDocument> referenceGroupDocuments;
             var docType = _cosmosStore.GetDocumentType();
-            try
-            {
-                referenceGroupDocuments = await _cosmosStore.RunQueryAsync<BookingReferenceGroupDocument>(x => x.DocumentType == docType);
-            }
-            catch(CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+
+            referenceGroupDocuments = (await _cosmosStore.RunQueryAsync<BookingReferenceGroupDocument>(x => x.DocumentType == docType)).ToArray();
+
+            if (!referenceGroupDocuments.Any())
             {
                 referenceGroupDocuments = await MigrateFromAllOldDocument();
             }
@@ -72,7 +71,6 @@ namespace Nhs.Appointments.Persistance
             {
                 await _cosmosStore.WriteAsync(referenceGroupDocument);
             }
-
             
             return referenceGroupDocuments;
         }

@@ -68,7 +68,7 @@ namespace Nhs.Appointments.Persistance
             {
                 DocumentType = docType,
                 Id = g.Prefix.ToString(),
-                Sequence = g.Prefix,
+                Sequence = g.Sequence,
                 SiteCount = g.SiteCount,
             }).ToList();
 

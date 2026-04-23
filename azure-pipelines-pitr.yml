@@ -20,7 +20,7 @@ stages:
             displayName: "Validate Restore Window"
             inputs:
               azureSubscription: "vaccs-mya-dev-uks"
-              scriptType: "ps"
+              scriptType: "pscore"
               scriptLocation: "scriptPath"
               scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/validate-cosmos-pitr.ps1"
               arguments: >
@@ -38,7 +38,7 @@ stages:
             displayName: "Stop Applications"
             inputs:
               azureSubscription: "vaccs-mya-dev-uks"
-              scriptType: "ps"
+              scriptType: "pscore"
               scriptLocation: scriptPath
               scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/stop-dev-app-services.ps1"
               arguments: "-resourceGroup vaccs-mya-dev-uks -region uks"
@@ -53,7 +53,7 @@ stages:
             displayName: "Execute Restore"
             inputs:
               azureSubscription: "vaccs-mya-dev-uks"
-              scriptType: "ps"
+              scriptType: "pscore"
               scriptLocation: "inlineScript"
               inlineScript: |
                 az cosmosdb restore `

@@ -28,7 +28,7 @@ public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore) : IS
     public async Task<OperationResult> UpdateSiteReferenceDetails(string siteId, string odsCode, string icb, string region)
     {
         var originalDocument = await GetOrDefault(siteId);
-        if (originalDocument == null || 
+        if (originalDocument == null ||
             !ValidateUpdateToSiteAllowed(originalDocument))
         {
             return new OperationResult(false, "The specified site was not found.");
@@ -89,7 +89,7 @@ public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore) : IS
         decimal? longitude, decimal? latitude, string type = null)
     {
         decimal?[] coords = (longitude != null) & (latitude != null) ? [longitude, latitude] : [];
-        
+
         var originalDocument = await GetOrDefault(siteId);
         if (originalDocument == null ||
             !ValidateUpdateToSiteAllowed(originalDocument))
@@ -117,7 +117,7 @@ public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore) : IS
         await cosmosStore.PatchDocument(documentType, siteId, [.. detailsPatchOperations]);
         return new OperationResult(true);
     }
-    
+
     private async Task<Site> GetOrDefault(string siteId)
     {
         try
@@ -196,7 +196,7 @@ public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore) : IS
             ? PatchOperation.Add("/status", status)
             : PatchOperation.Replace("/status", status);
 
-        PatchOperation[] patchOperations = [ patchOperation ];
+        PatchOperation[] patchOperations = [patchOperation];
 
         await cosmosStore.PatchDocument(documentType, siteId, patchOperations);
         return new OperationResult(true);
@@ -223,7 +223,7 @@ public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore) : IS
             : PatchOperation.Replace("/isDeleted", !originalDocument.isDeleted);
 
         await cosmosStore.PatchDocument(docType, siteId, [patchOperation]);
-        return new OperationResult(true);        
+        return new OperationResult(true);
     }
 
     private static Site MapToSite(SiteDocument siteDocument)

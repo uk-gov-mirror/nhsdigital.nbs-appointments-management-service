@@ -8,6 +8,7 @@ using Nhs.Appointments.Core.Users;
 using System.Text;
 
 namespace Nhs.Appointments.Core.UnitTests.BulkImport;
+
 public class UserDataImportHandlerTests
 {
     private readonly Mock<IUserService> _userServiceMock = new();
@@ -138,7 +139,7 @@ public class UserDataImportHandlerTests
             "test2@okta.net,Jane,,d3793464-b421-41f3-9bfa-53b06e7b3d19,,false,true,true,true,,",
             "test2@okta.net,,,9a06bacd-e916-4c10-8263-21451ca751b8,false,true,true,true,,",
         ];
-    
+
         var input = CsvFileBuilder.BuildInputCsv(UsersHeader, inputRows);
 
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes(input));
@@ -228,8 +229,8 @@ public class UserDataImportHandlerTests
         var input = CsvFileBuilder.BuildInputCsv(UsersHeader, inputRows);
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes(input));
         var file = new FormFile(stream, 0, stream.Length, "Test", "test.csv");
-        var sites = GetSites(); 
-        
+        var sites = GetSites();
+
         var report = await _sut.ProcessFile(file);
 
         report.Count().Should().Be(2);

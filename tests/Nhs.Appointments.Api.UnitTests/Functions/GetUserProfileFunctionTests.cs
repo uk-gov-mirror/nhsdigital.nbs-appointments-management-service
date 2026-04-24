@@ -56,7 +56,8 @@ namespace Nhs.Appointments.Api.Tests.Functions
 
             _userSiteAssignmentService.Setup(x => x.GetUserAsync("test@test.com")).ReturnsAsync(new User
             {
-                Id = "test@test.com", RoleAssignments = [],
+                Id = "test@test.com",
+                RoleAssignments = [],
             });
 
             var response = await _sut.RunAsync(request) as ContentResult;
@@ -87,7 +88,8 @@ namespace Nhs.Appointments.Api.Tests.Functions
 
             _userSiteAssignmentService.Setup(x => x.GetUserAsync("test@test.com")).ReturnsAsync(new User
             {
-                Id = "test@test.com", RoleAssignments = roleAssignments,
+                Id = "test@test.com",
+                RoleAssignments = roleAssignments,
             });
 
             var siteDetails = new[]

@@ -21,7 +21,7 @@ public abstract class GetSiteByIdFeatureSteps : SiteManagementBaseFeatureSteps
         var siteId = GetSiteId(siteDesignation);
         Response = await GetHttpClientForTest().GetAsync($"http://localhost:7071/api/sites/{siteId}");
     }
-    
+
     [When("I request site details for ODS Code '(.+)'")]
     public async Task RequestSitesByODS_Code(string odsCode)
     {
@@ -43,7 +43,7 @@ public abstract class GetSiteByIdFeatureSteps : SiteManagementBaseFeatureSteps
             InformationForCitizens: row.Cells.ElementAt(7).Value,
             Accessibilities: ParseAccessibilities(row.Cells.ElementAt(8).Value),
             OutOfTheWayLocation,
-            status: null, 
+            status: null,
             isDeleted: dataTable.GetBoolRowValueOrDefault(row, "IsDeleted"),
             Type: dataTable.GetRowValueOrDefault(row, "Type")
         );

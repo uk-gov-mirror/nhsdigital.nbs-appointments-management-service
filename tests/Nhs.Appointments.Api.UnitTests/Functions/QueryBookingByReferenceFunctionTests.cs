@@ -54,7 +54,9 @@ public class QueryBookingByReferenceFunctionTests
             Duration = 5,
             AttendeeDetails = new AttendeeDetails
             {
-                FirstName = "John", LastName = "Bloggs", NhsNumber = "1234567890"
+                FirstName = "John",
+                LastName = "Bloggs",
+                NhsNumber = "1234567890"
             },
             Site = site
         };
@@ -104,7 +106,9 @@ public class QueryBookingByReferenceFunctionTests
             Duration = 5,
             AttendeeDetails = new AttendeeDetails
             {
-                FirstName = "John", LastName = "Bloggs", NhsNumber = "1234567890"
+                FirstName = "John",
+                LastName = "Bloggs",
+                NhsNumber = "1234567890"
             },
             Site = "TEST01"
         };
@@ -161,7 +165,7 @@ public class QueryBookingByReferenceFunctionTests
 
         _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(null as Site);
-        
+
         var request = new QueryBookingByReferenceRequest(bookingRef, "TEST03");
         var httpRequest = CreateRequest(request.site);
 

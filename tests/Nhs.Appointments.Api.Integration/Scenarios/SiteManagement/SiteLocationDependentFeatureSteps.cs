@@ -567,7 +567,7 @@ public class SiteLocationDependentFeatureSteps : BaseFeatureSteps, IAsyncLifetim
 
         await PostQuerySitesRequestAsync(payload);
     }
-    
+
     //Not to be used unless explicitly need to wait
     [When("I wait for '(.+)' milliseconds")]
     public async Task WaitForSeconds(string milliseconds)

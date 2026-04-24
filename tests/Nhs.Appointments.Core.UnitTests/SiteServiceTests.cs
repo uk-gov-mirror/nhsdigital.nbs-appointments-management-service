@@ -21,16 +21,16 @@ public class SiteServiceTests
     {
         _options.Setup(x => x.Value).Returns(new SiteServiceOptions
         {
-            DisableSiteCache = false, 
-            AllSitesCacheDurationMinutes = 10, 
-            SiteCacheKey = "sites", 
+            DisableSiteCache = false,
+            AllSitesCacheDurationMinutes = 10,
+            SiteCacheKey = "sites",
             SiteSupportsServiceSlidingCacheSlideThresholdSeconds = 900,
             SiteSupportsServiceSlidingCacheAbsoluteExpirationSeconds = 14400,
             SiteSupportsServiceBatchMultiplier = 2,
         });
 
         var cacheService = new CacheService(_memoryCache.Object, TimeProvider.System);
-        
+
         _sut = new SiteService(_siteStore.Object, _availabilityStore.Object, _logger.Object, cacheService, _options.Object);
         _memoryCache.Setup(x => x.CreateEntry(It.IsAny<object>())).Returns(_cacheEntry.Object);
     }
@@ -499,7 +499,7 @@ public class SiteServiceTests
                 Longitude = -1.663038,
                 SearchRadius = 1000
             },
-            new() 
+            new()
             {
                 AccessNeeds = [ "test_access_need1", "test_access_need2" ],
                 Latitude = 53.796638,
@@ -1097,8 +1097,8 @@ public class SiteServiceTests
 
         _availabilityStore.Verify(x => x.SiteSupportsAllServicesOnSingleDateInRangeAsync(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<List<string>>()), Times.Never);
     }
-    
-     [Fact]
+
+    [Fact]
     public async Task QuerySitesAsync_CallsAvailabilityStoreForEachSite_WhenSiteSupportsServiceFilterUsed_NoCache()
     {
         var sites = new List<SiteWithDistance>
@@ -1140,7 +1140,7 @@ public class SiteServiceTests
         };
         _siteStore.Setup(x => x.GetAllSites()).ReturnsAsync(sites.Select(s => s.Site));
         _availabilityStore.Setup(x => x.SiteSupportsAllServicesOnSingleDateInRangeAsync(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<List<string>>())).ReturnsAsync(true);
-        
+
         //set up a cache, but it's for a different date range, so its not used
         object outResult = new CacheService.LazySlideCacheObject(true, DateTimeOffset.UtcNow);
         _memoryCache.Setup(x => x.TryGetValue("LazySlide:site_6877d86e-c2df-4def-8508-e1eccf0ea6ba_supports_RSV:Adult_in_20251003_20251014", out outResult)).Returns(true);
@@ -1161,19 +1161,19 @@ public class SiteServiceTests
                 }
             }
         }.ToArray();
-        
+
         var result = await _sut.QuerySitesAsync(filters, 50, false);
         result.Should().BeEquivalentTo(sites);
 
-        var docIds = new List<string>() { "20251003", "20251004", "20251005","20251006","20251007","20251008","20251009","20251010", "20251011", "20251012","20251013","20251014","20251015"};
-        
+        var docIds = new List<string>() { "20251003", "20251004", "20251005", "20251006", "20251007", "20251008", "20251009", "20251010", "20251011", "20251012", "20251013", "20251014", "20251015" };
+
         _availabilityStore.Verify(x => x.SiteSupportsAllServicesOnSingleDateInRangeAsync("6877d86e-c2df-4def-8508-e1eccf0ea6ba", new List<string> { "RSV:Adult" }, docIds), Times.Once);
         _availabilityStore.Verify(x => x.SiteSupportsAllServicesOnSingleDateInRangeAsync("6877d86e-c2df-4def-8508-e1eccf0ea6bb", new List<string> { "RSV:Adult" }, docIds), Times.Once);
-        
+
         //creates new correct cache for queried date range
         _memoryCache.Verify(x => x.CreateEntry("LazySlide:site_6877d86e-c2df-4def-8508-e1eccf0ea6ba_supports_RSV:Adult_in_20251003_20251015"), Times.Once);
         _memoryCache.Verify(x => x.CreateEntry("LazySlide:site_6877d86e-c2df-4def-8508-e1eccf0ea6bb_supports_RSV:Adult_in_20251003_20251015"), Times.Once);
-        
+
         _logger.Verify(x => x.Log(
                 LogLevel.Information,
                 It.IsAny<EventId>(),
@@ -1185,7 +1185,7 @@ public class SiteServiceTests
             ), Times.Once
         );
     }
-    
+
     [Fact]
     public async Task QuerySitesAsync_CallsAvailabilityStoreForEachSite_WhenSiteSupportsServiceFilterUsed_UsesCacheWhenPresent()
     {
@@ -1227,7 +1227,7 @@ public class SiteServiceTests
                 Distance: 3573)
         };
         _siteStore.Setup(x => x.GetAllSites()).ReturnsAsync(sites.Select(s => s.Site));
-        
+
         object outResult = new CacheService.LazySlideCacheObject(true, DateTimeOffset.UtcNow);
         _memoryCache.Setup(x => x.TryGetValue("LazySlide:site_6877d86e-c2df-4def-8508-e1eccf0ea6ba_supports_RSV:Adult_in_20251003_20251015", out outResult)).Returns(true);
         _memoryCache.Setup(x => x.TryGetValue("LazySlide:site_6877d86e-c2df-4def-8508-e1eccf0ea6bb_supports_RSV:Adult_in_20251003_20251015", out outResult)).Returns(true);
@@ -1247,19 +1247,19 @@ public class SiteServiceTests
                 }
             }
         }.ToArray();
-        
+
         var result = await _sut.QuerySitesAsync(filters, 50, false);
         result.Should().BeEquivalentTo(sites);
 
-        var docIds = new List<string>() { "20251003", "20251004", "20251005","20251006","20251007","20251008","20251009","20251010", "20251011", "20251012","20251013","20251014","20251015"};
-        
+        var docIds = new List<string>() { "20251003", "20251004", "20251005", "20251006", "20251007", "20251008", "20251009", "20251010", "20251011", "20251012", "20251013", "20251014", "20251015" };
+
         //doesn't call the store if cached
         _availabilityStore.Verify(x => x.SiteSupportsAllServicesOnSingleDateInRangeAsync("6877d86e-c2df-4def-8508-e1eccf0ea6ba", new List<string> { "RSV:Adult" }, docIds), Times.Never);
         _availabilityStore.Verify(x => x.SiteSupportsAllServicesOnSingleDateInRangeAsync("6877d86e-c2df-4def-8508-e1eccf0ea6bb", new List<string> { "RSV:Adult" }, docIds), Times.Never);
-        
+
         _memoryCache.Verify(x => x.CreateEntry("LazySlide:site_6877d86e-c2df-4def-8508-e1eccf0ea6ba_supports_RSV:Adult_in_20251003_20251015"), Times.Never);
         _memoryCache.Verify(x => x.CreateEntry("LazySlide:site_6877d86e-c2df-4def-8508-e1eccf0ea6bb_supports_RSV:Adult_in_20251003_20251015"), Times.Never);
-        
+
         _logger.Verify(x => x.Log(
                 LogLevel.Information,
                 It.IsAny<EventId>(),
@@ -1271,7 +1271,7 @@ public class SiteServiceTests
             ), Times.Once
         );
     }
-    
+
     [Theory]
     [InlineData(1, 21)]
     [InlineData(2, 11)]
@@ -1282,19 +1282,19 @@ public class SiteServiceTests
     {
         //valid sites are 21, so expected iterations deduced off that 
         var siteCount = 21;
-        
+
         _options.Setup(x => x.Value).Returns(new SiteServiceOptions
         {
-            DisableSiteCache = false, 
-            AllSitesCacheDurationMinutes = 10, 
-            SiteCacheKey = "sites", 
+            DisableSiteCache = false,
+            AllSitesCacheDurationMinutes = 10,
+            SiteCacheKey = "sites",
             SiteSupportsServiceSlidingCacheSlideThresholdSeconds = 900,
             SiteSupportsServiceSlidingCacheAbsoluteExpirationSeconds = 14400,
             SiteSupportsServiceBatchMultiplier = batchMultiplier,
         });
-        
+
         var invalidSites = new List<SiteWithDistance>();
-        
+
         for (var i = 1; i < siteCount; i++)
         {
             var id = $"6877d86e-c2df-4def-8508-e1eccf0ea6{i:00}";
@@ -1314,15 +1314,15 @@ public class SiteServiceTests
                     },
                     status: SiteStatus.Online, isDeleted: null,
                     Type: string.Empty),
-                Distance: 3500+i));
-            
+                Distance: 3500 + i));
+
             //invalid site results happen to not be cached
             object nullObject = null;
             _memoryCache.Setup(x => x.TryGetValue($"LazySlide:site_{id}_supports_RSV:Adult_in_20251003_20251006", out nullObject)).Returns(false);
         }
 
         var validSites = new List<SiteWithDistance>();
-        
+
         for (double i = 1; i < siteCount; i++)
         {
             var longitude = 50.2d + (i / 100);
@@ -1343,13 +1343,13 @@ public class SiteServiceTests
                     },
                     status: SiteStatus.Online, isDeleted: null,
                     Type: string.Empty),
-                Distance: (int)(3700+i)));
-            
+                Distance: (int)(3700 + i)));
+
             //valid site results happen to be cached
             object outResult = new CacheService.LazySlideCacheObject(true, DateTimeOffset.UtcNow);
             _memoryCache.Setup(x => x.TryGetValue($"LazySlide:site_{id}_supports_RSV:Adult_in_20251003_20251006", out outResult)).Returns(true);
         }
-        
+
         var sites = invalidSites.Union(validSites).ToList();
 
         _siteStore.Setup(x => x.GetAllSites()).ReturnsAsync(sites.Select(s => s.Site));
@@ -1360,7 +1360,7 @@ public class SiteServiceTests
             var id = $"{i:00}";
             _availabilityStore.Setup(x => x.SiteSupportsAllServicesOnSingleDateInRangeAsync($"6877d86e-c2df-4def-8508-e1eccf0ea6{id}", It.IsAny<List<string>>(), It.IsAny<List<string>>())).ReturnsAsync(false);
         }
-        
+
         var filters = new List<SiteFilter>
         {
             new()
@@ -1380,21 +1380,21 @@ public class SiteServiceTests
         var result = await _sut.QuerySitesAsync(filters, 1, false);
         result.Single().Site.Id.Should().Be(validSites.First().Site.Id);
 
-        var docIds = new List<string>() { "20251003", "20251004", "20251005", "20251006"};
-        
+        var docIds = new List<string>() { "20251003", "20251004", "20251005", "20251006" };
+
         for (var i = 1; i < siteCount; i++)
         {
             var id = $"{i:00}";
             _availabilityStore.Verify(x => x.SiteSupportsAllServicesOnSingleDateInRangeAsync($"6877d86e-c2df-4def-8508-e1eccf0ea6{id}", new List<string> { "RSV:Adult" }, docIds), Times.Once);
         }
-        
+
         for (var i = 1; i < siteCount; i++)
         {
             //since the valid sites were cached, it shouldn't look up via DB
             var id = $"{i:00}";
             _availabilityStore.Verify(x => x.SiteSupportsAllServicesOnSingleDateInRangeAsync($"6877d86e-c2df-4def-8508-e1eccf0ea7{id}", new List<string> { "RSV:Adult" }, docIds), Times.Never);
         }
-        
+
         _logger.Verify(x => x.Log(
                 LogLevel.Information,
                 It.IsAny<EventId>(),
@@ -1771,17 +1771,17 @@ public class SiteServiceTests
             x => x.SiteSupportsAllServicesOnSingleDateInRangeAsync(It.IsAny<string>(), It.Is<List<string>>(l => l.SequenceEqual(services)), It.IsAny<List<string>>()),
             Times.Exactly(4));
     }
-    
+
     [Fact]
     public async Task QuerySitesAsync_SameOrderedCacheKeyUsedForUnorderedAndDuplicatedServices()
     {
         var orderedServices = new List<string> { "COVID:5_11", "FLU:2_3", "FLU:3_11", "RSV:Adult" };
-        
+
         var services1 = new List<string> { "RSV:Adult", "FLU:2_3", "COVID:5_11", "FLU:3_11" };
-        var services2 = new List<string> { "FLU:2_3", "RSV:Adult",  "FLU:3_11", "COVID:5_11", "FLU:2_3" };
+        var services2 = new List<string> { "FLU:2_3", "RSV:Adult", "FLU:3_11", "COVID:5_11", "FLU:2_3" };
         var services3 = new List<string> { "RSV:Adult", "COVID:5_11", "FLU:3_11", "FLU:2_3" };
         var services4 = new List<string> { "COVID:5_11", "FLU:3_11", "RSV:Adult", "FLU:2_3", "COVID:5_11" };
-        
+
         var filters = new List<SiteFilter>
         {
             new()
@@ -1796,7 +1796,7 @@ public class SiteServiceTests
                 }
             }
         };
-        
+
         var sites = new List<Site>
         {
             new("test123",
@@ -1817,34 +1817,34 @@ public class SiteServiceTests
                 x.SiteSupportsAllServicesOnSingleDateInRangeAsync(It.IsAny<string>(), It.Is<List<string>>(l => l.SequenceEqual(orderedServices)),
                     It.IsAny<List<string>>()))
             .ReturnsAsync(true);
-        
+
         filters.Single().Availability.Services = services1.ToArray();
-        
+
         var result1 = await _sut.QuerySitesAsync([.. filters], 50, true);
         result1.Count().Should().Be(1);
-        
+
         _availabilityStore.Verify(
             x => x.SiteSupportsAllServicesOnSingleDateInRangeAsync(It.IsAny<string>(), It.Is<List<string>>(l => l.SequenceEqual(orderedServices)), It.IsAny<List<string>>()),
             Times.Once);
-        
+
         _availabilityStore.Verify(
             x => x.SiteSupportsAllServicesOnSingleDateInRangeAsync(It.IsAny<string>(), It.Is<List<string>>(l => l.SequenceEqual(services1)), It.IsAny<List<string>>()),
             Times.Never);
-        
+
         filters.Single().Availability.Services = services2.ToArray();
         var result2 = await _sut.QuerySitesAsync([.. filters], 50, true);
         result2.Count().Should().Be(1);
         _availabilityStore.Verify(
             x => x.SiteSupportsAllServicesOnSingleDateInRangeAsync(It.IsAny<string>(), It.Is<List<string>>(l => l.SequenceEqual(services2)), It.IsAny<List<string>>()),
             Times.Never);
-        
+
         filters.Single().Availability.Services = services3.ToArray();
         var result3 = await _sut.QuerySitesAsync([.. filters], 50, true);
         result3.Count().Should().Be(1);
         _availabilityStore.Verify(
             x => x.SiteSupportsAllServicesOnSingleDateInRangeAsync(It.IsAny<string>(), It.Is<List<string>>(l => l.SequenceEqual(services3)), It.IsAny<List<string>>()),
             Times.Never);
-        
+
         filters.Single().Availability.Services = services4.ToArray();
         var result4 = await _sut.QuerySitesAsync([.. filters], 50, true);
         result4.Count().Should().Be(1);
@@ -1925,7 +1925,7 @@ public class SiteServiceTests
         };
         _siteStore.Setup(x => x.GetAllSites())
             .ReturnsAsync(sites);
-        
+
         object outResult = new CacheService.LazySlideCacheObject(true, DateTimeOffset.UtcNow);
         _memoryCache.Setup(x => x.TryGetValue(CacheService.LazySlideCacheKey("site_test123_supports_COVID:5_11_RSV:Adult_in_20250901_20251001"), out outResult)).Returns(true);
         _memoryCache.Setup(x => x.TryGetValue(CacheService.LazySlideCacheKey("site_test321_supports_COVID:5_11_RSV:Adult_in_20250901_20251001"), out outResult)).Returns(true);
@@ -2014,7 +2014,7 @@ public class SiteServiceTests
         };
         _siteStore.Setup(x => x.GetAllSites())
             .ReturnsAsync(sites);
-        
+
         object outResult = true;
         _memoryCache.Setup(x => x.TryGetValue(CacheService.LazySlideCacheKey("site_test123_supports_COVID:5_11_RSV:Adult_in_20250901_20251001"), out outResult)).Returns(false);
         _memoryCache.Setup(x => x.TryGetValue(CacheService.LazySlideCacheKey("site_test321_supports_COVID:5_11_RSV:Adult_in_20250901_20251001"), out outResult)).Returns(false);
@@ -2244,21 +2244,21 @@ public class SiteServiceTests
 
         object outResult = new CacheService.CacheObject<IEnumerable<Site>>(sites);
         _memoryCache.Setup(x => x.TryGetValue("sites", out outResult)).Returns(true);
-        
+
         _options.Setup(x => x.Value).Returns(new SiteServiceOptions
         {
-            DisableSiteCache = false, 
-            AllSitesCacheDurationMinutes = 10, 
+            DisableSiteCache = false,
+            AllSitesCacheDurationMinutes = 10,
             SiteCacheKey = "sites",
         });
-        
+
         var result = await _sut.GetAllSites();
-        
+
         _siteStore.Verify(x => x.GetAllSites(), Times.Never);
         _memoryCache.Verify(x => x.TryGetValue("sites", out outResult), Times.Once);
         Assert.Equal(sites, result);
     }
-    
+
     [Fact]
     public async Task GetAllSites_ReturnsFromBasicCache_WhenOptionsSiteSlidingCache_Enabled()
     {
@@ -2294,23 +2294,23 @@ public class SiteServiceTests
 
         object outResult = new CacheService.LazySlideCacheObject(sites, DateTime.UtcNow);
         _memoryCache.Setup(x => x.TryGetValue(CacheService.LazySlideCacheKey("sites"), out outResult)).Returns(true);
-        
+
         _options.Setup(x => x.Value).Returns(new SiteServiceOptions
         {
-            DisableSiteCache = false, 
+            DisableSiteCache = false,
             AllSitesSlidingCacheEnabled = true,
             AllSitesSlideCacheDurationMinutes = 1,
-            AllSitesCacheDurationMinutes = 10, 
+            AllSitesCacheDurationMinutes = 10,
             SiteCacheKey = "sites",
         });
-        
+
         var result = await _sut.GetAllSites();
-        
+
         _siteStore.Verify(x => x.GetAllSites(), Times.Never);
         _memoryCache.Verify(x => x.TryGetValue(CacheService.LazySlideCacheKey("sites"), out outResult), Times.Once);
         Assert.Equal(sites, result);
     }
-    
+
     [Fact]
     public async Task GetAllSites_ReturnsFromStore_WhenOptionsSiteSlidingCache_Disabled_And_CacheFalse()
     {
@@ -2347,21 +2347,21 @@ public class SiteServiceTests
         object outResult = null;
         _memoryCache.Setup(x => x.TryGetValue("sites", out outResult)).Returns(false);
         _siteStore.Setup(x => x.GetAllSites()).ReturnsAsync(sites);
-        
+
         _options.Setup(x => x.Value).Returns(new SiteServiceOptions
         {
-            DisableSiteCache = false, 
-            AllSitesCacheDurationMinutes = 10, 
+            DisableSiteCache = false,
+            AllSitesCacheDurationMinutes = 10,
             SiteCacheKey = "sites",
         });
-        
+
         var result = await _sut.GetAllSites();
-        
+
         _siteStore.Verify(x => x.GetAllSites(), Times.Once);
         _memoryCache.Verify(x => x.TryGetValue("sites", out outResult), Times.Once);
         Assert.Equal(sites, result);
     }
-    
+
     [Fact]
     public async Task GetAllSites_ReturnsFromStore_WhenOptionsSiteSlidingCache_Disabled_And_CacheEmpty()
     {
@@ -2398,21 +2398,21 @@ public class SiteServiceTests
         object outResult = new CacheService.CacheObject<IEnumerable<Site>>(null);
         _memoryCache.Setup(x => x.TryGetValue("sites", out outResult)).Returns(true);
         _siteStore.Setup(x => x.GetAllSites()).ReturnsAsync(sites);
-        
+
         _options.Setup(x => x.Value).Returns(new SiteServiceOptions
         {
-            DisableSiteCache = false, 
-            AllSitesCacheDurationMinutes = 10, 
+            DisableSiteCache = false,
+            AllSitesCacheDurationMinutes = 10,
             SiteCacheKey = "sites",
         });
-        
+
         var result = await _sut.GetAllSites();
-        
+
         _siteStore.Verify(x => x.GetAllSites(), Times.Once);
         _memoryCache.Verify(x => x.TryGetValue("sites", out outResult), Times.Once);
         Assert.Equal(sites, result);
     }
-    
+
     [Fact]
     public async Task GetAllSites_ReturnsFromStore_WhenOptionsSiteSlidingCache_Enabled_And_CacheFalse()
     {
@@ -2449,18 +2449,18 @@ public class SiteServiceTests
         object outResult = null;
         _memoryCache.Setup(x => x.TryGetValue(CacheService.LazySlideCacheKey("sites"), out outResult)).Returns(false);
         _siteStore.Setup(x => x.GetAllSites()).ReturnsAsync(sites);
-        
+
         _options.Setup(x => x.Value).Returns(new SiteServiceOptions
         {
-            DisableSiteCache = false, 
+            DisableSiteCache = false,
             AllSitesSlidingCacheEnabled = true,
             AllSitesSlideCacheDurationMinutes = 1,
-            AllSitesCacheDurationMinutes = 10, 
+            AllSitesCacheDurationMinutes = 10,
             SiteCacheKey = "sites",
         });
-        
+
         var result = await _sut.GetAllSites();
-        
+
         _siteStore.Verify(x => x.GetAllSites(), Times.Once);
         _memoryCache.Verify(x => x.TryGetValue(CacheService.LazySlideCacheKey("sites"), out outResult), Times.Once);
         Assert.Equal(sites, result);

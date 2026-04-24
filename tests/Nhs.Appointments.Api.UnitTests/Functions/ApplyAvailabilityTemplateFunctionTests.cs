@@ -16,6 +16,7 @@ using Nhs.Appointments.Core.Users;
 using System.Text;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
+
 public class ApplyAvailabilityTemplateFunctionTests
 {
     private readonly Mock<IAvailabilityWriteService> _availabilityWriteService = new();
@@ -107,8 +108,8 @@ public class ApplyAvailabilityTemplateFunctionTests
                     null,
                     false,
                     string.Empty
-                    )); 
-        
+                    ));
+
         var sessions = new List<Session>
         {
             new()

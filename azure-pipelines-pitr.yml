@@ -6,9 +6,9 @@ pool:
 
 parameters:
   - name: RestoreDateTime
-    displayName: "Target Restore Date/Time (UTC)"
+    displayName: "Target Restore Date/Time (UK LOCAL TIME)"
     type: string
-    default: "2026-04-23T10:00:00Z" # a template for the user
+    default: "2026-04-24 10:00:00" # a template for the user
     
 stages:
   - stage: Validation
@@ -17,6 +17,7 @@ stages:
       - job: ValidateInput
         steps:
           - task: AzureCLI@2
+            name: ValidateStep
             displayName: "Validate Restore Window"
             inputs:
               azureSubscription: "vaccs-mya-dev-uks"
@@ -46,6 +47,8 @@ stages:
   - stage: CosmosPITR
     displayName: "Perform Cosmos DB PITR"
     dependsOn: StopWebApp
+    variables:
+      RestoreTimeUtc: $[ stageDependencies.Validation.ValidateInput.outputs['ValidateStep.ConvertedUtcTime'] ]
     jobs:
       - job: RestoreCosmos
         steps:
@@ -61,4 +64,4 @@ stages:
                   --resource-group "vaccs-mya-dev-uks" `
                   --target-database-account-name "vaccs-mya-cdb-dev-uks-secondary" `
                   --location "uksouth" `
-                  --restore-timestamp "${{ parameters.RestoreDateTime }}"
+                  --restore-timestamp "$(RestoreTimeUtc)"

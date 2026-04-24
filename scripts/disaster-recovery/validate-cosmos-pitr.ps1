@@ -6,7 +6,7 @@ param (
 
 Write-Host "--- Starting PITR Validation ---"
 
-# 1. Fetch Account Tier (Continuous7Days or Continuous30Days)
+# Fetch Account Tier (Continuous7Days or Continuous30Days)
 $policy = az cosmosdb show -n $sourceAccount -g $resourceGroup --query "backupPolicy.continuousModeProperties.tier" -o tsv
 
 if ($null -eq $policy) {
@@ -17,22 +17,25 @@ if ($null -eq $policy) {
 $retentionDays = if ($policy -eq "Continuous30Days") { 30 } else { 7 }
 Write-Host "Account Retention Tier: $retentionDays days."
 
-# 2. Parse and Compare Dates
+# Parse and Convert from UK Local to UTC
 try {
-    $restoreTime = [DateTime]::Parse($restoreDateAndTimeStr).ToUniversalTime()
+    $localTime = [DateTime]::Parse($restoreDateAndTimeStr)
+    $ukTimeZone = [TimeZoneInfo]::FindSystemTimeZoneById("Europe/London") 
+    $restoreTime = [TimeZoneInfo]::ConvertTimeToUtc($localTime, $ukTimeZone)
+    
+    Write-Host "Detected UK Input:  $($localTime.ToString('u'))"
+    Write-Host "Converted for Azure (UTC): $($restoreTime.ToString('u'))"
 } catch {
-    Write-Error "Invalid Date Format: $restoreDateAndTimeStr. Please use ISO 8601 (YYYY-MM-DDTHH:mm:ssZ)."
+    Write-Error "Invalid Date Format: $restoreDateAndTimeStr. Please use YYYY-MM-DD HH:mm:ss (UK Local Time)."
     exit 1
 }
 
 $now = [DateTime]::UtcNow
 $ageInDays = ($now - $restoreTime).TotalDays
 
-Write-Host "Current UTC Time:       $($now.ToString('u'))"
-Write-Host "Requested Restore Time: $($restoreTime.ToString('u'))"
 Write-Host "Calculated Data Age:    $($ageInDays.ToString('F2')) days"
 
-# 3. Logic Validation
+# Logic Validation
 if ($ageInDays -lt 0) {
     Write-Host "##vso[task.logissue type=error]Restore timestamp cannot be in the future."
     exit 1
@@ -44,3 +47,4 @@ if ($ageInDays -gt $retentionDays) {
 }
 
 Write-Host "Validation Successful. The requested point-in-time is within the recovery window."
+Write-Host "##vso[task.setvariable variable=ConvertedUtcTime;isOutput=true]$($restoreTime.ToString('yyyy-MM-ddTHH:mm:ssZ'))"

@@ -2,7 +2,8 @@
 
 param (
   [string][Parameter(Mandatory)]$resourceGroup,
-  [string][Parameter(Mandatory)]$region
+  [string][Parameter(Mandatory)]$region,
+  [string][Parameter(Mandatory)]$subscriptionId
 )
 
 $ErrorActionPreference = "Stop"
@@ -33,7 +34,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 foreach ($containerApp in $containerApps) {
-  Stop-AzContainerApp -Name $containerApp -ResourceGroupName $resourceGroup
+  Stop-AzContainerApp -Name $containerApp -ResourceGroupName $resourceGroup -SubscriptionId 85913fdb-7f11-4963-8519-70879ffd2910
   if ($LASTEXITCODE -ne 0) {
     Write-Warning "Failed to stop Container App: $containerApp."
     $LASTEXITCODE = 0

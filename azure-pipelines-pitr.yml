@@ -9,7 +9,7 @@ parameters:
     displayName: "Target Restore Date/Time (UK LOCAL TIME)"
     type: string
     default: "2026-04-24 10:00:00" # a template for the user
-    
+
 stages:
   - stage: Validation
     displayName: "Pre-Flight Validation"
@@ -42,7 +42,7 @@ stages:
               scriptType: "pscore"
               scriptLocation: scriptPath
               scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/stop-dev-app-services.ps1"
-              arguments: "-resourceGroup vaccs-mya-dev-uks -region uks"
+              arguments: "-resourceGroup vaccs-mya-dev-uks -region uks  -ssubscriptionId 85913fdb-7f11-4963-8519-70879ffd2910"
 
   - stage: CosmosPITR
     displayName: "Perform Cosmos DB PITR"

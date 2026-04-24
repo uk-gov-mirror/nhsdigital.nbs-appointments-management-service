@@ -10,6 +10,7 @@ $DebugPreference = "Continue"
 
 $webAppService = "vaccs-mya-app-dev-$region"
 $functionAppServices = @("vaccs-mya-func-dev-$region", "vaccs-mya-sbfunc-dev-$region", "vaccs-mya-timerfunc-dev-$region")
+$containerApps = @("vaccs-mya-aggregator-dev-$region", "vaccs-mya-auditor-dev-$region")
 
 foreach ($functionApp in $functionAppServices) {
   Write-Host "Stopping function app '$functionApp' in resource group '$resourceGroup'"
@@ -29,6 +30,14 @@ az webapp stop `
 if ($LASTEXITCODE -ne 0) {
   Write-Warning "Failed to stop Web App: $webAppService. The DR process will continue anyway."
   $LASTEXITCODE = 0
+}
+
+foreach ($containerApp in $containerApps) {
+  Stop-AzContainerApp -Name $containerApp -ResourceGroupName $resourceGroup
+  if ($LASTEXITCODE -ne 0) {
+    Write-Warning "Failed to stop Container App: $containerApp."
+    $LASTEXITCODE = 0
+  }
 }
 
 exit 0

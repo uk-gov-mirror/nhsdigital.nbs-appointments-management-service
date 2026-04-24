@@ -98,8 +98,8 @@ public class AvailabilityDocumentStore(
     public async Task<bool> SiteSupportsAllServicesOnSingleDateInRangeAsync(string siteId, List<string> services, DateOnly from, DateOnly until)
     {
         var documents = await GetDailyAvailability(siteId, from, until);
-        var sessions = documents.SelectMany(x => x.Sessions);
-        return sessions.Any(session => services.All(service => session.Services.Contains(service)));
+        var sessions = documents.SelectMany(x => x.Sessions).Select(x => x.Services);
+        return sessions.Any(sessionServices => services.All(sessionServices.Contains));
     }
 
     public async Task CancelDayAsync(string site, DateOnly date)

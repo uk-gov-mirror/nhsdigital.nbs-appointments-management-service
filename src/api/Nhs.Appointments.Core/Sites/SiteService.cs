@@ -436,6 +436,6 @@ public class SiteService(
         
         var dateStringsInRange = GetDateStringsInRange(from, until);
         return await availabilityStore.SiteSupportsAllServicesOnSingleDateInRangeAsync(siteId, services,
-            dateStringsInRange);
+            from, until);
     }
 }

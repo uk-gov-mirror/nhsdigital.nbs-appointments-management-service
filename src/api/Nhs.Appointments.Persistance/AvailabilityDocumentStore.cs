@@ -95,31 +95,14 @@ public class AvailabilityDocumentStore(
         };
     }
 
-    public async Task<bool> SiteSupportsAllServicesOnSingleDateInRangeAsync(string siteId, List<string> services, List<string> datesInPeriod)
+    public async Task<bool> SiteSupportsAllServicesOnSingleDateInRangeAsync(string siteId, List<string> services, DateOnly from, DateOnly until)
     {
-        var docType = documentStore.GetDocumentType();
-
-        var query = @"
-                    SELECT VALUE COUNT(1)
-                    FROM booking_data bd
-                    WHERE ARRAY_CONTAINS(@docIds, bd.id)
-                    AND bd.site = @site
-                    AND bd.docType = @docType
-                    AND ARRAY_LENGTH(SETINTERSECT(
-                        ARRAY(
-                            SELECT VALUE svc FROM session IN bd.sessions JOIN svc IN session.services
-                        ), @services)) = @requestedServiceCount";
-
-        var queryDef = new QueryDefinition(query)
-            .WithParameter("@docType", docType)
-            .WithParameter("@docIds", datesInPeriod)
-            .WithParameter("@site", siteId)
-            .WithParameter("@services", services.ToArray())
-            .WithParameter("@requestedServiceCount", services.Count);
-
-        var dailyAvailabilityCount = (await documentStore.RunSqlQueryAsync<int>(queryDef)).Single();
-
-        return dailyAvailabilityCount > 0;
+        var documents = await GetDailyAvailability(siteId, from, until);
+        
+        return documents.Select(
+            d => d.Sessions.SelectMany(
+                s => s.Services))
+            .All(s => services.All(s.Contains));
     }
 
     public async Task CancelDayAsync(string site, DateOnly date)

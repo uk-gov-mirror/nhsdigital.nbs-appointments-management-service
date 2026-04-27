@@ -12,7 +12,6 @@ using Microsoft.OpenApi.Models;
 using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Inspectors;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 
@@ -22,9 +21,8 @@ public class GetSiteMetaDataFunction(
     ISiteService siteService,
     IValidator<SiteBasedResourceRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<GetSiteMetaDataFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : SiteBasedResourceFunction<GetSiteMetaDataResponse>(validator, userContextProvider, logger, metricsRecorder)
+    ILogger<GetSiteMetaDataFunction> logger)
+    : SiteBasedResourceFunction<GetSiteMetaDataResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetSiteMetaData", tags: ["Sites"],
         Summary = "Get meta data about the site specific to appointments")]

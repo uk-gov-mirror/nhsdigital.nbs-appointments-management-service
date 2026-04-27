@@ -1,3 +1,4 @@
+using System.Text;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
@@ -6,14 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Newtonsoft.Json;
-using Nhs.Appointments.Api.Models;
-using Nhs.Appointments.Core.Features;
-using System.Text;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
+using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Core.Users;
-using Nhs.Appointments.Core.Metrics;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
 
@@ -22,7 +20,6 @@ public class EditSessionFunctionTests
     private readonly Mock<IValidator<EditSessionRequest>> _mockValidator = new();
     private readonly Mock<IUserContextProvider> _mockUserContext = new();
     private readonly Mock<ILogger<EditSessionFunction>> _mockLogger = new();
-    private readonly Mock<IMetricsRecorder> _mockMetricsRecorder = new();
     private readonly Mock<IAvailabilityWriteService> _mockAvailabilityWriteService = new();
 
     private readonly EditSessionFunction _sut;
@@ -33,7 +30,6 @@ public class EditSessionFunctionTests
             _mockValidator.Object,
             _mockUserContext.Object,
             _mockLogger.Object,
-            _mockMetricsRecorder.Object,
             _mockAvailabilityWriteService.Object);
 
         _mockValidator.Setup(x => x.ValidateAsync(It.IsAny<EditSessionRequest>(), It.IsAny<CancellationToken>()))

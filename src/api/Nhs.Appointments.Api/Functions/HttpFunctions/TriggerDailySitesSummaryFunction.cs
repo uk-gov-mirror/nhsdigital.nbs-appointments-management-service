@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Inspectors;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Reports.SiteSummary;
 using Nhs.Appointments.Core.Users;
 
@@ -21,9 +20,8 @@ public class TriggerDailySitesSummaryFunction(
     ISitesSummaryTrigger sitesSummaryTrigger,
     IValidator<EmptyRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<TriggerDailySitesSummaryFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<EmptyRequest, EmptyResponse>(validator, userContextProvider, logger, metricsRecorder)
+    ILogger<TriggerDailySitesSummaryFunction> logger)
+    : BaseApiFunction<EmptyRequest, EmptyResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "TriggerDailySitesSummaryFunction", tags: ["System"],
         Summary = "Utility function to manually trigger daily Sites summary")]

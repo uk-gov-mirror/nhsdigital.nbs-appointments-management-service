@@ -13,7 +13,6 @@ using Nhs.Appointments.Api.Json;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Audit.Functions;
 using Nhs.Appointments.Core.Inspectors;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 
@@ -23,10 +22,8 @@ public class SetSiteReferenceDetailsFunction(
     ISiteService siteService,
     IValidator<SetSiteReferenceDetailsRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<SetSiteReferenceDetailsFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<SetSiteReferenceDetailsRequest, EmptyResponse>(validator, userContextProvider, logger,
-        metricsRecorder)
+    ILogger<SetSiteReferenceDetailsFunction> logger)
+    : BaseApiFunction<SetSiteReferenceDetailsRequest, EmptyResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "SetSiteReferenceDetails", tags: ["Sites"],
         Summary = "Set reference details for a site")]

@@ -12,7 +12,6 @@ using Microsoft.OpenApi.Models;
 using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Extensions;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
@@ -21,9 +20,8 @@ public class GetUserPermissionsFunction(
     IPermissionChecker permissionChecker,
     IValidator<SiteBasedResourceRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<GetUserPermissionsFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : SiteBasedResourceFunction<PermissionsResponse>(validator, userContextProvider, logger, metricsRecorder)
+    ILogger<GetUserPermissionsFunction> logger)
+    : SiteBasedResourceFunction<PermissionsResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetPermissionsForAuthenticatedUser", tags: ["User"],
         Summary = "Gets all permissions for the authenticated user at a site")]

@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Extensions;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.OdsCodes;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
@@ -23,10 +22,9 @@ public class GetSitesPreviewFunction(
     IValidator<EmptyRequest> validator,
     IUserContextProvider userContextProvider,
     ILogger<GetSitesPreviewFunction> logger,
-    IMetricsRecorder metricsRecorder,
     IPermissionChecker permissionChecker,
     IWellKnowOdsCodesService wellKnowOdsCodesService)
-    : BaseApiFunction<EmptyRequest, IEnumerable<SitePreview>>(validator, userContextProvider, logger, metricsRecorder)
+    : BaseApiFunction<EmptyRequest, IEnumerable<SitePreview>>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetSitesPreview", tags: ["Site"],
         Summary = "Gets preview of sites available to user")]

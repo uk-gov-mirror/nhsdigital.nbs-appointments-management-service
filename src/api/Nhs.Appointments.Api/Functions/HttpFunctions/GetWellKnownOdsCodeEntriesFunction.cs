@@ -9,7 +9,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Api.Models;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.OdsCodes;
 using Nhs.Appointments.Core.Users;
 
@@ -19,10 +18,8 @@ public class GetWellKnownOdsCodeEntriesFunction(
     IWellKnowOdsCodesService wellKnowOdsCodesService,
     IValidator<EmptyRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<GetWellKnownOdsCodeEntriesFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<EmptyRequest, IEnumerable<WellKnownOdsEntry>>(validator, userContextProvider, logger,
-        metricsRecorder)
+    ILogger<GetWellKnownOdsCodeEntriesFunction> logger)
+    : BaseApiFunction<EmptyRequest, IEnumerable<WellKnownOdsEntry>>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetWellKnownOdsCodeEntries", tags: ["wellKnownOdsCodeEntries"],
         Summary = "Get information for well known ods codes.")]

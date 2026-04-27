@@ -1,3 +1,4 @@
+using System.Text;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
@@ -8,17 +9,13 @@ using Moq;
 using Newtonsoft.Json;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
-using Nhs.Appointments.Core.Features;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
-using System.Text;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
 public class QuerySitesFunctionTests
 {
     private readonly Mock<ILogger<QuerySitesFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly Mock<ISiteService> _siteService = new();
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
     private readonly Mock<IValidator<QuerySitesRequest>> _validator = new();
@@ -31,8 +28,7 @@ public class QuerySitesFunctionTests
             _siteService.Object,
             _validator.Object,
             _userContextProvider.Object,
-            _logger.Object,
-            _metricsRecorder.Object);
+            _logger.Object);
         _validator.Setup(x => x.ValidateAsync(It.IsAny<QuerySitesRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());
     }

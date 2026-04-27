@@ -9,7 +9,6 @@ using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Api.Validators;
 using Nhs.Appointments.Core;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
@@ -17,7 +16,6 @@ namespace Nhs.Appointments.Api.Tests.Functions;
 public class RemoveUserFunctionTests
 {
     private readonly Mock<ILogger<RemoveUserFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly RemoveUserFunction _sut;
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
 
@@ -26,7 +24,7 @@ public class RemoveUserFunctionTests
     public RemoveUserFunctionTests()
     {
         _sut = new RemoveUserFunction(_userService.Object, new RemoveUserRequestValidator(),
-            _userContextProvider.Object, _logger.Object, _metricsRecorder.Object);
+            _userContextProvider.Object, _logger.Object);
     }
 
     [Fact]

@@ -23,7 +23,7 @@ public class GetSiteFunction(
     IUserContextProvider userContextProvider,
     ILogger<GetSiteFunction> logger,
     IMetricsRecorder metricsRecorder)
-    : SiteBasedResourceFunction<Site>(validator, userContextProvider, logger, metricsRecorder)
+    : SiteBasedResourceFunction<Site>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetSite", tags: ["Sites"], Summary = "Get single site by Id")]
     [OpenApiParameter("site", In = ParameterLocation.Path, Required = true, Type = typeof(string),

@@ -9,7 +9,6 @@ using Newtonsoft.Json;
 using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
@@ -17,7 +16,6 @@ namespace Nhs.Appointments.Api.Tests.Functions;
 public class GetUserPermissionsFunctionTests
 {
     private readonly Mock<ILogger<GetUserPermissionsFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly Mock<IPermissionChecker> _permissionChecker = new();
     private readonly GetUserPermissionsFunction _sut;
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
@@ -26,7 +24,7 @@ public class GetUserPermissionsFunctionTests
     public GetUserPermissionsFunctionTests()
     {
         _sut = new GetUserPermissionsFunction(_permissionChecker.Object, _validator.Object, _userContextProvider.Object,
-            _logger.Object, _metricsRecorder.Object);
+            _logger.Object);
         _validator
             .Setup(x => x.ValidateAsync(It.IsAny<SiteBasedResourceRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());

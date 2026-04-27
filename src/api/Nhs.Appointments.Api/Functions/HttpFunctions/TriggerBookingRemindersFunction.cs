@@ -23,7 +23,7 @@ public class TriggerBookingRemindersFunction(
     IUserContextProvider userContextProvider,
     ILogger<TriggerBookingRemindersFunction> logger,
     IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<EmptyRequest, EmptyResponse>(validator, userContextProvider, logger, metricsRecorder)
+    : BaseApiFunction<EmptyRequest, EmptyResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "TriggerBookingReminders", tags: ["System"],
         Summary = "Utility function to manually trigger reminder notifications for bookings")]

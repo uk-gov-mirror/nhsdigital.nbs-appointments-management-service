@@ -13,7 +13,6 @@ using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Core.Inspectors;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 
@@ -24,9 +23,8 @@ public class QueryBookingByReferenceFunction(
     IValidator<QueryBookingByReferenceRequest> validator,
     IUserContextProvider userContextProvider,
     ILogger<QueryBookingByReferenceFunction> logger,
-    IMetricsRecorder metricsRecorder,
     ISiteService siteService)
-    : BaseApiFunction<QueryBookingByReferenceRequest, Booking>(validator, userContextProvider, logger, metricsRecorder)
+    : BaseApiFunction<QueryBookingByReferenceRequest, Booking>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "QueryBookingByReference", tags: ["Booking"],
         Summary = "Get a booking by booking reference")]

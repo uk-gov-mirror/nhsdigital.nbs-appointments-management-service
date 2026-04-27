@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -13,9 +12,7 @@ using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Bookings;
-using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Inspectors;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
@@ -24,10 +21,8 @@ public class GetWeekSummaryFunction(
     IBookingAvailabilityStateService bookingAvailabilityStateService,
     IValidator<GetWeekSummaryRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<GetWeekSummaryFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<GetWeekSummaryRequest, AvailabilitySummary>(validator, userContextProvider,
-        logger, metricsRecorder)
+    ILogger<GetWeekSummaryFunction> logger)
+    : BaseApiFunction<GetWeekSummaryRequest, AvailabilitySummary>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetWeekSummary", tags: ["Availability"],
         Summary = "Get weekly availability summary for a week start date and site")]

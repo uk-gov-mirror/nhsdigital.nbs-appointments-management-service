@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,25 +15,19 @@ using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Inspectors;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
+
 public class QueryAvailabilityByHoursFunction(
     IBookingAvailabilityStateService bookingAvailabilityStateService,
     IValidator<AvailabilityQueryByHoursRequest> validator,
     IUserContextProvider userContextProvider,
     ILogger<QueryAvailabilityByHoursFunction> logger,
-    IMetricsRecorder metricsRecorder,
     IAvailableSlotsFilter availableSlotsFilter,
     ISiteService siteService,
-    IFeatureToggleHelper featureToggleHelper) : BaseApiFunction<AvailabilityQueryByHoursRequest, AvailabilityByHours>(validator, userContextProvider, logger, metricsRecorder)
+    IFeatureToggleHelper featureToggleHelper) : BaseApiFunction<AvailabilityQueryByHoursRequest, AvailabilityByHours>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "QueryAvailabilityByHours", tags: ["Availability"],
         Summary = "Query appointment availability by hours")]

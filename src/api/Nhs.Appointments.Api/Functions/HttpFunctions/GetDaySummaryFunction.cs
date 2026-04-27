@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,13 +12,8 @@ using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Bookings;
-using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Inspectors;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
-using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 
@@ -23,10 +21,8 @@ public class GetDaySummaryFunction(
     IBookingAvailabilityStateService bookingAvailabilityStateService,
     IValidator<GetDaySummaryRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<GetDaySummaryFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<GetDaySummaryRequest, AvailabilitySummary>(validator, userContextProvider,
-        logger, metricsRecorder)
+    ILogger<GetDaySummaryFunction> logger)
+    : BaseApiFunction<GetDaySummaryRequest, AvailabilitySummary>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetDaySummary", tags: ["Availability"],
         Summary = "Get daily availability summary for a date and site")]

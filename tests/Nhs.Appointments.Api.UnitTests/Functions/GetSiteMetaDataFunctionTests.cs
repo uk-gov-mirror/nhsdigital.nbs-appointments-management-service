@@ -9,7 +9,6 @@ using Newtonsoft.Json;
 using Nhs.Appointments.Api.Functions;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 
@@ -18,7 +17,6 @@ namespace Nhs.Appointments.Api.Tests.Functions;
 public class GetSiteMetaDataFunctionTests
 {
     private readonly Mock<ILogger<GetSiteMetaDataFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly Mock<ISiteService> _siteService = new();
     private readonly GetSiteMetaDataFunction _sut;
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
@@ -27,7 +25,7 @@ public class GetSiteMetaDataFunctionTests
     public GetSiteMetaDataFunctionTests()
     {
         _sut = new GetSiteMetaDataFunction(_siteService.Object, _validator.Object, _userContextProvider.Object,
-            _logger.Object, _metricsRecorder.Object);
+            _logger.Object);
         _validator
             .Setup(x => x.ValidateAsync(It.IsAny<SiteBasedResourceRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());

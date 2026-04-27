@@ -23,7 +23,7 @@ public class SetLocalFeatureFlagOverrideFunction(
     ILogger<SetLocalFeatureFlagOverrideFunction> logger,
     IMetricsRecorder metricsRecorder,
     IFeatureToggleHelper featureToggleHelper)
-    : BaseApiFunction<SetLocalFeatureFlagOverrideRequest, EmptyResponse>(validator, userContextProvider, logger, metricsRecorder)
+    : BaseApiFunction<SetLocalFeatureFlagOverrideRequest, EmptyResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "SetLocalFeatureFlagOverride", tags: ["FeatureFlag"],
         Summary = "Override the enabled state for the requested flag")]

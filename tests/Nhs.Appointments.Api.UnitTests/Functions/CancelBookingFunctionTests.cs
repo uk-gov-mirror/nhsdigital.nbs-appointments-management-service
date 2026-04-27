@@ -11,7 +11,6 @@ using Moq;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Bookings;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.UnitTests;
 using Nhs.Appointments.Core.Users;
@@ -22,7 +21,6 @@ public class CancelBookingFunctionTests : FeatureToggledTests
 {
     private readonly Mock<IBookingWriteService> _bookingWriteService = new();
     private readonly Mock<ILogger<CancelBookingFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly CancelBookingFunction _sut;
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
     private readonly Mock<IValidator<CancelBookingRequest>> _validator = new();
@@ -35,7 +33,6 @@ public class CancelBookingFunctionTests : FeatureToggledTests
             _validator.Object,
             _userContextProvider.Object,
             _logger.Object,
-            _metricsRecorder.Object,
             _siteService.Object);
         _validator.Setup(x => x.ValidateAsync(It.IsAny<CancelBookingRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());

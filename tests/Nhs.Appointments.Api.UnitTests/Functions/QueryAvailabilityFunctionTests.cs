@@ -1,4 +1,5 @@
 using System.Net;
+using System.Text;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
@@ -8,17 +9,14 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Newtonsoft.Json;
 using Nhs.Appointments.Api.Availability;
-using Nhs.Appointments.Api.Json;
-using Nhs.Appointments.Core.Features;
-using System.Text;
-using Nhs.Appointments.Core.Json;
-using Nhs.Appointments.Core.Bookings;
-using Nhs.Appointments.Core.Sites;
-using Nhs.Appointments.Core.Users;
-using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
+using Nhs.Appointments.Api.Json;
+using Nhs.Appointments.Core.Availability;
+using Nhs.Appointments.Core.Bookings;
+using Nhs.Appointments.Core.Json;
+using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.UnitTests;
-using Nhs.Appointments.Core.Metrics;
+using Nhs.Appointments.Core.Users;
 
 #pragma warning disable CS0618 // Keep availabilityCalculator around until MultipleServicesEnabled is stable
 
@@ -31,7 +29,6 @@ public class QueryAvailabilityFunctionTests
     private readonly Mock<IAvailabilityGrouper> _availabilityGrouper = new();
     private readonly Mock<IAvailabilityGrouperFactory> _availabilityGrouperFactory = new();
     private readonly Mock<ILogger<QueryAvailabilityFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly QueryAvailabilityFunction _sut;
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
     private readonly Mock<IValidator<QueryAvailabilityRequest>> _validator = new();
@@ -46,7 +43,6 @@ public class QueryAvailabilityFunctionTests
             _availabilityGrouperFactory.Object,
             _userContextProvider.Object,
             _logger.Object,
-            _metricsRecorder.Object,
             _hasConsecutiveCapacityFilter.Object,
             _siteService.Object);
 

@@ -1,14 +1,12 @@
 using System.Net;
 using FluentAssertions;
 using FluentValidation;
-using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Nhs.Appointments.Api.Functions;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Features;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Okta;
 using Nhs.Appointments.Core.Users;
 
@@ -17,7 +15,6 @@ namespace Nhs.Appointments.Api.Tests.Functions;
 public class SetUserRolesFunctionTests
 {
     private readonly Mock<ILogger<SetUserRolesFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly SetUserRolesFunctionTestProxy _sut;
     private readonly Mock<IUserContextProvider> _userContext = new();
     private readonly Mock<IUserService> _userService = new();
@@ -27,13 +24,11 @@ public class SetUserRolesFunctionTests
     public SetUserRolesFunctionTests()
     {
         _sut = new SetUserRolesFunctionTestProxy(
-            _userService.Object, 
-            _validator.Object, 
-            _userContext.Object, 
-            _oktaService.Object, 
-            _logger.Object, 
-            _metricsRecorder.Object
-        );
+            _userService.Object,
+            _validator.Object,
+            _userContext.Object,
+            _oktaService.Object,
+            _logger.Object);
     }
 
     [Fact]
@@ -121,9 +116,8 @@ public class SetUserRolesFunctionTests
             IValidator<SetUserRolesRequest> validator,
             IUserContextProvider userContextProvider,
             IOktaService oktaService,
-            ILogger<SetUserRolesFunction> logger,
-            IMetricsRecorder metricsRecorder)
-            : base(userService, validator, userContextProvider, oktaService, logger, metricsRecorder)
+            ILogger<SetUserRolesFunction> logger)
+            : base(userService, validator, userContextProvider, oktaService, logger)
         {
             _logger = logger;
         }

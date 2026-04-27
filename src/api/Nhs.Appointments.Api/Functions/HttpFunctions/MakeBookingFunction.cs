@@ -13,7 +13,6 @@ using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Core.Inspectors;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 
@@ -24,9 +23,8 @@ public class MakeBookingFunction(
     ISiteService siteService,
     IValidator<MakeBookingRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<MakeBookingFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<MakeBookingRequest, MakeBookingResponse>(validator, userContextProvider, logger, metricsRecorder)
+    ILogger<MakeBookingFunction> logger)
+    : BaseApiFunction<MakeBookingRequest, MakeBookingResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "MakeBooking", tags: ["Booking"], Summary = "Make a booking")]
     [OpenApiRequestBody("application/json", typeof(MakeBookingRequest), Required = true)]

@@ -10,7 +10,6 @@ using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Json;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
@@ -19,7 +18,6 @@ public class GetDailyAvailabilityFunctionTests
 {
     private readonly Mock<IAvailabilityQueryService> _mockAvailabilityQueryService = new();
     private readonly Mock<ILogger<GetDailyAvailabilityFunction>> _mockLogger = new();
-    private readonly Mock<IMetricsRecorder> _mockMetricsRecorder = new();
     private readonly Mock<IUserContextProvider> _mockUserContextProvider = new();
     private readonly Mock<IValidator<GetDailyAvailabilityRequest>> _mockValidator = new();
 
@@ -31,8 +29,7 @@ public class GetDailyAvailabilityFunctionTests
             _mockAvailabilityQueryService.Object,
             _mockValidator.Object,
             _mockUserContextProvider.Object,
-            _mockLogger.Object,
-            _mockMetricsRecorder.Object);
+            _mockLogger.Object);
 
         _mockValidator.Setup(x =>
                 x.ValidateAsync(It.IsAny<GetDailyAvailabilityRequest>(), It.IsAny<CancellationToken>()))

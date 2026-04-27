@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using FluentValidation;
@@ -17,7 +16,6 @@ using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Audit.Functions;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Core.Inspectors;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 
@@ -28,10 +26,8 @@ public class CancelBookingFunction(
     IValidator<CancelBookingRequest> validator,
     IUserContextProvider userContextProvider,
     ILogger<CancelBookingFunction> logger,
-    IMetricsRecorder metricsRecorder,
     ISiteService siteService)
-    : BaseApiFunction<CancelBookingRequest, CancelBookingResponse>(validator, userContextProvider, logger,
-        metricsRecorder)
+    : BaseApiFunction<CancelBookingRequest, CancelBookingResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "CancelBooking", tags: ["Booking"], Summary = "Cancel a booking")]
     [OpenApiRequestBody("application/json", typeof(CancelBookingOpenApiRequest),

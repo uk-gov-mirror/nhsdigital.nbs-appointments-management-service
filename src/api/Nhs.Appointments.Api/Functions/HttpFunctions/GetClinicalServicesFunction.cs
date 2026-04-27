@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -6,12 +10,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.ClinicalServices;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 
@@ -19,9 +18,8 @@ public class GetClinicalServicesFunction(
     IValidator<EmptyRequest> validator,
     IUserContextProvider userContextProvider,
     ILogger<GetClinicalServicesFunction> logger,
-    IMetricsRecorder metricsRecorder,
     IClinicalServiceProvider clinicalServiceProvider)
-    : BaseApiFunction<EmptyRequest, IEnumerable<ClinicalServiceType>>(validator, userContextProvider, logger, metricsRecorder)
+    : BaseApiFunction<EmptyRequest, IEnumerable<ClinicalServiceType>>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetServiceTypes", tags: ["serviceTypes"], 
         Summary = "Get Services Types for Availabilities Form")]

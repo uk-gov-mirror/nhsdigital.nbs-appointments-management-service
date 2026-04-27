@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Bookings;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.UnitTests;
 using Nhs.Appointments.Core.Users;
@@ -22,7 +21,6 @@ public class MakeBookingFunctionTests
     private static readonly DateOnly Date = new DateOnly(2077, 1, 1);
     private readonly Mock<IBookingWriteService> _bookingWriteService = new();
     private readonly Mock<ILogger<MakeBookingFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly Mock<ISiteService> _siteService = new();
     private readonly MakeBookingFunction _sut;
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
@@ -31,7 +29,7 @@ public class MakeBookingFunctionTests
     public MakeBookingFunctionTests()
     {
         _sut = new MakeBookingFunction(_bookingWriteService.Object, _siteService.Object, _validator.Object,
-            _userContextProvider.Object, _logger.Object, _metricsRecorder.Object);
+            _userContextProvider.Object, _logger.Object);
         _validator.Setup(x => x.ValidateAsync(It.IsAny<MakeBookingRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());
     }

@@ -22,7 +22,7 @@ public class GetFeatureFlagFunction(
     ILogger<GetFeatureFlagFunction> logger,
     IMetricsRecorder metricsRecorder,
     IFeatureToggleHelper featureToggleHelper)
-    : BaseApiFunction<GetFeatureFlagRequest, GetFeatureFlagResponse>(validator, userContextProvider, logger, metricsRecorder)
+    : BaseApiFunction<GetFeatureFlagRequest, GetFeatureFlagResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetFeatureFlag", tags: ["FeatureFlag"],
         Summary = "Get the enabled state for the requested flag")]

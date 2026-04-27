@@ -13,7 +13,6 @@ using Nhs.Appointments.Api.Json;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Audit.Functions;
 using Nhs.Appointments.Core.Inspectors;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 
@@ -23,10 +22,8 @@ public class SetSiteAccessibilitiesFunction(
     ISiteService siteService,
     IValidator<SetSiteAccessibilitiesRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<SetSiteAccessibilitiesFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<SetSiteAccessibilitiesRequest, EmptyResponse>(validator, userContextProvider, logger,
-        metricsRecorder)
+    ILogger<SetSiteAccessibilitiesFunction> logger)
+    : BaseApiFunction<SetSiteAccessibilitiesRequest, EmptyResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "SetSiteAccessibilities", tags: ["Sites"],
         Summary = "Set accessibilities values for a site")]

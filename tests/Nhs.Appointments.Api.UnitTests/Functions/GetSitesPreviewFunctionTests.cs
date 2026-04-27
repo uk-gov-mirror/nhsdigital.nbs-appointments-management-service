@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.OdsCodes;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
@@ -18,7 +17,6 @@ namespace Nhs.Appointments.Api.Tests.Functions;
 public class GetSitesPreviewFunctionTests
 {
     private readonly Mock<ILogger<GetSitesPreviewFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly Mock<IPermissionChecker> _permissionChecker = new();
     private readonly GetSitesPreviewFunction _sut;
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
@@ -29,12 +27,11 @@ public class GetSitesPreviewFunctionTests
     public GetSitesPreviewFunctionTests()
     {
         _sut = new GetSitesPreviewFunction(
-            _userSiteAssignmentService.Object, 
+            _userSiteAssignmentService.Object,
             _validator.Object,
-            _userContextProvider.Object, 
-            _logger.Object, 
-            _metricsRecorder.Object, 
-            _permissionChecker.Object, 
+            _userContextProvider.Object,
+            _logger.Object,
+            _permissionChecker.Object,
             _wellKnowOdsCodesService.Object
         );
     }

@@ -9,11 +9,9 @@ using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Nhs.Appointments.Api.File;
 using Nhs.Appointments.Api.Json;
 using Nhs.Appointments.Api.Models;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Functions;
@@ -21,8 +19,7 @@ namespace Nhs.Appointments.Api.Functions;
 public abstract class BaseApiFunction<TRequest, TResponse>(
     IValidator<TRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger logger,
-    IMetricsRecorder metricsRecorder)
+    ILogger logger)
 {
     protected ClaimsPrincipal Principal => userContextProvider.UserPrincipal;
 

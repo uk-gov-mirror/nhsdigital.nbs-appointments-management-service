@@ -9,8 +9,6 @@ using Newtonsoft.Json;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.ClinicalServices;
-using Nhs.Appointments.Core.Features;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
@@ -22,7 +20,6 @@ public class GetClinicalServicesFunctionTests
     private readonly Mock<IValidator<EmptyRequest>> _validator = new();
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
     private readonly Mock<ILogger<GetClinicalServicesFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly Mock<IClinicalServiceProvider> _clinicalServiceProvider = new();
 
     public GetClinicalServicesFunctionTests()
@@ -31,7 +28,6 @@ public class GetClinicalServicesFunctionTests
             _validator.Object,
             _userContextProvider.Object,
             _logger.Object,
-            _metricsRecorder.Object,
             _clinicalServiceProvider.Object);
     }
 

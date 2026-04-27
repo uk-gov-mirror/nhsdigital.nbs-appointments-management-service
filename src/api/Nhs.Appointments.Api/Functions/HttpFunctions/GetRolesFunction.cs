@@ -20,7 +20,7 @@ public class GetRolesFunction(
     IUserContextProvider userContextProvider,
     ILogger<GetRolesFunction> logger,
     IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<GetRolesRequest, GetRolesResponse>(validator, userContextProvider, logger, metricsRecorder)
+    : BaseApiFunction<GetRolesRequest, GetRolesResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetRoles", tags: ["Roles"], Summary = "Get user roles in the system")]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, "application/json", typeof(GetRolesResponse),

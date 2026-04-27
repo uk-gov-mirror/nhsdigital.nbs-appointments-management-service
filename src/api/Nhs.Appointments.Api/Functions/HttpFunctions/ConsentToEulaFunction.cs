@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Eula;
 using Nhs.Appointments.Core.Extensions;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
@@ -19,9 +18,8 @@ public class ConsentToEulaFunction(
     IEulaService eulaService,
     IValidator<ConsentToEulaRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<ConsentToEulaFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<ConsentToEulaRequest, EmptyResponse>(validator, userContextProvider: userContextProvider, logger, metricsRecorder)
+    ILogger<ConsentToEulaFunction> logger)
+    : BaseApiFunction<ConsentToEulaRequest, EmptyResponse>(validator, userContextProvider: userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "ConsentToEula", tags: ["Eula"],
         Summary = "Confirm a user's consent to a specific EULA version.")]

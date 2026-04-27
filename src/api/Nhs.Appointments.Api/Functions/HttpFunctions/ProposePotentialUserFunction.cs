@@ -7,7 +7,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Api.Models;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
@@ -16,10 +15,7 @@ public class ProposePotentialUserFunction(
     IUserService userService,
     IValidator<ProposePotentialUserRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<ProposePotentialUserFunction> logger,
-    IMetricsRecorder metricsRecorder
-) : BaseApiFunction<ProposePotentialUserRequest, ProposePotentialUserResponse>(validator, userContextProvider, logger,
-    metricsRecorder)
+    ILogger<ProposePotentialUserFunction> logger) : BaseApiFunction<ProposePotentialUserRequest, ProposePotentialUserResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation("ProposePotentialUser", "user/propose-potential",
         Summary = "Gets the current status of a potential new user. Used to inform the user creation process.")]

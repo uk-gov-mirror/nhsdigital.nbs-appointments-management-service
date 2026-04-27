@@ -9,7 +9,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Api.Models;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 
@@ -19,10 +18,8 @@ public class GetAccessibilityDefinitionsFunction(
     IAccessibilityDefinitionsService AccessibilityDefinitionsService,
     IValidator<EmptyRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<GetAccessibilityDefinitionsFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<EmptyRequest, IEnumerable<AccessibilityDefinition>>(validator, userContextProvider, logger,
-        metricsRecorder)
+    ILogger<GetAccessibilityDefinitionsFunction> logger)
+    : BaseApiFunction<EmptyRequest, IEnumerable<AccessibilityDefinition>>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetAccessibilityDefinitions", tags: ["AccessibilityDefinitions"],
         Summary = "Get system accessibility definitions")]

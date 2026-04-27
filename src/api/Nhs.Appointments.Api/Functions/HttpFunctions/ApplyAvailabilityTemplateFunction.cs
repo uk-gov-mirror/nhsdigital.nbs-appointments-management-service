@@ -14,7 +14,6 @@ using Nhs.Appointments.Audit.Functions;
 using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Extensions;
 using Nhs.Appointments.Core.Inspectors;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 
@@ -25,10 +24,8 @@ public class ApplyAvailabilityTemplateFunction(
     IValidator<ApplyAvailabilityTemplateRequest> validator,
     IUserContextProvider userContextProvider,
     ILogger<ApplyAvailabilityTemplateFunction> logger,
-    IMetricsRecorder metricsRecorder,
     ISiteService siteService)
-    : BaseApiFunction<ApplyAvailabilityTemplateRequest, EmptyResponse>(validator, userContextProvider: userContextProvider, logger,
-        metricsRecorder)
+    : BaseApiFunction<ApplyAvailabilityTemplateRequest, EmptyResponse>(validator, userContextProvider: userContextProvider, logger)
 {
     [OpenApiOperation("ApplyAvailabilityTemplate", ["Availability"],
         Summary = "Set appointment availability for a date range")]

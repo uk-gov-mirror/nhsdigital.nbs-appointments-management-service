@@ -10,7 +10,6 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Eula;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
@@ -19,9 +18,8 @@ public class GetEulaFunction(
     IEulaService eulaService,
     IValidator<EmptyRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<GetEulaFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<EmptyRequest, EulaVersion>(validator, userContextProvider, logger, metricsRecorder)
+    ILogger<GetEulaFunction> logger)
+    : BaseApiFunction<EmptyRequest, EulaVersion>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetEula", tags: ["Eula"], Summary = "Gets the End-User Licence Agreement")]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, "application/json", typeof(EulaVersion),

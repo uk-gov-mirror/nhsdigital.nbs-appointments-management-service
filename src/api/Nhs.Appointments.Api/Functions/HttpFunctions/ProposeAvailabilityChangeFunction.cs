@@ -11,8 +11,6 @@ using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Api.Json;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Bookings;
-using Nhs.Appointments.Core.Features;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
@@ -21,13 +19,11 @@ public class ProposeAvailabilityChangeFunction(
     IBookingAvailabilityStateService bookingAvailabilityStateService,
     IValidator<AvailabilityChangeProposalRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<ProposeAvailabilityChangeFunction> logger,
-    IMetricsRecorder metricsRecorder)
+    ILogger<ProposeAvailabilityChangeFunction> logger)
     : BaseApiFunction<AvailabilityChangeProposalRequest, AvailabilityChangeProposalResponse>(
         validator,
         userContextProvider,
-        logger,
-        metricsRecorder
+        logger
     )
 {
     [OpenApiOperation(operationId: "GetAvailabilityChangeProposal", tags: ["availability"],

@@ -23,7 +23,7 @@ public class TriggerAutoCancelledBookingsFunction(
     IUserContextProvider userContextProvider,
     ILogger<TriggerAutoCancelledBookingsFunction> logger,
     IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<EmptyRequest, EmptyResponse>(validator, userContextProvider, logger, metricsRecorder)
+    : BaseApiFunction<EmptyRequest, EmptyResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "TriggerAutoCancelledBookingsFunction", tags: ["System"],
        Summary = "Utility function to manually trigger auto cancellation notifications for bookings")]

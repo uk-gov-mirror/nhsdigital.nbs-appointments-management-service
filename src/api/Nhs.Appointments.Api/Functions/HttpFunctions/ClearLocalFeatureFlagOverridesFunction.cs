@@ -23,7 +23,7 @@ public class ClearLocalFeatureFlagOverridesFunction(
     ILogger<ClearLocalFeatureFlagOverridesFunction> logger,
     IMetricsRecorder metricsRecorder,
     IFeatureToggleHelper featureToggleHelper)
-    : BaseApiFunction<EmptyRequest, EmptyResponse>(validator, userContextProvider, logger, metricsRecorder)
+    : BaseApiFunction<EmptyRequest, EmptyResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "ClearLocalFeatureFlagOverrides", tags: ["FeatureFlag"],
         Summary = "Clear the local overrides for all feature flags")]

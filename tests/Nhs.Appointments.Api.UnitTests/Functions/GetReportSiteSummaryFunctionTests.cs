@@ -8,7 +8,6 @@ using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Tests.Functions.Data;
 using Nhs.Appointments.Api.Validators;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Reports.SiteSummary;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
@@ -25,7 +24,6 @@ public class GetReportSiteSummaryFunctionTests
     private readonly Mock<TimeProvider> _timeProvider = new();
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
     private readonly Mock<ILogger<GetAccessibilityDefinitionsFunction>> _mockLogger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
 
     public GetReportSiteSummaryFunctionTests()
     {
@@ -44,9 +42,7 @@ public class GetReportSiteSummaryFunctionTests
             new SiteReportCsvWriter(_timeProvider.Object),
             new SiteReportRequestValidator(),
             _userContextProvider.Object,
-            _mockLogger.Object,
-            _metricsRecorder.Object
-        );
+            _mockLogger.Object);
     }
 
     [Fact(DisplayName = "Generates site summary reports")]

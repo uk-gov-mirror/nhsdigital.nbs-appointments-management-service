@@ -1,3 +1,4 @@
+using System.Text.Json;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
@@ -9,16 +10,13 @@ using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Bookings;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
-using System.Text.Json;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
 public class GetDaySummaryFunctionTests
 {
     private readonly Mock<IBookingAvailabilityStateService> _mockBookingAvailabilityStateService = new();
     private readonly Mock<ILogger<GetDaySummaryFunction>> _mockLogger = new();
-    private readonly Mock<IMetricsRecorder> _mockMetricsRecorder = new();
     private readonly Mock<IUserContextProvider> _mockUserContextProvider = new();
     private readonly Mock<IValidator<GetDaySummaryRequest>> _mockValidator = new();
 
@@ -30,9 +28,7 @@ public class GetDaySummaryFunctionTests
             _mockBookingAvailabilityStateService.Object,
             _mockValidator.Object,
             _mockUserContextProvider.Object,
-            _mockLogger.Object,
-            _mockMetricsRecorder.Object
-        );
+            _mockLogger.Object);
     }
 
     [Fact]

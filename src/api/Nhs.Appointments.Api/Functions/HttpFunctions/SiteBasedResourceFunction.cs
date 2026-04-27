@@ -5,17 +5,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Helpers;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 
 public abstract class SiteBasedResourceFunction<TResponse>(
-    IValidator<SiteBasedResourceRequest> validator, 
-    IUserContextProvider userContextProvider, 
-    ILogger logger, 
-    IMetricsRecorder metricsRecorder
-    ) : BaseApiFunction<SiteBasedResourceRequest, TResponse>(validator, userContextProvider, logger, metricsRecorder)
+    IValidator<SiteBasedResourceRequest> validator,
+    IUserContextProvider userContextProvider,
+    ILogger logger) : BaseApiFunction<SiteBasedResourceRequest, TResponse>(validator, userContextProvider, logger)
 {
     protected override Task<(IReadOnlyCollection<ErrorMessageResponseItem> errors, SiteBasedResourceRequest request)> ReadRequestAsync(HttpRequest req)
     {

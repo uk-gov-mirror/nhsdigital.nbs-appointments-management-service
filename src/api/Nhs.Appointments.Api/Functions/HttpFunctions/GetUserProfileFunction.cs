@@ -10,7 +10,6 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Extensions;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
@@ -19,9 +18,7 @@ public class GetUserProfileFunction(
     IUserService userService,
     IValidator<EmptyRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<GetUserProfileFunction> logger,
-    IMetricsRecorder metricsRecorder
-) : BaseApiFunction<EmptyRequest, UserProfile>(validator, userContextProvider, logger, metricsRecorder)
+    ILogger<GetUserProfileFunction> logger) : BaseApiFunction<EmptyRequest, UserProfile>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetUserProfile", tags: ["User"],
         Summary = "Gets information about the signed in user")]

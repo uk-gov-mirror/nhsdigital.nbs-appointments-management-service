@@ -42,7 +42,7 @@ stages:
               scriptType: "pscore"
               scriptLocation: scriptPath
               scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/stop-dev-app-services.ps1"
-              arguments: "-resourceGroup vaccs-mya-dev-uks -region uks  -ssubscriptionId 85913fdb-7f11-4963-8519-70879ffd2910"
+              arguments: "-resourceGroup vaccs-mya-dev-uks -region uks  -subscriptionId 85913fdb-7f11-4963-8519-70879ffd2910"
 
   - stage: CosmosPITR
     displayName: "Perform Cosmos DB PITR"

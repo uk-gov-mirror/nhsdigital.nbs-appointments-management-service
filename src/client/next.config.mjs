@@ -6,6 +6,19 @@ const nextConfig = {
   },
   output: 'standalone',
   basePath: process.env.CLIENT_BASE_PATH,
+  headers: async () => {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains; preload',
+          },
+        ],
+      },
+    ];
+  },
   redirects: async () => {
     return [
       {
@@ -24,3 +37,4 @@ const nextConfig = {
 };
 
 export default nextConfig;
+

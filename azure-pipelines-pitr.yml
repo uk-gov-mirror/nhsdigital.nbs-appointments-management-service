@@ -25,8 +25,8 @@ stages:
               scriptLocation: "scriptPath"
               scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/validate-cosmos-pitr.ps1"
               arguments: >
-                -sourceAccount "vaccs-mya-cdb-dev-uks" 
-                -resourceGroup "vaccs-mya-dev-uks"  
+                -sourceAccount "vaccs-mya-cdb-dev-uks"
+                -resourceGroup "vaccs-mya-dev-uks"
                 -restoreDateAndTimeStr "${{ parameters.RestoreDateTime }}"
 
   - stage: StopWebApp
@@ -42,7 +42,7 @@ stages:
               scriptType: "pscore"
               scriptLocation: scriptPath
               scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/stop-dev-app-services.ps1"
-              arguments: "-resourceGroup vaccs-mya-dev-uks -region uks  -subscriptionId 85913fdb-7f11-4963-8519-70879ffd2910"
+              arguments: "-resourceGroup vaccs-mya-dev-uks -region uks"
 
   - stage: CosmosPITR
     displayName: "Perform Cosmos DB PITR"

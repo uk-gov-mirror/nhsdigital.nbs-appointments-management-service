@@ -30,7 +30,7 @@ stages:
                 -restoreDateAndTimeStr "${{ parameters.RestoreDateTime }}"
 
   - stage: StopWebApp
-    displayName: "Stop MYA Web App and Function Apps"
+    displayName: "Stop Applications"
     dependsOn: Validation
     jobs:
       - job: StopApps

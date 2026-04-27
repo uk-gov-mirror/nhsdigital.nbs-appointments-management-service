@@ -7,8 +7,8 @@ using Moq;
 using Nhs.Appointments.Api.Functions;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
-using Nhs.Appointments.Core;
 using Nhs.Appointments.Core.Features;
+using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Okta;
 using Nhs.Appointments.Core.Users;
 

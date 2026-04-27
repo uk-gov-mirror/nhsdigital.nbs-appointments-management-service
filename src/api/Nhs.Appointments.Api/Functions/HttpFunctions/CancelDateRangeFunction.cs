@@ -13,6 +13,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Core.Inspectors;
+using Nhs.Appointments.Core.Metrics;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 

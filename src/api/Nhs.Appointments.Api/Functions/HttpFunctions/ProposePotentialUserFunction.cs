@@ -7,6 +7,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Api.Models;
+using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;

@@ -14,6 +14,7 @@ using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Extensions;
 using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Inspectors;
+using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Okta;
 using Nhs.Appointments.Core.Users;
 

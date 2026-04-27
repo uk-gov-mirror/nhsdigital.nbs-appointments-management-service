@@ -9,6 +9,7 @@ using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Api.Validators;
 using Nhs.Appointments.Core;
+using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Tests.Functions;

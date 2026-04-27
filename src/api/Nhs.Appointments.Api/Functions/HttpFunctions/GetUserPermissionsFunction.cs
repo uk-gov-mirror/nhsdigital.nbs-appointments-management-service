@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Extensions;
+using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;

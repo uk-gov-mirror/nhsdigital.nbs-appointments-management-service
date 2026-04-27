@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Nhs.Appointments.Api.Functions;
 using Nhs.Appointments.Api.Models;
+using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Tests.Functions;

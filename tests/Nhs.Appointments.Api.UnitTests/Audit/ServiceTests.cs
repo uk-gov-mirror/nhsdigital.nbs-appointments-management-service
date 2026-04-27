@@ -6,6 +6,7 @@ using Moq;
 using Nhs.Appointments.Audit.Persistance;
 using Nhs.Appointments.Audit.Services;
 using Nhs.Appointments.Core;
+using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Persistance;
 
 namespace Nhs.Appointments.Api.Tests.Audit;

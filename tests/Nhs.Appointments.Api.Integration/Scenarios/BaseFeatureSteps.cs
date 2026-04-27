@@ -127,7 +127,7 @@ public abstract partial class BaseFeatureSteps : Feature
         return await CosmosOperationHelper.Retry_CosmosOperation_OnTooManyRequests(BaseRetryOptions,
             cosmosOperation,
             new Logger<T>(new LoggerFactory()),
-            new InMemoryMetricsRecorder(),
+            new InMemoryMetricsRecorder(new Logger<IMetricsRecorder>(new LoggerFactory())),
             new CosmosOperationMetric(),
             cancellationToken);
     }

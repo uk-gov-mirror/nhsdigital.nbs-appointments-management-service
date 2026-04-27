@@ -12,6 +12,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Users;
+using Nhs.Appointments.Core.Metrics;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 

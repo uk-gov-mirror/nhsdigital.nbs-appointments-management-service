@@ -10,6 +10,7 @@ using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Features;
+using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 using System.Net;
 using System.Text;

@@ -6,6 +6,7 @@ using Moq;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Validators;
 using Nhs.Appointments.Core.Features;
+using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Reports.MasterSiteList;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;

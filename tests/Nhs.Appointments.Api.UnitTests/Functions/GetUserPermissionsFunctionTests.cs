@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
+using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Tests.Functions;

@@ -10,40 +10,40 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Eula;
+using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
-namespace Nhs.Appointments.Api.Functions.HttpFunctions
+namespace Nhs.Appointments.Api.Functions.HttpFunctions;
+
+public class GetEulaFunction(
+    IEulaService eulaService,
+    IValidator<EmptyRequest> validator,
+    IUserContextProvider userContextProvider,
+    ILogger<GetEulaFunction> logger,
+    IMetricsRecorder metricsRecorder)
+    : BaseApiFunction<EmptyRequest, EulaVersion>(validator, userContextProvider, logger, metricsRecorder)
 {
-    public class GetEulaFunction(
-        IEulaService eulaService,
-        IValidator<EmptyRequest> validator,
-        IUserContextProvider userContextProvider,
-        ILogger<GetEulaFunction> logger,
-        IMetricsRecorder metricsRecorder)
-        : BaseApiFunction<EmptyRequest, EulaVersion>(validator, userContextProvider, logger, metricsRecorder)
+    [OpenApiOperation(operationId: "GetEula", tags: ["Eula"], Summary = "Gets the End-User Licence Agreement")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, "application/json", typeof(EulaVersion),
+        Description = "The latest version of the End-User Licence Agreement")]
+    [Function("GetEulaFunction")]
+    public override Task<IActionResult> RunAsync(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "eula")]
+        HttpRequest req)
     {
-        [OpenApiOperation(operationId: "GetEula", tags: ["Eula"], Summary = "Gets the End-User Licence Agreement")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, "application/json", typeof(EulaVersion),
-            Description = "The latest version of the End-User Licence Agreement")]
-        [Function("GetEulaFunction")]
-        public override Task<IActionResult> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "eula")]
-            HttpRequest req)
-        {
-            return base.RunAsync(req);
-        }
+        return base.RunAsync(req);
+    }
 
-        protected override async Task<ApiResult<EulaVersion>> HandleRequest(EmptyRequest request, ILogger logger
-    )
-        {
-            var eula = await eulaService.GetEulaVersionAsync();
+    protected override async Task<ApiResult<EulaVersion>> HandleRequest(EmptyRequest request, ILogger logger
+)
+    {
+        var eula = await eulaService.GetEulaVersionAsync();
 
-            return ApiResult<EulaVersion>.Success(eula);
-        }
+        return ApiResult<EulaVersion>.Success(eula);
+    }
 
-        protected override Task<IEnumerable<ErrorMessageResponseItem>> ValidateRequest(EmptyRequest request)
-        {
-            return Task.FromResult(Enumerable.Empty<ErrorMessageResponseItem>());
-        }
+    protected override Task<IEnumerable<ErrorMessageResponseItem>> ValidateRequest(EmptyRequest request)
+    {
+        return Task.FromResult(Enumerable.Empty<ErrorMessageResponseItem>());
     }
 }

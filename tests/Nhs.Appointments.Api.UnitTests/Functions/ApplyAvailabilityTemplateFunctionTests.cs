@@ -11,6 +11,7 @@ using Nhs.Appointments.Api.Availability;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Json;
+using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 using System.Text;

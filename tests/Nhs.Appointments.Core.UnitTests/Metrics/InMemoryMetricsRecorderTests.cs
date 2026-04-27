@@ -1,37 +1,15 @@
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Nhs.Appointments.Core.Metrics;
 
 namespace Nhs.Appointments.Core.UnitTests.Metrics;
 
 public class InMemoryMetricsRecorderTests
 {
-    private readonly InMemoryMetricsRecorder _sut = new();
+    private readonly Mock<ILogger<IMetricsRecorder>> logger = new();
+    private readonly InMemoryMetricsRecorder _sut;
 
-    [Fact]
-    public void BeginRecording_RecordsSource()
-    {
-        // Arrange.
-        var randomSource = Guid.NewGuid().ToString();
-
-        // Act.
-        _sut.BeginRecording(randomSource);
-
-        // Assert.
-        _sut.Source.Should().Be(randomSource);
-    }
-
-    [Fact]
-    public void CannotBeginRecordingMoreThanOnce()
-    {
-        // Arrange.
-        var randomSource = Guid.NewGuid().ToString();
-        _sut.BeginRecording(randomSource);
-
-        // Act.
-        Action action = () => _sut.BeginRecording(randomSource);
-
-        // Assert.
-        action.Should().Throw<InvalidOperationException>();
-    }
+    public InMemoryMetricsRecorderTests() => _sut = new InMemoryMetricsRecorder(logger.Object);
 
     [Fact]
     public void RecordMetric_RecordsMetrics()
@@ -40,19 +18,38 @@ public class InMemoryMetricsRecorderTests
         var expectedValue1 = random.Next(1,1000);
         var generatedName1 = Guid.NewGuid().ToString();
         var testMetric = new TestMetric(generatedName1, expectedValue1);
+        var expectedJson1 = JsonConvert.SerializeObject(testMetric);
 
         var generatedName2 = Guid.NewGuid().ToString();
         var expectedValue2 = Guid.NewGuid().ToString();
         var otherMetric = new OtherMetric(generatedName2, "myField", expectedValue2);
-
+        var expectedJson2 = JsonConvert.SerializeObject(otherMetric);
+        
         _sut.RecordMetric(testMetric);
         _sut.RecordMetric(otherMetric);
-        var expectedResults = new List<IMetric>
-        {
-            testMetric,
-            otherMetric
-        };
-        _sut.Metrics.Should().BeEquivalentTo(expectedResults);
+
+        logger.Verify(x => x.Log(
+                    LogLevel.Information,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((state, t) =>
+                        state.ToString().Contains($"{expectedJson1}")
+                ),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception, string>>()
+            ), Times.Once
+        );
+        logger.Verify(x => x.Log(
+                    LogLevel.Information,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((state, t) =>
+                        state.ToString().Contains($"{expectedJson2}")
+                ),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception, string>>()
+            ), Times.Once
+        );
+
+        logger.VerifyNoOtherCalls();
     }
 
     private class TestMetric(string name, int value) : IMetric

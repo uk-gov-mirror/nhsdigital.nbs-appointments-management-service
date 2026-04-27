@@ -11,6 +11,7 @@ using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Inspectors;
+using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 using System.Collections.Generic;
 using System.Net;

@@ -6,6 +6,7 @@ using Nhs.Appointments.Api.Functions;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core;
+using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 using System.Net;

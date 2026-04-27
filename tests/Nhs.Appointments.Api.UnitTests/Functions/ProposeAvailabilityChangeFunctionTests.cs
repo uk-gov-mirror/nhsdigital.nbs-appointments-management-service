@@ -13,6 +13,7 @@ using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Core.Users;
+using Nhs.Appointments.Core.Metrics;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
 public class ProposeAvailabilityChangeFunctionTests

@@ -46,10 +46,10 @@ public abstract class SiteManagementBaseFeatureSteps : AuditFeatureSteps
     public async Task AssertBadRequest(DataTable dataTable)
     {
         Response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        
+
         var row = dataTable.Rows.ElementAt(0);
 
-        var expectedErrorMessages = row.Cells.Select(x=>x.Value).ToList();
+        var expectedErrorMessages = row.Cells.Select(x => x.Value).ToList();
 
         (_, ErrorResponses) =
             await JsonRequestReader.ReadRequestAsync<IEnumerable<ErrorMessageResponseItem>>(
@@ -80,10 +80,10 @@ public abstract class SiteManagementBaseFeatureSteps : AuditFeatureSteps
             Type: dataTable.GetRowValueOrDefault(row, "Type")
         );
         Response.StatusCode.Should().Be(HttpStatusCode.OK);
-        
+
         var actualResult =
             await CosmosReadItem<Site>("core_data", GetSiteId(), new PartitionKey("site"), CancellationToken.None);
-        
+
         actualResult.Resource.Should().BeEquivalentTo(expectedSite, opts => opts.WithStrictOrdering());
     }
 }

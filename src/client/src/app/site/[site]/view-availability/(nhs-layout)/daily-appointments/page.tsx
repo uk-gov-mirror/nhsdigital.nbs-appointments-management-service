@@ -14,10 +14,8 @@ import {
 } from '@services/timeService';
 import { notFound } from 'next/navigation';
 import fromServer from '@server/fromServer';
-import { Button } from '@components/nhsuk-frontend';
 import PrintPageButton from '@components/print-page-button';
-import Link from 'next/link';
-import { Heading } from 'nhsuk-react-components';
+import { Heading, Button } from 'nhsuk-react-components';
 import { DayView } from './day-view';
 
 type PageProps = {
@@ -72,26 +70,28 @@ const Page = async ({ params, searchParams }: PageProps) => {
 
   return (
     <>
-      <div className="nhsuk-button-group nhsuk-button-group--small">
+      <ol className="nhsuk-list nhsuk-u-margin-0 nhsuk-button-group-flat flex-row">
+        {canChangeAvailability && (
+          <Button
+            href={`/manage-your-appointments/site/${siteFromPath}/change-availability?returnUrl=${encodedReturnUrl}`}
+            className="no-print"
+            small
+            secondarySolid
+            style={{
+              marginRight: '1rem',
+            }}
+          >
+            Change availability
+          </Button>
+        )}
+        &nbsp;
         <PrintPageButton />
-      </div>
+      </ol>
 
       <Heading headingLevel="h2">
         <span className="nhsuk-caption-l">{site.name}</span>
         {fromDate.format('dddd D MMMM YYYY')}
       </Heading>
-
-      {canChangeAvailability && (
-        <Link
-          /* Inject the returnUrl into the href */
-          href={`/site/${siteFromPath}/change-availability?returnUrl=${encodedReturnUrl}`}
-          className="no-print nhsuk-u-margin-right-3"
-        >
-          <Button type="button" styleType="secondary">
-            Change availability
-          </Button>
-        </Link>
-      )}
 
       <p className="print-out-data" aria-hidden="true">
         Generated: {GetCurrentDateTime()}

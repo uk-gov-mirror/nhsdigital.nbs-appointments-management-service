@@ -121,7 +121,7 @@ public class PermissionCheckerTests
         var result = await _sut.HasPermissionAsync(userId, ["test"], "OtherPermission");
         result.Should().BeFalse();
     }
-    
+
     [Fact]
     public async Task HasGlobalPermissions_ReturnsTrue_WhenPermissionAssigned()
     {
@@ -142,7 +142,7 @@ public class PermissionCheckerTests
         var result = await _sut.HasGlobalPermissionAsync(userId, "TestPermission");
         result.Should().BeTrue();
     }
-    
+
     [Fact]
     public async Task HasGlobalPermissions_ReturnsFalse_WhenPermissionNotAssigned()
     {
@@ -165,7 +165,7 @@ public class PermissionCheckerTests
         var result = await _sut.HasGlobalPermissionAsync(userId, "TestPermission");
         result.Should().BeFalse();
     }
-    
+
     [Fact]
     public async Task HasGlobalPermissions_ReturnsTrue_WhenPermissionAssignedMultiple()
     {
@@ -272,13 +272,13 @@ public class PermissionCheckerTests
         {
             new() { Id = "Role1", Name = "Role One", Permissions = ["Permission1", "Permission2"] }
         };
-        
+
         _roleService.Setup(x => x.GetRoles()).ReturnsAsync(roles);
         _userAssignmentService.Setup(x => x.GetUserRoleAssignments(userId)).ThrowsAsync(new CosmosException("Resource not found", HttpStatusCode.NotFound, 0, "1", 1));
         var result = await _sut.GetPermissionsAsync(userId, "1");
         result.Should().BeEmpty();
     }
-    
+
     [Fact]
     public async Task GetSitesWithPermissionAsync_ReturnsNoSites_WhenUserHasNoSitesWithThePermission()
     {
@@ -297,7 +297,7 @@ public class PermissionCheckerTests
         var result = await _sut.GetSitesWithPermissionAsync(userId, "TestPermission");
         result.Should().BeEmpty();
     }
-    
+
     [Fact]
     public async Task GetSitesWithPermissionAsync_ReturnsOneSite_WhenUserHasASiteWithThePermission()
     {
@@ -319,7 +319,7 @@ public class PermissionCheckerTests
         var result = await _sut.GetSitesWithPermissionAsync(userId, "TestPermission");
         result.Should().BeEquivalentTo(new List<Site>() { expectedSite });
     }
-    
+
     [Fact]
     public async Task GetSitesWithPermissionAsync_ReturnsMultipleSites_WhenUserHasMultipleSitesWithThePermission()
     {
@@ -348,7 +348,7 @@ public class PermissionCheckerTests
         var result = await _sut.GetSitesWithPermissionAsync(userId, "TestPermission");
         result.Should().BeEquivalentTo(sites);
     }
-    
+
     [Fact]
     public async Task GetPermissionAsync_ReturnsNoPermissions_WhenThereAreNoRoles()
     {
@@ -362,7 +362,7 @@ public class PermissionCheckerTests
         var result = await _sut.GetPermissionsAsync(userId, "1");
         result.Should().BeEmpty();
     }
-    
+
     [Fact]
     public async Task GetPermissionAsync_ReturnsAllPermissions_ForAllUserAssignedRoles()
     {
@@ -384,7 +384,7 @@ public class PermissionCheckerTests
         var result = await _sut.GetPermissionsAsync(userId, "1");
         result.Should().Equal(expectedResult);
     }
-    
+
     [Fact]
     public async Task GetPermissionAsync_OnlyReturnsPermissions_ForUserAssignedRolesAtRequestedSiteOrGlobalScope()
     {
@@ -402,13 +402,13 @@ public class PermissionCheckerTests
             new() { Role = "Role3", Scope = "global" }
         };
 
-        var expectedResult = new [] { "Permission-1", "Permission-2", "Permission-5", "Permission-6" };
+        var expectedResult = new[] { "Permission-1", "Permission-2", "Permission-5", "Permission-6" };
         _roleService.Setup(x => x.GetRoles()).ReturnsAsync(roles);
         _userAssignmentService.Setup(x => x.GetUserRoleAssignments(userId)).ReturnsAsync(userAssignments);
         var result = await _sut.GetPermissionsAsync(userId, "1");
         result.Should().Equal(expectedResult);
     }
-  
+
     [Theory]
     [InlineData("")]
     [InlineData(null)]
@@ -432,7 +432,7 @@ public class PermissionCheckerTests
         var result = await _sut.GetPermissionsAsync(userId, siteId);
         result.Should().Equal(expectedResult);
     }
-    
+
     [Fact]
     public async Task GetPermissionAsync_OnlyReturnsDistinctPermissions_WhenUserAssignedRolesContainOverlappingPermissions()
     {
@@ -448,7 +448,7 @@ public class PermissionCheckerTests
             new() { Role = "Role2", Scope = "site:1" }
         };
 
-        var expectedResult = new [] { "Permission-1", "Permission-2", "Permission-3" };
+        var expectedResult = new[] { "Permission-1", "Permission-2", "Permission-3" };
         _roleService.Setup(x => x.GetRoles()).ReturnsAsync(roles);
         _userAssignmentService.Setup(x => x.GetUserRoleAssignments(userId)).ReturnsAsync(userAssignments);
         var result = await _sut.GetPermissionsAsync(userId, "1");

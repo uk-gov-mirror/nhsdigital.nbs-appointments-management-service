@@ -6,6 +6,7 @@ using Moq;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Validators;
 using Nhs.Appointments.Core.Features;
+using Nhs.Appointments.Core.OdsCodes;
 using Nhs.Appointments.Core.Reports.MasterSiteList;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
@@ -23,6 +24,8 @@ public class GetReportMasterSiteListFunctionTests
     private readonly Mock<ILogger<GetReportMasterSiteListFunction>> _mockLogger = new();
     private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly Mock<TimeProvider> _timeProvider = new();
+    private readonly Mock<IWellKnowOdsCodesService> _odsCodesService = new();
+    private readonly Mock<IAccessibilityDefinitionsService> _accessibilityService = new();
 
     public GetReportMasterSiteListFunctionTests()
     {
@@ -32,6 +35,8 @@ public class GetReportMasterSiteListFunctionTests
 
         _sut = new GetReportMasterSiteListFunction(
             _siteService.Object,
+            _odsCodesService.Object,
+            _accessibilityService.Object, 
             new MasterSiteListReportCsvWriter(_timeProvider.Object),
             _featureToggleHelper.Object,
             new EmptyValidator(),
@@ -64,7 +69,20 @@ public class GetReportMasterSiteListFunctionTests
         //Arrange
         var sites = new List<Site>();
         var userPrincipal = UserDataGenerator.CreateUserPrincipal("test.user2@testdomain.com");
-        
+
+        var mockDefinitions = new List<AccessibilityDefinition>
+        {
+            new("accessible_toilet", "Accessible toilet"),
+            new("braille_translation", "Braille translation service"),
+            new("disabled_parking", "Disabled car parking"),
+            new("parking", "Car parking"),
+            new("induction_loop", "Induction loop"),
+            new("sign_language", "Sign language service"),
+            new("step_free", "Step free access"),
+            new("text_relay", "Text relay"),
+            new("wheelchair_access", "Wheelchair access")
+        };
+
         _featureToggleHelper
             .Setup(helper => helper.IsFeatureEnabled(Flags.ReportsUplift))
             .ReturnsAsync(true);
@@ -73,6 +91,14 @@ public class GetReportMasterSiteListFunctionTests
             .Returns(userPrincipal);
 
         _siteService.Setup(x => x.GetAllSites(It.IsAny<bool>(), It.IsAny<bool>())).ReturnsAsync(sites);
+
+        _odsCodesService
+        .Setup(x => x.GetWellKnownOdsCodeEntries())
+        .ReturnsAsync(new List<WellKnownOdsEntry>());
+
+        _accessibilityService
+        .Setup(x => x.GetAccessibilityDefinitions())
+        .ReturnsAsync(mockDefinitions);
 
         //Act
         var result = await _sut.RunAsync(CreateRequest());
@@ -86,18 +112,21 @@ public class GetReportMasterSiteListFunctionTests
         var csvLines = contentString.Split(Environment.NewLine);
         var headers = csvLines[0].Split(',');
 
-        headers.Length.Should().Be(11);
-        headers.Should().Contain("Site Name");
-        headers.Should().Contain("ODS Code");
-        headers.Should().Contain("Site Type");
-        headers.Should().Contain("Region");
-        headers.Should().Contain("ICB");
-        headers.Should().Contain("GUID");
-        headers.Should().Contain("IsDeleted");
-        headers.Should().Contain("Status");
-        headers.Should().Contain("Long");
-        headers.Should().Contain("Lat");
-        headers.Should().Contain("Address");
+        headers.Length.Should().Be(22);
+
+        var expectedHeaders = new[]
+        {
+            "Site Name", "ODS Code", "Site Type", "Region", "Regional Name",
+            "ICB", "ICB Name", "GUID", "IsDeleted", "Status", "Long", "Lat", "Address",
+            "Accessible toilet", "Braille translation service", "Disabled car parking",
+            "Car parking", "Induction loop", "Sign language service",
+            "Step free access", "Text relay", "Wheelchair access"
+        };
+
+        foreach (var header in expectedHeaders)
+        {
+            headers.Should().Contain(header);
+        }
     }
 
     private static HttpRequest CreateRequest()

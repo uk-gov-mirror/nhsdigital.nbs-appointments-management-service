@@ -2,6 +2,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Moq;
 using Nhs.Appointments.Api.Notifications;
 using Nhs.Appointments.Api.Notifications.Options;
 using Nhs.Appointments.Api.Providers;
@@ -12,6 +13,7 @@ using Nhs.Appointments.Core.Caching;
 using Nhs.Appointments.Core.ClinicalServices;
 using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Messaging;
+using Nhs.Appointments.Core.OdsCodes;
 using Nhs.Appointments.Core.Reports.SiteSummary;
 using Nhs.Appointments.Core.Users;
 using Nhs.Appointments.Persistance;
@@ -62,6 +64,8 @@ public class NotificationsServiceProviderExtensionsTests
             .AddUserNotifications(configuration)
             .AddTypedCosmosDataStores()
             .AddCaching(configuration)
+            .AddSingleton(new Mock<IWellKnownOdsCodesStore>().Object)
+            .AddTransient<ITypedDocumentCosmosStore<AuditFunctionDocument>, TypedDocumentCosmosStore<AuditFunctionDocument>>()
             .AddTransient<ITypedDocumentCosmosStore<AuditFunctionDocument>, TypedDocumentCosmosStore<AuditFunctionDocument>>()
             .AddTransient<ITypedDocumentCosmosStore<AuditAuthDocument>, TypedDocumentCosmosStore<AuditAuthDocument>>()
             .AddTransient<ITypedDocumentCosmosStore<AuditNotificationDocument>, TypedDocumentCosmosStore<AuditNotificationDocument>>()

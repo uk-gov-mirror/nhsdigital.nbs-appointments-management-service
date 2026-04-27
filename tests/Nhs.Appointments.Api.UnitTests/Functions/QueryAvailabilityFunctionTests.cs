@@ -119,11 +119,11 @@ public class QueryAvailabilityFunctionTests
         if (await _sut.RunAsync(httpRequest) is ContentResult result)
         {
             result.StatusCode.Should().Be((int)HttpStatusCode.OK);
-            
+
             _hasConsecutiveCapacityFilter.Verify(
                 x => x.SessionHasConsecutiveSessions(It.IsAny<SessionInstance[]>(), It.IsAny<int>()),
                 Times.Exactly(2));
-            
+
             var response = await ReadResponseAsync<QueryAvailabilityResponse>(result.Content);
             response.Count.Should().Be(2);
             response[0].site.Should().Be("2de5bb57-060f-4cb5-b14d-16587d0c2e8f");
@@ -331,7 +331,7 @@ public class QueryAvailabilityFunctionTests
             "COVID",
             new DateOnly(2077, 01, 01),
             new DateOnly(2077, 01, 03),
-            QueryType.Days, 
+            QueryType.Days,
             null);
 
         var httpRequest = CreateRequest(request);
@@ -342,7 +342,7 @@ public class QueryAvailabilityFunctionTests
             Times.Exactly(3));
         _hasConsecutiveCapacityFilter.Verify(x => x.SessionHasConsecutiveSessions(It.IsAny<SessionInstance[]>(), It.IsAny<int>()), Times.Once);
     }
-    
+
     [Fact]
     public async Task RunAsync_CallsBookingAvailabilityStateService()
     {
@@ -388,13 +388,13 @@ public class QueryAvailabilityFunctionTests
             "COVID",
             new DateOnly(2077, 01, 01),
             new DateOnly(2077, 01, 03),
-            QueryType.Days, 
+            QueryType.Days,
             null);
 
         var httpRequest = CreateRequest(request);
 
         await _sut.RunAsync(httpRequest);
-        
+
         _bookingAvailabilityStateService.Verify(x => x.GetAvailableSlots("2de5bb57-060f-4cb5-b14d-16587d0c2e8f", new DateTime(2077, 01, 01, 0, 0, 0),
                 new DateTime(2077, 01, 03, 23, 59, 59)),
             Times.Once);

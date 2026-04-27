@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@components/nhsuk-frontend';
+import { Button } from 'nhsuk-react-components';
 
 const PrintPageButton = () => {
   const onClick = () => {
@@ -8,11 +8,7 @@ const PrintPageButton = () => {
   };
 
   return (
-    <Button
-      className="no-print nhsuk-button--small"
-      styleType="secondary"
-      onClick={() => onClick()}
-    >
+    <Button className="no-print" small secondarySolid onClick={() => onClick()}>
       Print page
     </Button>
   );

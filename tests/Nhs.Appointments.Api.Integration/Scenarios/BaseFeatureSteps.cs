@@ -7,10 +7,10 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using Azure.Storage.Blobs;
 using FluentAssertions;
 using Gherkin.Ast;
+using MassTransit;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Logging;
@@ -25,6 +25,15 @@ using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Persistance;
 using Nhs.Appointments.Persistance.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Net;
+using System.Net.Http;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 using Xunit.Gherkin.Quick;
 using Feature = Xunit.Gherkin.Quick.Feature;
@@ -63,7 +72,6 @@ public abstract partial class BaseFeatureSteps : Feature
     
     protected readonly BlobServiceClient BlobServiceClient;
 
-    protected readonly Mapper Mapper;
     protected HttpStatusCode _statusCode;
     
     /// <summary>
@@ -108,12 +116,6 @@ public abstract partial class BaseFeatureSteps : Feature
             clientOptions: options);
         
         BlobServiceClient = new BlobServiceClient(Environment.GetEnvironmentVariable("BLOB_STORAGE_CONNECTION_STRING") ?? "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://host.docker.internal:10000/devstoreaccount1;QueueEndpoint=http://host.docker.internal:10001/devstoreaccount1;TableEndpoint=http://host.docker.internal:10002/devstoreaccount1;");
-
-        var mapperConfiguration = new MapperConfiguration(cfg =>
-        {
-            cfg.AddProfile<CosmosAutoMapperProfile>();
-        });
-        Mapper = new Mapper(mapperConfiguration);
     }
 
     /// <summary>
@@ -948,6 +950,9 @@ public abstract partial class BaseFeatureSteps : Feature
     [And("the following sites exist in the system")]
     public async Task SetUpSites(DataTable dataTable)
     {
+        // Extract headers from the first row to see what columns are available
+        var headers = dataTable.Rows.First().Cells.Select(c => c.Value).ToList();
+
         var sites = dataTable.Rows.Skip(1).Select(row => new SiteDocument
         {
             Id = GetSiteId(dataTable.GetRowValueOrDefault(row, "Site")),
@@ -955,7 +960,7 @@ public abstract partial class BaseFeatureSteps : Feature
             Address = dataTable.GetRowValueOrDefault(row, "Address"),
             PhoneNumber = dataTable.GetRowValueOrDefault(row, "PhoneNumber"),
             OdsCode = dataTable.GetRowValueOrDefault(row, "OdsCode"),
-            Region = dataTable.GetRowValueOrDefault(row, "Region"),
+            Region = dataTable.GetRowValueOrDefault(row, "Region"),            
             IntegratedCareBoard = dataTable.GetRowValueOrDefault(row, "ICB"),
             InformationForCitizens = dataTable.GetRowValueOrDefault(row, "InformationForCitizens"),
             DocumentType = "site",
@@ -982,6 +987,8 @@ public abstract partial class BaseFeatureSteps : Feature
     [And("the following default site exists in the system")]
     public async Task SetUpSingleDefaultSite(DataTable dataTable)
     {
+        var headers = dataTable.Rows.First().Cells.Select(c => c.Value).ToList();
+
         var site = dataTable.Rows.Skip(1).Take(1).Select(row => new SiteDocument
         {
             Id = GetSiteId(),
@@ -1013,6 +1020,8 @@ public abstract partial class BaseFeatureSteps : Feature
     [Given("the following sites with valid Guid IDs exist in the system")]
     public async Task SetupSitesWithValidGuidIds(DataTable dataTable)
     {
+        var headers = dataTable.Rows.First().Cells.Select(c => c.Value).ToList();
+
         var sites = dataTable.Rows.Skip(1).Select(row => new SiteDocument
         {
             Id = dataTable.GetRowValueOrDefault(row, "Site"),

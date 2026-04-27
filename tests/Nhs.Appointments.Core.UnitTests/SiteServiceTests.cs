@@ -3,6 +3,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Caching;
+using Nhs.Appointments.Core.Caching.InMemory;
+using Nhs.Appointments.Core.Concurrency;
 using Nhs.Appointments.Core.Sites;
 
 namespace Nhs.Appointments.Core.UnitTests;
@@ -16,9 +18,11 @@ public class SiteServiceTests
     private readonly Mock<ILogger<ISiteService>> _logger = new();
     private readonly SiteService _sut;
     private readonly Mock<IOptions<SiteServiceOptions>> _options = new();
+    private readonly Mock<IOptions<LeaseManagerOptions>> _leaseOptions = new();
 
     public SiteServiceTests()
     {
+        _leaseOptions.Setup(o => o.Value).Returns(new LeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0) });
         _options.Setup(x => x.Value).Returns(new SiteServiceOptions
         {
             DisableSiteCache = false,
@@ -29,7 +33,7 @@ public class SiteServiceTests
             SiteSupportsServiceBatchMultiplier = 2,
         });
 
-        var cacheService = new CacheService(new InMemoryCacheStore(_memoryCache.Object), new InMemoryCacheLease(), TimeProvider.System);
+        var cacheService = new CacheService(new InMemoryCacheStore(_memoryCache.Object), new InMemoryLeaseManager(_leaseOptions.Object), TimeProvider.System);
         
         _sut = new SiteService(_siteStore.Object, _availabilityStore.Object, _logger.Object, cacheService, _options.Object);
         _memoryCache.Setup(x => x.CreateEntry(It.IsAny<object>())).Returns(_cacheEntry.Object);

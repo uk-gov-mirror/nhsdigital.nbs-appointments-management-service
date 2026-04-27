@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Nhs.Appointments.Core.Caching.InMemory;
+using Nhs.Appointments.Core.Caching.Redis;
 using StackExchange.Redis;
 
 namespace Nhs.Appointments.Core.Caching;
@@ -34,7 +36,6 @@ public static class ServiceRegistration
                 EndPoints = { configuration.GetValue<string>("REDIS_ENDPOINT") ?? throw new NullReferenceException("RedisEndpoint not set in configuration") },
                 Password = configuration.GetValue<string>("REDIS_PASSWORD") ?? throw new NullReferenceException("RedisPassword not set in configuration"),
             })
-            .AddSingleton<ICacheLease, RedisCacheStore>()
             .AddTransient<ICacheStore, RedisCacheStore>();
     }
     
@@ -42,7 +43,6 @@ public static class ServiceRegistration
     {
         return services
             .AddSingleton<IMemoryCache, MemoryCache>()
-            .AddSingleton<ICacheLease, InMemoryCacheLease>()
             .AddTransient<ICacheStore, InMemoryCacheStore>();
     }
 }

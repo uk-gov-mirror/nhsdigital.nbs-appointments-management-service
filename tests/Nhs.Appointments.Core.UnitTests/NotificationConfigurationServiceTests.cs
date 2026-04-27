@@ -1,6 +1,9 @@
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Core.Caching;
+using Nhs.Appointments.Core.Caching.InMemory;
+using Nhs.Appointments.Core.Concurrency;
 using Nhs.Appointments.Core.Messaging;
 
 namespace Nhs.Appointments.Core.UnitTests;
@@ -10,10 +13,12 @@ public class NotificationConfigurationServiceTests
     private readonly Mock<INotificationConfigurationStore> _storeMock = new();
     private readonly NotificationConfigurationService _sut;
     private static readonly string[] Covid5_11Services = { "COVID:5_11" };
+    private readonly Mock<IOptions<LeaseManagerOptions>> _leaseOptions = new();
 
     public NotificationConfigurationServiceTests()
     {
-        _sut = new NotificationConfigurationService(new CacheService(new InMemoryCacheStore(_memoryCacheMock.Object), new InMemoryCacheLease(), TimeProvider.System), _storeMock.Object);
+        _leaseOptions.Setup(o => o.Value).Returns(new LeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0) });
+        _sut = new NotificationConfigurationService(new CacheService(new InMemoryCacheStore(_memoryCacheMock.Object), new InMemoryLeaseManager(_leaseOptions.Object), TimeProvider.System), _storeMock.Object);
     }
 
     [Fact]

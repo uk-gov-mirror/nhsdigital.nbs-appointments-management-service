@@ -1,6 +1,9 @@
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Nhs.Appointments.Core.Caching;
+using Nhs.Appointments.Core.Caching.InMemory;
 using Nhs.Appointments.Core.ClinicalServices;
+using Nhs.Appointments.Core.Concurrency;
 
 namespace Nhs.Appointments.Core.UnitTests;
 public class ClinicalServiceProviderTests
@@ -13,13 +16,16 @@ public class ClinicalServiceProviderTests
         new ClinicalServiceType { Value = "COVID:5_11", ServiceType = "COVID-19", Url = "https://www.nhs.uk/bookcovid" },
         new ClinicalServiceType { Value = "FLU:18_64", ServiceType = "flu", Url = "https://www.nhs.uk/bookflu" }
     };
+    private readonly Mock<IOptions<LeaseManagerOptions>> _leaseOptions = new();
+    
     private const string _cacheKey = "clinical-service";
 
     public ClinicalServiceProviderTests()
     {
+        _leaseOptions.Setup(o => o.Value).Returns(new LeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0) });
         _storeMock = new Mock<IClinicalServiceStore>();
         _memoryCacheMock = new Mock<IMemoryCache>();
-        _sut = new ClinicalServiceProvider(_storeMock.Object, new CacheService(new InMemoryCacheStore(_memoryCacheMock.Object), new InMemoryCacheLease(), TimeProvider.System));
+        _sut = new ClinicalServiceProvider(_storeMock.Object, new CacheService(new InMemoryCacheStore(_memoryCacheMock.Object), new InMemoryLeaseManager(_leaseOptions.Object), TimeProvider.System));
     }
 
     [Fact]

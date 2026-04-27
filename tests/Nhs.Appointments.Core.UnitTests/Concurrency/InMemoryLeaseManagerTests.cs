@@ -3,7 +3,7 @@ using Nhs.Appointments.Core.Concurrency;
 
 namespace Nhs.Appointments.Core.UnitTests.Concurrency;
 
-public class InMemorySiteLeaseManagerTests
+public class InMemoryLeaseManagerTests
 {
     [Fact]
     public void SiteAndDateSupplied_Acquire_ReturnsSiteLeaseContext()
@@ -11,19 +11,19 @@ public class InMemorySiteLeaseManagerTests
         // Arrange.
         var siteId = Guid.NewGuid().ToString();
         var date  = DateOnly.FromDateTime(DateTime.UtcNow);
-        var options = new Mock<IOptions<SiteLeaseManagerOptions>>();
-        var slmo = new SiteLeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0) };
+        var options = new Mock<IOptions<LeaseManagerOptions>>();
+        var slmo = new LeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0) };
         options.Setup(o => o.Value).Returns(slmo);
 
         var expectedSiteKey = LeaseKeys.SiteKeyFactory.Create(siteId, date);
 
-        var sut = new InMemorySiteLeaseManager(options.Object);
+        var sut = new InMemoryLeaseManager(options.Object);
 
         // Act.
-        var slc = sut.Acquire(siteId, date);
+        var slc = sut.Acquire(LeaseKeys.SiteKeyFactory.Create(siteId, date));
 
         // Assert.
-        slc.SiteKey.Should()
+        slc.LeaseKey.Should()
             .Be(expectedSiteKey);
     }
 
@@ -33,24 +33,24 @@ public class InMemorySiteLeaseManagerTests
         // Arrange.
         var siteId = Guid.NewGuid().ToString();
         var date = DateOnly.FromDateTime(DateTime.UtcNow);
-        var options = new Mock<IOptions<SiteLeaseManagerOptions>>();
-        var slmo = new SiteLeaseManagerOptions { Timeout = new TimeSpan(0, 0, 0, 0, 0, 1) };
+        var options = new Mock<IOptions<LeaseManagerOptions>>();
+        var slmo = new LeaseManagerOptions { Timeout = new TimeSpan(0, 0, 0, 0, 0, 1) };
         options.Setup(o => o.Value).Returns(slmo);
 
         var expectedSiteKey = LeaseKeys.SiteKeyFactory.Create(siteId, date);
 
-        var sut = new InMemorySiteLeaseManager(options.Object);
+        var sut = new InMemoryLeaseManager(options.Object);
 
         // Act.
-        var slc1 = sut.Acquire(siteId, date);
-        Action action = () => sut.Acquire(siteId, date);
+        var slc1 = sut.Acquire(LeaseKeys.SiteKeyFactory.Create(siteId, date));
+        Action action = () => sut.Acquire(LeaseKeys.SiteKeyFactory.Create(siteId, date));
 
         // Assert.
-        slc1.SiteKey.Should()
+        slc1.LeaseKey.Should()
             .Be(expectedSiteKey);
         action.Should()
             .Throw<AbandonedMutexException>()
-            .WithMessage($"Abandoned attempt to acquire lock for site key {expectedSiteKey}");
+            .WithMessage($"Abandoned attempt to acquire lock for key {expectedSiteKey}");
     }
 
     [Fact]
@@ -59,26 +59,26 @@ public class InMemorySiteLeaseManagerTests
         // Arrange.
         var siteId = Guid.NewGuid().ToString();
         var date = DateOnly.FromDateTime(DateTime.UtcNow);
-        var options = new Mock<IOptions<SiteLeaseManagerOptions>>();
-        var slmo = new SiteLeaseManagerOptions { Timeout = new TimeSpan(0, 0, 0, 0, 0, 1) };
+        var options = new Mock<IOptions<LeaseManagerOptions>>();
+        var slmo = new LeaseManagerOptions { Timeout = new TimeSpan(0, 0, 0, 0, 0, 1) };
         options.Setup(o => o.Value).Returns(slmo);
 
         var expectedSiteKey = LeaseKeys.SiteKeyFactory.Create(siteId, date);
 
-        var sut = new InMemorySiteLeaseManager(options.Object);
+        var sut = new InMemoryLeaseManager(options.Object);
 
         // Act.
         var originalSiteKey = "";
-        using (var slc1 = sut.Acquire(siteId, date))
+        using (var slc1 = sut.Acquire(LeaseKeys.SiteKeyFactory.Create(siteId, date)))
         {
-            originalSiteKey = slc1.SiteKey;
+            originalSiteKey = slc1.LeaseKey;
         }
-        var slc2 = sut.Acquire(siteId, date);
+        var slc2 = sut.Acquire(LeaseKeys.SiteKeyFactory.Create(siteId, date));
 
         // Assert.
         originalSiteKey.Should()
             .Be(expectedSiteKey);
-        slc2.SiteKey.Should()
+        slc2.LeaseKey.Should()
             .Be(expectedSiteKey);
     }
 
@@ -89,23 +89,23 @@ public class InMemorySiteLeaseManagerTests
         var siteId = Guid.NewGuid().ToString();
         var date1 = DateOnly.FromDateTime(DateTime.UtcNow);
         var date2 = date1.AddDays(1);
-        var options = new Mock<IOptions<SiteLeaseManagerOptions>>();
-        var slmo = new SiteLeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0) };
+        var options = new Mock<IOptions<LeaseManagerOptions>>();
+        var slmo = new LeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0) };
         options.Setup(o => o.Value).Returns(slmo);
 
         var expectedSiteKey1 = LeaseKeys.SiteKeyFactory.Create(siteId, date1);
         var expectedSiteKey2 = LeaseKeys.SiteKeyFactory.Create(siteId, date2);
 
-        var sut = new InMemorySiteLeaseManager(options.Object);
+        var sut = new InMemoryLeaseManager(options.Object);
 
         // Act.
-        var slc1 = sut.Acquire(siteId, date1);
-        var slc2 = sut.Acquire(siteId, date2);
+        var slc1 = sut.Acquire(LeaseKeys.SiteKeyFactory.Create(siteId, date1));
+        var slc2 = sut.Acquire(LeaseKeys.SiteKeyFactory.Create(siteId, date2));
 
         // Assert.
-        slc1.SiteKey.Should()
+        slc1.LeaseKey.Should()
             .Be(expectedSiteKey1);
-        slc2.SiteKey.Should()
+        slc2.LeaseKey.Should()
             .Be(expectedSiteKey2);
         expectedSiteKey1.Should().NotBe(expectedSiteKey2);
     }
@@ -117,23 +117,23 @@ public class InMemorySiteLeaseManagerTests
         var siteId1 = Guid.NewGuid().ToString();
         var siteId2 = Guid.NewGuid().ToString();
         var date = DateOnly.FromDateTime(DateTime.UtcNow);
-        var options = new Mock<IOptions<SiteLeaseManagerOptions>>();
-        var slmo = new SiteLeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0) };
+        var options = new Mock<IOptions<LeaseManagerOptions>>();
+        var slmo = new LeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0) };
         options.Setup(o => o.Value).Returns(slmo);
 
         var expectedSiteKey1 = LeaseKeys.SiteKeyFactory.Create(siteId1, date);
         var expectedSiteKey2 = LeaseKeys.SiteKeyFactory.Create(siteId2, date);
 
-        var sut = new InMemorySiteLeaseManager(options.Object);
+        var sut = new InMemoryLeaseManager(options.Object);
 
         // Act.
-        var slc1 = sut.Acquire(siteId1, date);
-        var slc2 = sut.Acquire(siteId2, date);
+        var slc1 = sut.Acquire(LeaseKeys.SiteKeyFactory.Create(siteId1, date));
+        var slc2 = sut.Acquire(LeaseKeys.SiteKeyFactory.Create(siteId2, date));
 
         // Assert.
-        slc1.SiteKey.Should()
+        slc1.LeaseKey.Should()
             .Be(expectedSiteKey1);
-        slc2.SiteKey.Should()
+        slc2.LeaseKey.Should()
             .Be(expectedSiteKey2);
         expectedSiteKey1.Should().NotBe(expectedSiteKey2);
     }

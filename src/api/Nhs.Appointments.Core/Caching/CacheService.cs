@@ -1,10 +1,12 @@
+using Nhs.Appointments.Core.Concurrency;
+
 namespace Nhs.Appointments.Core.Caching;
 
-public class CacheService(ICacheStore cacheStore, ICacheLazySlideService cacheLazySlideService, TimeProvider timeProvider) : ICacheService
+public class CacheService(ICacheStore cacheStore, ILeaseManager leaseManager, TimeProvider timeProvider) : ICacheService
 {
     public async Task<T> GetLazySlidingCacheValue<T>(string cacheKey, LazySlideCacheOptions<T> options)
     {
-        //intentionally prefix cache key indicating that it is a lazy sliding value
+        //intentionally prefix a cache key indicating that it is a lazy sliding value
         var lazySlideCacheKey = CacheKey.LazySlideCacheKey(cacheKey);
         
         if (options.AbsoluteExpiration <= options.SlideThreshold)
@@ -14,55 +16,20 @@ public class CacheService(ICacheStore cacheStore, ICacheLazySlideService cacheLa
         
         var cache = await cacheStore.TryGetAsync<LazySlideCacheObject>(cacheKey);
 
-        if (cache.Success)
+        if (!cache.Success)
         {
-            
+            return await SlideCache(lazySlideCacheKey, options, timeProvider.GetUtcNow());
         }
-        
-        return await cacheLazySlideService.SlideCache(lazySlideCacheKey, cache.o)
 
-        var utcNow = timeProvider.GetUtcNow();
-        
-        await cacheLease.AquireLease(lazySlideCacheKey);
+        ArgumentNullException.ThrowIfNull(cache.Response);
 
-        var slidePerformed = false;
-
-        try
+        if (cache.Response.DueToSlide(options.SlideThreshold, timeProvider.GetUtcNow()))
         {
-            var cache = await cacheStore.TryGetAsync<LazySlideCacheObject>(cacheKey);
-            if (cache.Success)
-            {
-                ArgumentNullException.ThrowIfNull(cache.Response);
-            
-                //check if we want to update the existing cache in the background lazily...
-                if (cache.Response.DateTimeUpdated.Add(options.SlideThreshold) < utcNow)
-                {
-                    //Sliding cache functionality
-                    
-                    //Update the cache value so the NEXT request gets a newer version of the latest expensive value fetch
-                    //This approach means the cache entry is never guaranteed to be the exact latest value (unless a cache value does not exist) - but it is recent enough to not have a big impact
-                    //The performance gain is a sufficient benefit to the value being potentially slightly behind the latest value
-                    _ = SlideCache(lazySlideCacheKey, options, (T)cache.Response.Value, utcNow);
-                    slidePerformed = true;
-                }
-            
-                //return the current cached value regardless of whether sliding was invoked
-                return (T)cache.Response.Value;
-            }
-            
-            var value = await options.UpdateOperation();
-            await cacheStore.SetAsync(lazySlideCacheKey, new LazySlideCacheObject(value, utcNow),
-                utcNow.Add(options.AbsoluteExpiration));
-            return value;
+            _ = SlideCache(lazySlideCacheKey, options, timeProvider.GetUtcNow());
         }
-        finally
-        {
-            //the lock was released earlier if a slide was performed
-            if (!slidePerformed)
-            {
-                await cacheLease.ReleaseLease(lazySlideCacheKey);
-            }
-        }
+            
+        return (T)cache.Response.Value;
+
     }
 
     public async Task<T> GetCacheValue<T>(string cacheKey, CacheOptions<T> options)
@@ -76,11 +43,14 @@ public class CacheService(ICacheStore cacheStore, ICacheLazySlideService cacheLa
                 return cache.Response.Value;
             }
         }
-        
-        var newValue = await options.UpdateOperation();
 
-        await cacheStore.SetAsync(cacheKey, new CacheObject<T>(newValue), options.AbsoluteExpiration);
-        return newValue;
+        using (leaseManager.Acquire(cacheKey))
+        {
+            var newValue = await options.UpdateOperation();
+
+            await cacheStore.SetAsync(cacheKey, new CacheObject<T>(newValue), options.AbsoluteExpiration);
+            return newValue;
+        }
     }
 
     public async Task<T> GetCacheValueWithDefault<T>(string cacheKey, CacheOptions<T> options, T defaultValue)
@@ -106,23 +76,35 @@ public class CacheService(ICacheStore cacheStore, ICacheLazySlideService cacheLa
         return tryResult.Result;
     }
 
-    private async Task SlideCache<T>(string lazySlideCacheKey, LazySlideCacheOptions<T> options, T lazyValue, DateTimeOffset dateTime)
+    private async Task<T> SlideCache<T>(string lazySlideCacheKey, LazySlideCacheOptions<T> options, DateTimeOffset dateTime)
     {
-        try
+        using (leaseManager.Acquire(lazySlideCacheKey))
         {
-            //update the cache datetime prematurely so that concurrent waiting threads do not trigger their own slide operation
-            await cacheStore.SetAsync(lazySlideCacheKey, new LazySlideCacheObject(lazyValue, dateTime),
-                dateTime.Add(options.AbsoluteExpiration));
+            var cache = await cacheStore.TryGetAsync<LazySlideCacheObject>(lazySlideCacheKey);
+            
+            if (cache.Success)
+            {
+                ArgumentNullException.ThrowIfNull(cache.Response);
+                if (cache.Response.DueToSlide(options.SlideThreshold, timeProvider.GetUtcNow()))
+                {
+                    await cacheStore.SetAsync(lazySlideCacheKey, new LazySlideCacheObject(cache.Response, dateTime),
+                        dateTime.Add(options.AbsoluteExpiration));
+                }
+            }
+            else
+            {
+                // must wait for initial cache value
+                var slideValue = await options.UpdateOperation();
+                await cacheStore.SetAsync(lazySlideCacheKey, new LazySlideCacheObject(slideValue, dateTime),
+                    dateTime.Add(options.AbsoluteExpiration));
+                return slideValue;
+            }
         }
-        finally
-        {
-            //can release other threads now that the cache time has been updated
-            await cacheLease.ReleaseLease(lazySlideCacheKey);
-        }
-        
-        //then update the actual value now that no locks are being held
-        var value = await options.UpdateOperation();
-        await cacheStore.SetAsync(lazySlideCacheKey, new LazySlideCacheObject(value, dateTime),
+
+        // no need to have lock around here as we're silently sliding the cached value
+        var setValue = await options.UpdateOperation();
+        await cacheStore.SetAsync(lazySlideCacheKey, new LazySlideCacheObject(setValue, dateTime),
             dateTime.Add(options.AbsoluteExpiration));
+        return setValue;
     }
 }

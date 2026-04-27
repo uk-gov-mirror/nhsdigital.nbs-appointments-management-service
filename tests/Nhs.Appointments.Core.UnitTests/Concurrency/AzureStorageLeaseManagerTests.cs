@@ -10,7 +10,7 @@ using Nhs.Appointments.Core.Concurrency;
 
 namespace Nhs.Appointments.Core.UnitTests.Concurrency;
 
-public class AzureStorageSiteLeaseManagerTests
+public class AzureStorageLeaseManagerTests
 {
     [Theory]
     [InlineData(0)]
@@ -18,14 +18,14 @@ public class AzureStorageSiteLeaseManagerTests
     [InlineData(-10)]
     public void CannotConstructWithInvalidAcquireTime(int acquireTimeInSeconds)
     {
-        var slmo = new SiteLeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0) };
-        var options = new Mock<IOptions<SiteLeaseManagerOptions>>();
+        var slmo = new LeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0) };
+        var options = new Mock<IOptions<LeaseManagerOptions>>();
         options.Setup(o => o.Value).Returns(slmo);
 
         var blobClient = new TestableBlobClient();
         var abs = new Mock<IAzureBlobStorage>();
 
-        Action action = () => new AzureStorageSiteLeaseManager(options.Object, abs.Object, acquireTimeInSeconds);
+        Action action = () => new AzureStorageLeaseManager(options.Object, abs.Object, acquireTimeInSeconds);
 
         // Assert.
         action.Should()
@@ -39,14 +39,14 @@ public class AzureStorageSiteLeaseManagerTests
     [InlineData(-10)]
     public void CannotConstructWithInvalidDelayTime(int delayRetryTimeInMilliseconds)
     {
-        var slmo = new SiteLeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0) };
-        var options = new Mock<IOptions<SiteLeaseManagerOptions>>();
+        var slmo = new LeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0) };
+        var options = new Mock<IOptions<LeaseManagerOptions>>();
         options.Setup(o => o.Value).Returns(slmo);
 
         var blobClient = new TestableBlobClient();
         var abs = new Mock<IAzureBlobStorage>();
 
-        Action action = () => new AzureStorageSiteLeaseManager(options.Object, abs.Object, 10, delayRetryTimeInMilliseconds);
+        Action action = () => new AzureStorageLeaseManager(options.Object, abs.Object, 10, delayRetryTimeInMilliseconds);
 
         // Assert.
         action.Should()
@@ -64,21 +64,21 @@ public class AzureStorageSiteLeaseManagerTests
 
         var containerName = Guid.NewGuid().ToString();
 
-        var slmo = new SiteLeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0), ContainerName = containerName };
-        var options = new Mock<IOptions<SiteLeaseManagerOptions>>();
+        var slmo = new LeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0), ContainerName = containerName };
+        var options = new Mock<IOptions<LeaseManagerOptions>>();
         options.Setup(o => o.Value).Returns(slmo);
 
         var blobClient = new TestableBlobClient();
         var abs = new Mock<IAzureBlobStorage>();
         abs.Setup(a => a.GetBlobClientFromContainerAndBlobName(containerName, expectedSiteKey)).Returns(blobClient);
 
-        var sut = new AzureStorageSiteLeaseManager(options.Object, abs.Object);
+        var sut = new AzureStorageLeaseManager(options.Object, abs.Object);
 
         // Act.
-        var slc = sut.Acquire(siteId, date);
+        var slc = sut.Acquire(LeaseKeys.SiteKeyFactory.Create(siteId, date));
 
         // Assert.
-        slc.SiteKey.Should().Be(expectedSiteKey);
+        slc.LeaseKey.Should().Be(expectedSiteKey);
         abs.Verify();
         blobClient.RetainedBlobLeaseClient.Verify(blc => blc.Acquire(It.IsAny<TimeSpan>(), It.IsAny<RequestConditions>(), It.IsAny<CancellationToken>()), Times.Once());
     }
@@ -95,8 +95,8 @@ public class AzureStorageSiteLeaseManagerTests
 
         var containerName = Guid.NewGuid().ToString();
 
-        var slmo = new SiteLeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0), ContainerName = containerName };
-        var options = new Mock<IOptions<SiteLeaseManagerOptions>>();
+        var slmo = new LeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0), ContainerName = containerName };
+        var options = new Mock<IOptions<LeaseManagerOptions>>();
         options.Setup(o => o.Value).Returns(slmo);
 
         var blobClient1 = new TestableBlobClient();
@@ -105,15 +105,15 @@ public class AzureStorageSiteLeaseManagerTests
         abs.Setup(a => a.GetBlobClientFromContainerAndBlobName(containerName, expectedSiteKey1)).Returns(blobClient1);
         abs.Setup(a => a.GetBlobClientFromContainerAndBlobName(containerName, expectedSiteKey2)).Returns(blobClient2);
 
-        var sut = new AzureStorageSiteLeaseManager(options.Object, abs.Object);
+        var sut = new AzureStorageLeaseManager(options.Object, abs.Object);
 
         // Act.
-        var slc1 = sut.Acquire(siteId, date1);
-        var slc2 = sut.Acquire(siteId, date2);
+        var slc1 = sut.Acquire(LeaseKeys.SiteKeyFactory.Create(siteId, date1));
+        var slc2 = sut.Acquire(LeaseKeys.SiteKeyFactory.Create(siteId, date2));
 
         // Assert.
-        slc1.SiteKey.Should().Be(expectedSiteKey1);
-        slc2.SiteKey.Should().Be(expectedSiteKey2);
+        slc1.LeaseKey.Should().Be(expectedSiteKey1);
+        slc2.LeaseKey.Should().Be(expectedSiteKey2);
         abs.Verify();
         blobClient1.RetainedBlobLeaseClient.Verify(blc => blc.Acquire(It.IsAny<TimeSpan>(), It.IsAny<RequestConditions>(), It.IsAny<CancellationToken>()), Times.Once());
         blobClient2.RetainedBlobLeaseClient.Verify(blc => blc.Acquire(It.IsAny<TimeSpan>(), It.IsAny<RequestConditions>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -131,8 +131,8 @@ public class AzureStorageSiteLeaseManagerTests
 
         var containerName = Guid.NewGuid().ToString();
 
-        var slmo = new SiteLeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0), ContainerName = containerName };
-        var options = new Mock<IOptions<SiteLeaseManagerOptions>>();
+        var slmo = new LeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0), ContainerName = containerName };
+        var options = new Mock<IOptions<LeaseManagerOptions>>();
         options.Setup(o => o.Value).Returns(slmo);
 
         var blobClient1 = new TestableBlobClient();
@@ -141,15 +141,15 @@ public class AzureStorageSiteLeaseManagerTests
         abs.Setup(a => a.GetBlobClientFromContainerAndBlobName(containerName, expectedSiteKey1)).Returns(blobClient1);
         abs.Setup(a => a.GetBlobClientFromContainerAndBlobName(containerName, expectedSiteKey2)).Returns(blobClient2);
 
-        var sut = new AzureStorageSiteLeaseManager(options.Object, abs.Object);
+        var sut = new AzureStorageLeaseManager(options.Object, abs.Object);
 
         // Act.
-        var slc1 = sut.Acquire(siteId1, date);
-        var slc2 = sut.Acquire(siteId2, date);
+        var slc1 = sut.Acquire(LeaseKeys.SiteKeyFactory.Create(siteId1, date));
+        var slc2 = sut.Acquire(LeaseKeys.SiteKeyFactory.Create(siteId2, date));
 
         // Assert.
-        slc1.SiteKey.Should().Be(expectedSiteKey1);
-        slc2.SiteKey.Should().Be(expectedSiteKey2);
+        slc1.LeaseKey.Should().Be(expectedSiteKey1);
+        slc2.LeaseKey.Should().Be(expectedSiteKey2);
         abs.Verify();
         blobClient1.RetainedBlobLeaseClient.Verify(blc => blc.Acquire(It.IsAny<TimeSpan>(), It.IsAny<RequestConditions>(), It.IsAny<CancellationToken>()), Times.Once());
         blobClient2.RetainedBlobLeaseClient.Verify(blc => blc.Acquire(It.IsAny<TimeSpan>(), It.IsAny<RequestConditions>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -165,23 +165,23 @@ public class AzureStorageSiteLeaseManagerTests
 
         var containerName = Guid.NewGuid().ToString();
 
-        var slmo = new SiteLeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0), ContainerName = containerName };
-        var options = new Mock<IOptions<SiteLeaseManagerOptions>>();
+        var slmo = new LeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0), ContainerName = containerName };
+        var options = new Mock<IOptions<LeaseManagerOptions>>();
         options.Setup(o => o.Value).Returns(slmo);
 
         var blobClient = new TestableBlobClient();
         var abs = new Mock<IAzureBlobStorage>();
         abs.Setup(a => a.GetBlobClientFromContainerAndBlobName(containerName, expectedSiteKey)).Returns(blobClient);
 
-        var sut = new AzureStorageSiteLeaseManager(options.Object, abs.Object);
+        var sut = new AzureStorageLeaseManager(options.Object, abs.Object);
 
         // Act.
-        var slc1 = sut.Acquire(siteId, date);
-        var slc2 = sut.Acquire(siteId, date);
+        var slc1 = sut.Acquire(LeaseKeys.SiteKeyFactory.Create(siteId, date));
+        var slc2 = sut.Acquire(LeaseKeys.SiteKeyFactory.Create(siteId, date));
 
         // Assert.
-        slc1.SiteKey.Should().Be(expectedSiteKey);
-        slc2.SiteKey.Should().Be(expectedSiteKey);
+        slc1.LeaseKey.Should().Be(expectedSiteKey);
+        slc2.LeaseKey.Should().Be(expectedSiteKey);
         abs.Verify();
         blobClient.RetainedBlobLeaseClient.Verify(blc => blc.Acquire(It.IsAny<TimeSpan>(), It.IsAny<RequestConditions>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
     }

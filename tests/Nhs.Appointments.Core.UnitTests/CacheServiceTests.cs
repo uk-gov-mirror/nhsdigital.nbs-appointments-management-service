@@ -1,6 +1,9 @@
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Time.Testing;
 using Nhs.Appointments.Core.Caching;
+using Nhs.Appointments.Core.Caching.InMemory;
+using Nhs.Appointments.Core.Concurrency;
 
 namespace Nhs.Appointments.Core.UnitTests;
 
@@ -9,10 +12,13 @@ public class CacheServiceTests
     private readonly IMemoryCache _memoryCache = new MemoryCache(new MemoryCacheOptions());
     private readonly CacheService _sut;
     private readonly FakeTimeProvider _timeProvider = new(DateTimeOffset.UtcNow);
+    private readonly Mock<IOptions<LeaseManagerOptions>> _leaseOptions = new();
+    
     
     public CacheServiceTests()
     {
-        _sut = new CacheService(new InMemoryCacheStore(_memoryCache), new InMemoryCacheLease(), _timeProvider);
+        _leaseOptions.Setup(o => o.Value).Returns(new LeaseManagerOptions { Timeout = new TimeSpan(1, 0, 0) });
+        _sut = new CacheService(new InMemoryCacheStore(_memoryCache), new InMemoryLeaseManager(_leaseOptions.Object), _timeProvider);
     }
 
     private int FakeExpensiveBoolOperationCallCount { get; set; }

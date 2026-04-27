@@ -8,13 +8,13 @@ public static class ServiceRegistration
 {
     public static IServiceCollection AddInMemoryLeasing(this IServiceCollection services)
     {
-        services.Configure<SiteLeaseManagerOptions>(opts => opts.Timeout = TimeSpan.FromSeconds(15));
-        return services.AddSingleton<ISiteLeaseManager, InMemorySiteLeaseManager>();
+        services.Configure<LeaseManagerOptions>(opts => opts.Timeout = TimeSpan.FromSeconds(15));
+        return services.AddSingleton<ILeaseManager, InMemoryLeaseManager>();
     }
 
     public static IServiceCollection AddAzureBlobStoreLeasing(this IServiceCollection services, string connectionString, string containerName)
     {
-        services.Configure<SiteLeaseManagerOptions>(opts => { 
+        services.Configure<LeaseManagerOptions>(opts => { 
             opts.Timeout = TimeSpan.FromSeconds(30);
             opts.ContainerName = containerName;
         });
@@ -26,6 +26,6 @@ public static class ServiceRegistration
 
         return services
             .AddSingleton<IAzureBlobStorage, AzureBlobStorage>()
-            .AddSingleton<ISiteLeaseManager, AzureStorageSiteLeaseManager>();
+            .AddSingleton<ILeaseManager, AzureStorageLeaseManager>();
     }
 }

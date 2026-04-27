@@ -22,7 +22,7 @@ public class BookingDataExtract(
         
         var allBookings = await bookingsStore.RunQueryAsync(
             b => b.DocumentType == "booking"
-                && b.StatusUpdated > timeProvider.GetUtcNow().Date.AddDays(-1)
+                && b.StatusUpdated > new DateTime(2026, 4, 23) //timeProvider.GetUtcNow().Date.AddDays(-1)
                 && b.StatusUpdated < timeProvider.GetUtcNow().Date,
             b => b
         );

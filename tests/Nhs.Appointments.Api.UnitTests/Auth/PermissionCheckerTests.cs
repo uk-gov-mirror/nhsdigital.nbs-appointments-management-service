@@ -5,6 +5,8 @@ using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Core.Caching;
+using Nhs.Appointments.Core.Caching.InMemory;
+using Nhs.Appointments.Core.Concurrency;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 
@@ -18,13 +20,14 @@ public class PermissionCheckerTests
     private readonly Mock<IMemoryCache> _cache = new();
     private readonly Mock<ICacheEntry> _cacheEntry = new();
     private readonly Mock<ISiteService> _siteService = new();
+    private readonly Mock<ILeaseManager> _leaseManager = new();
 
     public PermissionCheckerTests()
     {
         _sut = new PermissionChecker(
             _userAssignmentService.Object,
             _roleService.Object,
-            new CacheService(new InMemoryCacheStore(_cache.Object), new InMemoryCacheLease(), TimeProvider.System),
+            new CacheService(new InMemoryCacheStore(_cache.Object),  _leaseManager.Object, TimeProvider.System),
             _siteService.Object);
 
         _cache.Setup(x => x.CreateEntry(It.IsAny<string>())).Returns(_cacheEntry.Object);

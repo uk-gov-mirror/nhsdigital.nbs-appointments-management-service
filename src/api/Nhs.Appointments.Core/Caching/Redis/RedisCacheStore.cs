@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 
-namespace Nhs.Appointments.Core.Caching;
+namespace Nhs.Appointments.Core.Caching.Redis;
 
 public class RedisCacheStore(ConfigurationOptions connectionOptions, ILogger<RedisCacheStore> logger) : ICacheStore, IAsyncDisposable
 {
@@ -37,16 +37,6 @@ public class RedisCacheStore(ConfigurationOptions connectionOptions, ILogger<Red
         {
             logger.LogWarning(ex, "Failed to set cache of {Type} with key {Key}", typeof(T), key);
         }
-    }
-
-    public async Task<bool> CanUpdateCacheAsync(string key)
-    {
-        var lockGuid = Guid.NewGuid().ToString();
-        await OpenConnection();
-        
-        var database = _connectionMultiplexer.GetDatabase();
-
-        return await database.LockTakeAsync($"{key}:lock", lockGuid, TimeSpan.FromSeconds(1));
     }
 
     public async Task SetAsync<T>(string key, T value, TimeSpan expirationRelativeToNow) 

@@ -19,7 +19,7 @@ public class BookingWriteServiceTests
     private readonly Mock<IBookingsDocumentStore> _bookingsDocumentStore = new();
     private readonly Mock<IMessageBus> _messageBus = new();
     private readonly Mock<IReferenceNumberProvider> _referenceNumberProvider = new();
-    private readonly Mock<ISiteLeaseManager> _siteLeaseManager = new();
+    private readonly Mock<ILeaseManager> _siteLeaseManager = new();
     private BookingWriteService _sut;
 
     public BookingWriteServiceTests()
@@ -70,7 +70,7 @@ public class BookingWriteServiceTests
         var availabilityQueryService =
             new AvailabilityQueryService(_availabilityStore.Object, _availabilityCreatedEventStore.Object);
 
-        _siteLeaseManager.Setup(x => x.Acquire(expectedSiteId, expectedDay)).Returns(new FakeLeaseContext());
+        _siteLeaseManager.Setup(x => x.Acquire(LeaseKeys.SiteKeyFactory.Create(expectedSiteId, expectedDay))).Returns(new FakeLeaseContext());
 
         var bookingService = new BookingWriteService(_bookingsDocumentStore.Object, bookingQueryService,
             _referenceNumberProvider.Object,
@@ -81,7 +81,7 @@ public class BookingWriteServiceTests
         await bookingService.MakeBooking(booking);
 
         // Assert.
-        _siteLeaseManager.Verify(slm => slm.Acquire(expectedSiteId, expectedDay), Times.Once());
+        _siteLeaseManager.Verify(slm => slm.Acquire(LeaseKeys.SiteKeyFactory.Create(expectedSiteId, expectedDay)), Times.Once());
         _siteLeaseManager.VerifyNoOtherCalls();
     }
 
@@ -126,8 +126,8 @@ public class BookingWriteServiceTests
         var availabilityQueryService =
             new AvailabilityQueryService(_availabilityStore.Object, _availabilityCreatedEventStore.Object);
 
-        _siteLeaseManager.Setup(x => x.Acquire(expectedSiteId, expectedFrom1)).Returns(new FakeLeaseContext());
-        _siteLeaseManager.Setup(x => x.Acquire(expectedSiteId, expectedFrom2)).Returns(new FakeLeaseContext());
+        _siteLeaseManager.Setup(x => x.Acquire(LeaseKeys.SiteKeyFactory.Create(expectedSiteId, expectedFrom1))).Returns(new FakeLeaseContext());
+        _siteLeaseManager.Setup(x => x.Acquire(LeaseKeys.SiteKeyFactory.Create(expectedSiteId, expectedFrom2))).Returns(new FakeLeaseContext());
 
         var bookingService = new BookingWriteService(_bookingsDocumentStore.Object, bookingQueryService,
             _referenceNumberProvider.Object,
@@ -139,8 +139,8 @@ public class BookingWriteServiceTests
         await bookingService.MakeBooking(booking2);
 
         // Assert.
-        _siteLeaseManager.Verify(slm => slm.Acquire(expectedSiteId, expectedFrom1), Times.Once());
-        _siteLeaseManager.Verify(slm => slm.Acquire(expectedSiteId, expectedFrom2), Times.Once());
+        _siteLeaseManager.Verify(slm => slm.Acquire(LeaseKeys.SiteKeyFactory.Create(expectedSiteId, expectedFrom1)), Times.Once());
+        _siteLeaseManager.Verify(slm => slm.Acquire(LeaseKeys.SiteKeyFactory.Create(expectedSiteId, expectedFrom2)), Times.Once());
         _siteLeaseManager.VerifyNoOtherCalls();
     }
 
@@ -181,8 +181,8 @@ public class BookingWriteServiceTests
         var availabilityQueryService =
             new AvailabilityQueryService(_availabilityStore.Object, _availabilityCreatedEventStore.Object);
 
-        _siteLeaseManager.Setup(x => x.Acquire(expectedSiteId1, expectedFrom)).Returns(new FakeLeaseContext());
-        _siteLeaseManager.Setup(x => x.Acquire(expectedSiteId2, expectedFrom)).Returns(new FakeLeaseContext());
+        _siteLeaseManager.Setup(x => x.Acquire(LeaseKeys.SiteKeyFactory.Create(expectedSiteId1, expectedFrom))).Returns(new FakeLeaseContext());
+        _siteLeaseManager.Setup(x => x.Acquire(LeaseKeys.SiteKeyFactory.Create(expectedSiteId2, expectedFrom))).Returns(new FakeLeaseContext());
 
         var bookingService = new BookingWriteService(_bookingsDocumentStore.Object, bookingQueryService,
             _referenceNumberProvider.Object,
@@ -194,8 +194,8 @@ public class BookingWriteServiceTests
         await bookingService.MakeBooking(booking2);
 
         // Assert.
-        _siteLeaseManager.Verify(slm => slm.Acquire(expectedSiteId1, expectedFrom), Times.Once());
-        _siteLeaseManager.Verify(slm => slm.Acquire(expectedSiteId2, expectedFrom), Times.Once());
+        _siteLeaseManager.Verify(slm => slm.Acquire(LeaseKeys.SiteKeyFactory.Create(expectedSiteId1, expectedFrom)), Times.Once());
+        _siteLeaseManager.Verify(slm => slm.Acquire(LeaseKeys.SiteKeyFactory.Create(expectedSiteId2, expectedFrom)), Times.Once());
         _siteLeaseManager.VerifyNoOtherCalls();
     }
 
@@ -235,7 +235,7 @@ public class BookingWriteServiceTests
         var availabilityQueryService =
             new AvailabilityQueryService(_availabilityStore.Object, _availabilityCreatedEventStore.Object);
 
-        _siteLeaseManager.Setup(x => x.Acquire(expectedSiteId, expectedFrom)).Returns(new FakeLeaseContext());
+        _siteLeaseManager.Setup(x => x.Acquire(LeaseKeys.SiteKeyFactory.Create(expectedSiteId, expectedFrom))).Returns(new FakeLeaseContext());
 
         var bookingService = new BookingWriteService(_bookingsDocumentStore.Object, bookingQueryService,
             _referenceNumberProvider.Object,
@@ -247,7 +247,7 @@ public class BookingWriteServiceTests
         await bookingService.MakeBooking(booking2);
 
         // Assert.
-        _siteLeaseManager.Verify(slm => slm.Acquire(expectedSiteId, expectedFrom), Times.Exactly(2));
+        _siteLeaseManager.Verify(slm => slm.Acquire(LeaseKeys.SiteKeyFactory.Create(expectedSiteId, expectedFrom)), Times.Exactly(2));
         _siteLeaseManager.VerifyNoOtherCalls();
     }
 
@@ -294,7 +294,7 @@ public class BookingWriteServiceTests
         var availabilityQueryService =
             new AvailabilityQueryService(_availabilityStore.Object, _availabilityCreatedEventStore.Object);
 
-        _siteLeaseManager.Setup(x => x.Acquire(expectedSiteId, expectedDay)).Returns(new FakeLeaseContext());
+        _siteLeaseManager.Setup(x => x.Acquire(LeaseKeys.SiteKeyFactory.Create(expectedSiteId, expectedDay))).Returns(new FakeLeaseContext());
 
         var bookingService = new BookingWriteService(_bookingsDocumentStore.Object, bookingQueryService,
             _referenceNumberProvider.Object,
@@ -305,7 +305,7 @@ public class BookingWriteServiceTests
         await bookingService.MakeBooking(booking);
 
         // Assert.
-        _siteLeaseManager.Verify(slm => slm.Acquire(expectedSiteId, expectedDay), Times.Once());
+        _siteLeaseManager.Verify(slm => slm.Acquire(LeaseKeys.SiteKeyFactory.Create(expectedSiteId, expectedDay)), Times.Once());
         _siteLeaseManager.VerifyNoOtherCalls();
     }
 
@@ -331,7 +331,7 @@ public class BookingWriteServiceTests
             Status = AppointmentStatus.Booked
         };
 
-        _siteLeaseManager.Setup(x => x.Acquire(MockSite, new DateOnly(2077, 1, 1))).Returns(new FakeLeaseContext());
+        _siteLeaseManager.Setup(x => x.Acquire(LeaseKeys.SiteKeyFactory.Create(MockSite, new DateOnly(2077, 1, 1)))).Returns(new FakeLeaseContext());
 
         MockAvailability(availability);
 
@@ -371,7 +371,7 @@ public class BookingWriteServiceTests
             Status = AppointmentStatus.Provisional
         };
 
-        _siteLeaseManager.Setup(x => x.Acquire(MockSite, new DateOnly(2077, 1, 1))).Returns(new FakeLeaseContext());
+        _siteLeaseManager.Setup(x => x.Acquire(LeaseKeys.SiteKeyFactory.Create(MockSite, new DateOnly(2077, 1, 1)))).Returns(new FakeLeaseContext());
 
         MockAvailability(availability);
 
@@ -410,7 +410,7 @@ public class BookingWriteServiceTests
             Status = AppointmentStatus.Provisional
         };
 
-        _siteLeaseManager.Setup(x => x.Acquire(MockSite, new DateOnly(2077, 1, 1))).Returns(new FakeLeaseContext());
+        _siteLeaseManager.Setup(x => x.Acquire(LeaseKeys.SiteKeyFactory.Create(MockSite, new DateOnly(2077, 1, 1)))).Returns(new FakeLeaseContext());
 
         _bookingAvailabilityStateService.Setup(x => x.GetAvailableSlots(MockSite,
                 new DateTime(2077, 1, 1, 10, 0, 0, 0),
@@ -499,7 +499,7 @@ public class BookingWriteServiceTests
             Status = AppointmentStatus.Provisional
         };
 
-        _siteLeaseManager.Setup(x => x.Acquire(MockSite, new DateOnly(2077, 1, 1))).Returns(new FakeLeaseContext());
+        _siteLeaseManager.Setup(x => x.Acquire(LeaseKeys.SiteKeyFactory.Create(MockSite, new DateOnly(2077, 1, 1)))).Returns(new FakeLeaseContext());
 
         _bookingAvailabilityStateService.Setup(x => x.GetAvailableSlots(MockSite,
                 new DateTime(2077, 1, 1, 10, 0, 0, 0),
@@ -597,7 +597,7 @@ public class BookingWriteServiceTests
             Status = AppointmentStatus.Booked
         };
 
-        _siteLeaseManager.Setup(x => x.Acquire(MockSite, new DateOnly(2077, 1, 1))).Returns(new FakeLeaseContext());
+        _siteLeaseManager.Setup(x => x.Acquire(LeaseKeys.SiteKeyFactory.Create(MockSite, new DateOnly(2077, 1, 1)))).Returns(new FakeLeaseContext());
 
         MockAvailability(availability);
 
@@ -630,7 +630,7 @@ public class BookingWriteServiceTests
             Status = AppointmentStatus.Booked
         };
 
-        _siteLeaseManager.Setup(x => x.Acquire(MockSite, new DateOnly(2077, 1, 1))).Returns(new FakeLeaseContext());
+        _siteLeaseManager.Setup(x => x.Acquire(LeaseKeys.SiteKeyFactory.Create(MockSite, new DateOnly(2077, 1, 1)))).Returns(new FakeLeaseContext());
 
         MockAvailability(availability);
 
@@ -655,7 +655,7 @@ public class BookingWriteServiceTests
             Status = AppointmentStatus.Booked
         };
 
-        _siteLeaseManager.Setup(x => x.Acquire(MockSite, new DateOnly(2077, 1, 1))).Returns(new FakeLeaseContext());
+        _siteLeaseManager.Setup(x => x.Acquire(LeaseKeys.SiteKeyFactory.Create(MockSite, new DateOnly(2077, 1, 1)))).Returns(new FakeLeaseContext());
 
         _bookingAvailabilityStateService.Setup(x => x.GetAvailableSlots(MockSite,
                 new DateTime(2077, 1, 1, 13, 0, 0, 0),
@@ -784,7 +784,7 @@ public class BookingWriteServiceTests
 
         await _sut.CancelBooking(bookingRef, site, CancellationReason.CancelledByCitizen, runRecalculation: false);
 
-        _siteLeaseManager.Verify(x => x.Acquire(site, It.IsAny<DateOnly>()), Times.Never);
+        _siteLeaseManager.Verify(x => x.Acquire(LeaseKeys.SiteKeyFactory.Create(site, It.IsAny<DateOnly>())), Times.Never);
     }
 
     [Fact]
@@ -1204,7 +1204,7 @@ public class BookingWriteServiceTests
         var siteId = "TEST";
         var booking = new Booking { Site = siteId, Service = "TSERV", From = new DateTime(2077, 1, 1) };
 
-        _siteLeaseManager.Setup(x => x.Acquire(siteId, new DateOnly(2077, 1, 1))).Returns(new FakeLeaseContext());
+        _siteLeaseManager.Setup(x => x.Acquire(LeaseKeys.SiteKeyFactory.Create(siteId, new DateOnly(2077, 1, 1)))).Returns(new FakeLeaseContext());
         _bookingAvailabilityStateService
             .Setup(x => x.GetAvailableSlots(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
             .ReturnsAsync(new List<SessionInstance>());
@@ -1528,7 +1528,7 @@ public class BookingWriteServiceTests
     }
 }
 
-public class FakeLeaseManager : ISiteLeaseManager
+public class FakeLeaseManager : ILeaseManager
 {
     public FakeLeaseManager()
     {
@@ -1538,16 +1538,16 @@ public class FakeLeaseManager : ISiteLeaseManager
 
     public AutoResetEvent WaitHandle { get; }
 
-    public ISiteLeaseContext Acquire(string site, DateOnly date)
+    public ILeaseContext Acquire(string key)
     {
         WaitHandle.WaitOne();
         return new FakeLeaseContext();
     }
 }
 
-public class FakeLeaseContext : ISiteLeaseContext
+public class FakeLeaseContext : ILeaseContext
 {
-    public string SiteKey => Guid.NewGuid().ToString();
+    public string LeaseKey => Guid.NewGuid().ToString();
 
     public void Dispose()
     {

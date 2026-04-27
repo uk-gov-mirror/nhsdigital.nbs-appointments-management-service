@@ -4,6 +4,8 @@ using Microsoft.IdentityModel.Tokens;
 using Moq;
 using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Core.Caching;
+using Nhs.Appointments.Core.Caching.InMemory;
+using Nhs.Appointments.Core.Concurrency;
 
 namespace Nhs.Appointments.Api.Tests.Auth;
 
@@ -12,10 +14,11 @@ public class JwksRetrieverTests
     private readonly JwksRetriever _sut;
     private readonly Mock<IHttpClientFactory> _httpClientFactory = new();
     private readonly Mock<IMemoryCache> _memoryCache = new();
+    private readonly Mock<ILeaseManager> _leaseManager = new();
 
     public JwksRetrieverTests()
     {
-        _sut = new JwksRetriever(_httpClientFactory.Object, new CacheService(new InMemoryCacheStore(_memoryCache.Object), new InMemoryCacheLease(), TimeProvider.System));
+        _sut = new JwksRetriever(_httpClientFactory.Object, new CacheService(new InMemoryCacheStore(_memoryCache.Object), _leaseManager.Object, TimeProvider.System));
     }
 
     [Fact]

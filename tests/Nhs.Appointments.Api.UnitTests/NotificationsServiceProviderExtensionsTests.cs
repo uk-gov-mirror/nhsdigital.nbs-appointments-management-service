@@ -64,6 +64,7 @@ public class NotificationsServiceProviderExtensionsTests
             .AddUserNotifications(configuration)
             .AddTypedCosmosDataStores()
             .AddCaching(configuration)
+            .AddInMemoryLeasing()
             .AddSingleton(new Mock<IWellKnownOdsCodesStore>().Object)
             .AddTransient<ITypedDocumentCosmosStore<AuditFunctionDocument>, TypedDocumentCosmosStore<AuditFunctionDocument>>()
             .AddTransient<ITypedDocumentCosmosStore<AuditFunctionDocument>, TypedDocumentCosmosStore<AuditFunctionDocument>>()

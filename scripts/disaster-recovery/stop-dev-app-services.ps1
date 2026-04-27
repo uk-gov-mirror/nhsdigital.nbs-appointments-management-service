@@ -32,12 +32,15 @@ if ($LASTEXITCODE -ne 0) {
   $LASTEXITCODE = 0
 }
 
+# Setting the min and max replicas to 0 to stop the container apps, as there is no direct stop command for container apps in Azure CLI
 foreach ($containerApp in $containerApps) {
   Write-Host "Stopping container app '$containerApp'"
 
-  az containerapp stop `
+  az containerapp update `
     --name $containerApp `
-    --resource-group $resourceGroup
+    --resource-group $resourceGroup `
+    --min-replicas 0 `
+    --max-replicas 0
 
   if ($LASTEXITCODE -ne 0) {
     Write-Warning "Failed to stop Container App: $containerApp."

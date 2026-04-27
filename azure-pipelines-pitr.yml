@@ -66,28 +66,21 @@ stages:
                   --location "uksouth" `
                   --restore-timestamp "$(RestoreTimeUtc)"
 
-  - stage: UpdateConfigAndRestart
-    displayName: "Update Key Vault & Restart Functions"
+  - stage: UpdateAppConfig
+    displayName: "Update Connection Strings"
     dependsOn: CosmosPITR
     jobs:
-      - job: UpdateAndRestart
+      - job: UpdateSettings
         steps:
           - task: AzureCLI@2
-            displayName: "Update KV Secret and Restart Functions"
+            displayName: "Point Apps and KV to Restored DB"
             inputs:
               azureSubscription: "vaccs-mya-dev-uks"
               scriptType: "pscore"
-              scriptLocation: "inlineScript"
-              inlineScript: |
-                $vaultName = "vaccs-mya-kv-dev-uks"
-                $secretName = "ActiveCosmosDBAccountName"
-                $newDbName = "vaccs-mya-cdb-dev-uks-secondary"
-                $resourceGroup = "vaccs-mya-dev-uks"
-
-                Write-Host "Upserting secret '$secretName' in vault '$vaultName'..."
-                az keyvault secret set --vault-name $vaultName --name $secretName --value $newDbName
-
-                Write-Host "Restarting Function App: $functionAppName..."
-                az functionapp restart --name $functionAppName --resource-group $resourceGroup
-
-                Write-Host "PITR Switchover Complete. Functions are now pointing to: $newDbName"
+              scriptLocation: "scriptPath"
+              scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/update-app-connection-strings.ps1"
+              arguments: >
+                -resourceGroup "vaccs-mya-dev-uks" 
+                -environment "dev" 
+                -region "uks" 
+                -targetAccountName "vaccs-mya-cdb-dev-uks-secondary"

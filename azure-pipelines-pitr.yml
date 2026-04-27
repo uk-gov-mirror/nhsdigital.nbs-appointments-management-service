@@ -65,3 +65,29 @@ stages:
                   --target-database-account-name "vaccs-mya-cdb-dev-uks-secondary" `
                   --location "uksouth" `
                   --restore-timestamp "$(RestoreTimeUtc)"
+
+  - stage: UpdateConfigAndRestart
+    displayName: "Update Key Vault & Restart Functions"
+    dependsOn: CosmosPITR
+    jobs:
+      - job: UpdateAndRestart
+        steps:
+          - task: AzureCLI@2
+            displayName: "Update KV Secret and Restart Functions"
+            inputs:
+              azureSubscription: "vaccs-mya-dev-uks"
+              scriptType: "pscore"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                $vaultName = "vaccs-mya-kv-dev-uks"
+                $secretName = "ActiveCosmosDBAccountName"
+                $newDbName = "vaccs-mya-cdb-dev-uks-secondary"
+                $resourceGroup = "vaccs-mya-dev-uks"
+
+                Write-Host "Upserting secret '$secretName' in vault '$vaultName'..."
+                az keyvault secret set --vault-name $vaultName --name $secretName --value $newDbName
+
+                Write-Host "Restarting Function App: $functionAppName..."
+                az functionapp restart --name $functionAppName --resource-group $resourceGroup
+
+                Write-Host "PITR Switchover Complete. Functions are now pointing to: $newDbName"

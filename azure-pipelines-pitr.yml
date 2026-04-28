@@ -46,7 +46,7 @@ stages:
 
   - stage: CosmosPITR
     displayName: "Perform Cosmos DB PITR"
-    dependsOn: 
+    dependsOn:
       - StopWebApp
       - Validation
 
@@ -95,3 +95,42 @@ stages:
   # something like this
   # Write-Host "Restarting Function App: $functionAppName..."
   # az functionapp restart --name $functionAppName --resource-group $resourceGroup
+  - stage: RestartServices
+    displayName: "Restart Apps to Pick Up New Config"
+    dependsOn: UpdateConfig
+    # This 'environment' line triggers the manual approval check if configured in ADO
+    jobs:
+      - deployment: Restart
+        # NOTE: For this to work, you MUST set up an Approval check on that environment in the Azure DevOps UI.
+        # Go to Pipelines -> Environments -> 'mya-dev-recovery' -> Approvals and Checks.
+        environment: "mya-dev-recovery"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureCLI@2
+                  displayName: "Restart Web and Function Apps"
+                  inputs:
+                    azureSubscription: "vaccs-mya-dev-uks"
+                    scriptType: "pscore"
+                    scriptLocation: "inlineScript"
+                    inlineScript: |
+                      $rg = "vaccs-mya-dev-uks"
+
+                      # Start the Web App
+                      $webApp = "nbs-mya-app-dev-uks"
+                      Write-Host "Starting Web App: $webApp..."
+                      az webapp start --name $webApp --resource-group $rg
+
+                      # Start the Function Apps
+                      $functions = @(
+                        "nbs-mya-func-dev-uks",
+                        "nbs-mya-hlfunc-dev-uks",
+                        "nbs-mya-sbfunc-dev-uks",
+                        "nbs-mya-timerfunc-dev-uks"
+                      )
+
+                      foreach ($app in $functions) {
+                        Write-Host "Starting Function App: $app..."
+                        az functionapp start --name $app --resource-group $rg
+                      }

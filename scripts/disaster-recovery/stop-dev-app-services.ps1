@@ -11,6 +11,7 @@ $DebugPreference = "Continue"
 $webAppService = "vaccs-mya-app-dev-$region"
 $functionAppServices = @("vaccs-mya-func-dev-$region", "vaccs-mya-sbfunc-dev-$region", "vaccs-mya-timerfunc-dev-$region")
 $containerApps = @("vaccs-mya-aggregator-dev-$region", "vaccs-mya-auditor-dev-$region")
+$containerAppJobs = @("vaccs-mya-bookjob-dev-$region", "vaccs-mya-capjob-dev-$region")
 
 foreach ($functionApp in $functionAppServices) {
   Write-Host "Stopping function app '$functionApp' in resource group '$resourceGroup'"
@@ -58,6 +59,19 @@ foreach ($containerApp in $containerApps) {
       Write-Warning "Failed to deactivate revision '$rev' for '$containerApp'"
       $LASTEXITCODE = 0
     }
+  }
+}
+
+foreach ($job in $containerAppJobs) {
+  Write-Host "Stopping container app job '$job'"
+
+  az containerapp job stop `
+    --name $job `
+    --resource-group $resourceGroup
+
+  if ($LASTEXITCODE -ne 0) {
+    Write-Warning "Failed to stop container app job '$job'"
+    $LASTEXITCODE = 0
   }
 }
 

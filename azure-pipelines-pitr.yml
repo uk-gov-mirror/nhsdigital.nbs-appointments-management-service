@@ -46,7 +46,10 @@ stages:
 
   - stage: CosmosPITR
     displayName: "Perform Cosmos DB PITR"
-    dependsOn: StopWebApp
+    dependsOn: 
+      - StopWebApp
+      - Validation
+
     variables:
       RestoreTimeUtc: $[ stageDependencies.Validation.ValidateInput.outputs['ValidateStep.ConvertedUtcTime'] ]
     jobs:

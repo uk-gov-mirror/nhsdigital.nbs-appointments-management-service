@@ -16,6 +16,7 @@ using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
+
 public class QueryAvailabilityBySlotsFunctionTests
 {
     private readonly Mock<IBookingAvailabilityStateService> _bookingAvailabilityStateService = new();
@@ -114,7 +115,7 @@ public class QueryAvailabilityBySlotsFunctionTests
             .ReturnsAsync(slots);
         _availableSlotsFilter.Setup(x => x.FilterAvailableSlots(It.IsAny<List<SessionInstance>>(), It.IsAny<List<Attendee>>()))
             .Returns(slots);
-        
+
         var payload = new AvailabilityQueryBySlotsRequest(
             "test-site-123",
             [
@@ -125,8 +126,8 @@ public class QueryAvailabilityBySlotsFunctionTests
 
         var result = await _sut.RunAsync(CreateRequest(payload)) as ContentResult;
 
-        result.StatusCode.Should().Be(200); 
-        
+        result.StatusCode.Should().Be(200);
+
         var body = await new StringReader(result.Content).ReadToEndAsync();
         var response = JsonConvert.DeserializeObject<AvailabilityBySlots>(body);
 

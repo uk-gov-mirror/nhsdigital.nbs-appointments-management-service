@@ -16,6 +16,7 @@ using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
+
 public class QueryAvailabilityByDaysFunctionTests
 {
     private readonly Mock<IBookingAvailabilityStateService> _bookingAvailabilityStateService = new();

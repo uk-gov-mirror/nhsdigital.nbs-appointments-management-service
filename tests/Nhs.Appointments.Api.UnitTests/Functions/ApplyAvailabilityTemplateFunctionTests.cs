@@ -106,8 +106,8 @@ public class ApplyAvailabilityTemplateFunctionTests
                     null,
                     false,
                     string.Empty
-                    )); 
-        
+                    ));
+
         var sessions = new List<Session>
         {
             new()

@@ -4,26 +4,41 @@ namespace Nhs.Appointments.Core.Reports.MasterSiteList;
 
 public static class MasterSiteListReportMap
 {
-    public static string[] Headers()
+    public static string[] Headers(IEnumerable<AccessibilityDefinition> accessibilityDefinitions)
     {
-        var siteHeaders = new[]
+        var headers = new List<string>
         {
-            "Site Name", "ODS Code", "Site Type", "Region", "ICB", "GUID", "IsDeleted", "Status", "Long", "Lat", "Address"
+            "Site Name", "ODS Code", "Site Type", "Region", "Regional Name",
+            "ICB", "ICB Name", "GUID", "IsDeleted", "Status", "Long", "Lat", "Address"
         };
 
-        return siteHeaders;
+        headers.AddRange(accessibilityDefinitions.Select(d => d.DisplayName));
+        return headers.ToArray();
     }
 
-    public static string SiteName(Site site) => site.Name;
-    public static string OdsCode(Site site) => site.OdsCode;
-    public static string SiteType(Site site) => site.Type;
-    public static string Region(Site site) => site.Region;
-    public static string ICB(Site site) => site.IntegratedCareBoard;
-    public static string Guid(Site site) => site.Id;
-    public static bool IsDeleted(Site site) => site.isDeleted ?? false;
-    public static string Status(Site site) => site.status is not null ? site.status.ToString() : SiteStatus.Online.ToString();
-    public static double Longitude(Site site) => site.Coordinates?.Longitude ?? 0;
-    public static double Latitude(Site site) => site.Coordinates?.Latitude ?? 0;
-    public static string Address(Site site) => site.Address;
+    public static string SiteName(SiteForReport site) => site.Name;
+    public static string OdsCode(SiteForReport site) => site.OdsCode;
+    public static string SiteType(SiteForReport site) => site.Type;
+    public static string Region(SiteForReport site) => site.Region;
+    public static string RegionalName(SiteForReport site) => site.RegionalName;
+    public static string ICB(SiteForReport site) => site.IntegratedCareBoard;
+    public static string IcbName(SiteForReport site) => site.IntegratedCareBoardName;
+    public static string Guid(SiteForReport site) => site.Id;
+    public static bool IsDeleted(SiteForReport site) => site.isDeleted ?? false;
+    public static string Status(SiteForReport site) => site.status?.ToString() ?? SiteStatus.Online.ToString();
+    public static double Longitude(SiteForReport site) => site.Coordinates?.Longitude ?? 0;
+    public static double Latitude(SiteForReport site) => site.Coordinates?.Latitude ?? 0;
+    public static string Address(SiteForReport site) => site.Address;
 
+    public static string GetAccessibilityValue(SiteForReport site, string headerName, IEnumerable<AccessibilityDefinition> accessibilityDefinitions)
+    {
+        var accessibilityDefinition = accessibilityDefinitions.FirstOrDefault(d => d.DisplayName == headerName);
+        if (accessibilityDefinition == null) 
+        {
+            return "false";
+        }
+
+        var match = site.Accessibilities?.FirstOrDefault(a => a.Id == accessibilityDefinition.Id);
+        return (match != null && match.Value == "true") ? "true" : "false";
+    }
 }

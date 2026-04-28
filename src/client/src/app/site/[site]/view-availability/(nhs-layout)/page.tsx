@@ -7,7 +7,6 @@ import {
 import { ViewAvailabilityPage } from './view-availability-page';
 import { RFC3339Format, parseToUkDatetime, ukNow } from '@services/timeService';
 import fromServer from '@server/fromServer';
-import Link from 'next/link';
 import { Heading, Button } from 'nhsuk-react-components';
 
 type PageProps = {
@@ -45,21 +44,23 @@ const Page = async ({ params, searchParams }: PageProps) => {
 
   return (
     <>
+      {canChangeAvailability && (
+        <ol className="nhsuk-list nhsuk-u-margin-0 nhsuk-button-group-flat flex-row">
+          <Button
+            href={`/manage-your-appointments/site/${siteFromPath}/change-availability?returnUrl=${encodedReturnUrl}`}
+            className="no-print"
+            small
+            secondarySolid
+          >
+            Change availability
+          </Button>
+        </ol>
+      )}
+
       <Heading headingLevel="h2">
         <span className="nhsuk-caption-l">{site.name}</span>
         {`View availability for ${searchMonth.format('MMMM YYYY')}`}
       </Heading>
-
-      {canChangeAvailability && (
-        /* Pass the returnUrl to the wizard */
-        <Link
-          href={`/site/${siteFromPath}/change-availability?returnUrl=${encodedReturnUrl}`}
-        >
-          <Button type="button" secondary>
-            Change availability
-          </Button>
-        </Link>
-      )}
 
       <ViewAvailabilityPage site={site} searchMonth={searchMonth} />
     </>

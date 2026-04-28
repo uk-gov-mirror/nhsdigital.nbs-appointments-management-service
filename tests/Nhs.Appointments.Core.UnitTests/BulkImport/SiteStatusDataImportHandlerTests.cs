@@ -4,6 +4,7 @@ using Nhs.Appointments.Core.Sites;
 using System.Text;
 
 namespace Nhs.Appointments.Core.UnitTests.BulkImport;
+
 public class SiteStatusDataImportHandlerTests
 {
     private readonly Mock<ISiteService> _siteServiceMock = new();
@@ -77,7 +78,7 @@ public class SiteStatusDataImportHandlerTests
         result.All(r => r.Success).Should().BeTrue();
     }
 
-    [Fact]  
+    [Fact]
     public async Task InvalidSiteId_ReportsBadData()
     {
         string[] inputRows =

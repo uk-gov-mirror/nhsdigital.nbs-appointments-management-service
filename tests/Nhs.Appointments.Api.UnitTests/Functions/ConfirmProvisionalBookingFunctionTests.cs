@@ -156,10 +156,10 @@ public class ConfirmProvisionalBookingFunctionTests
         //     ], 
         //     relatedBookings, 
         //     string.Empty);
-        
+
         var dto = new
         {
-            contactDetails = new List<object>() 
+            contactDetails = new List<object>()
             {
                 new { type = "Phone", value = "phonenumber" },
                 new { type = "Email", value = "email@test.com" }
@@ -174,4 +174,3 @@ public class ConfirmProvisionalBookingFunctionTests
         return request;
     }
 }
-

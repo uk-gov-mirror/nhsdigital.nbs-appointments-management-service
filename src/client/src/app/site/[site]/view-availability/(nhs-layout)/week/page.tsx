@@ -8,7 +8,6 @@ import { ViewWeekAvailabilityPage } from './view-week-availability-page';
 import { endOfUkWeek, startOfUkWeek } from '@services/timeService';
 import { notFound } from 'next/navigation';
 import fromServer from '@server/fromServer';
-import Link from 'next/link';
 import { Heading, Button } from 'nhsuk-react-components';
 
 type PageProps = {
@@ -51,21 +50,23 @@ const Page = async ({ searchParams, params }: PageProps) => {
 
   return (
     <>
+      {canChangeAvailability && (
+        <ol className="nhsuk-list nhsuk-u-margin-0 nhsuk-button-group-flat flex-row">
+          <Button
+            href={`/manage-your-appointments/site/${siteFromPath}/change-availability?returnUrl=${encodedReturnUrl}`}
+            className="no-print"
+            small
+            secondarySolid
+          >
+            Change availability
+          </Button>
+        </ol>
+      )}
+
       <Heading headingLevel="h2">
         <span className="nhsuk-caption-l">{site.name}</span>
         {`${ukWeekStart.format('D MMMM')} to ${ukWeekEnd.format('D MMMM')}`}
       </Heading>
-
-      {canChangeAvailability && (
-        /* Inject the returnUrl */
-        <Link
-          href={`/site/${siteFromPath}/change-availability?returnUrl=${encodedReturnUrl}`}
-        >
-          <Button type="button" secondary>
-            Change availability
-          </Button>
-        </Link>
-      )}
 
       <ViewWeekAvailabilityPage
         ukWeekStart={ukWeekStart}

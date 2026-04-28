@@ -53,7 +53,8 @@ public class GetUserProfileFunctionTests
 
         _userSiteAssignmentService.Setup(x => x.GetUserAsync("test@test.com")).ReturnsAsync(new User
         {
-            Id = "test@test.com", RoleAssignments = [],
+            Id = "test@test.com",
+            RoleAssignments = [],
         });
 
         var response = await _sut.RunAsync(request) as ContentResult;
@@ -84,7 +85,8 @@ public class GetUserProfileFunctionTests
 
         _userSiteAssignmentService.Setup(x => x.GetUserAsync("test@test.com")).ReturnsAsync(new User
         {
-            Id = "test@test.com", RoleAssignments = roleAssignments,
+            Id = "test@test.com",
+            RoleAssignments = roleAssignments,
         });
 
         var siteDetails = new[]

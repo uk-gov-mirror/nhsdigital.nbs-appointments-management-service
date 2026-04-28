@@ -59,7 +59,8 @@ public class GetSitesPreviewFunctionTests
 
         _userSiteAssignmentService.Setup(x => x.GetUserAsync("test@test.com")).ReturnsAsync(new User
         {
-            Id = "test@test.com", RoleAssignments = [],
+            Id = "test@test.com",
+            RoleAssignments = [],
         });
 
         var response = await _sut.RunAsync(request) as ContentResult;
@@ -128,14 +129,15 @@ public class GetSitesPreviewFunctionTests
             new("ICB1", "ICB One", "icb"),
             new("ICB3", "ICB Three", "icb")
         };
-        
+
         _userSiteAssignmentService.Setup(x => x.GetUserAsync("test@test.com")).ReturnsAsync(new User
         {
-            Id = "test@test.com", RoleAssignments = roleAssignments
+            Id = "test@test.com",
+            RoleAssignments = roleAssignments
         });
         _userContextProvider.Setup(x => x.UserPrincipal).Returns(testPrincipal);
         _permissionChecker.Setup(x => x.GetSitesWithPermissionAsync("test@test.com", Permissions.ViewSitePreview))
-            .ReturnsAsync(new List<Site> { site1, site2});
+            .ReturnsAsync(new List<Site> { site1, site2 });
         _wellKnowOdsCodesService.Setup(x => x.GetWellKnownOdsCodeEntries()).ReturnsAsync(icbs);
 
         var response = await _sut.RunAsync(request) as ContentResult;

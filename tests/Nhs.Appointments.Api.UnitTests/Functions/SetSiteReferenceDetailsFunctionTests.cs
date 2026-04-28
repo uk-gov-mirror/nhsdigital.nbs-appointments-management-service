@@ -11,6 +11,7 @@ using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
+
 public class SetSiteReferenceDetailsFunctionTests
 {
     private readonly Mock<ILogger<SetSiteReferenceDetailsFunction>> _logger = new();

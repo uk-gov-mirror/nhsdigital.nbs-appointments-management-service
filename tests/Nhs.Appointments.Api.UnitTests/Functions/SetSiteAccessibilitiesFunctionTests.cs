@@ -11,6 +11,7 @@ using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
+
 public class SetSiteAccessibilitiesFunctionTests
 {
     private readonly Mock<ILogger<SetSiteAccessibilitiesFunction>> _logger = new();
@@ -104,7 +105,7 @@ public class SetSiteAccessibilitiesFunctionTests
     {
         private readonly ILogger<SetSiteAccessibilitiesFunction> _logger = logger;
 
-    public async Task<ApiResult<EmptyResponse>> Invoke(SetSiteAccessibilitiesRequest request) =>
-        await HandleRequest(request, _logger);
+        public async Task<ApiResult<EmptyResponse>> Invoke(SetSiteAccessibilitiesRequest request) =>
+            await HandleRequest(request, _logger);
     }
 }

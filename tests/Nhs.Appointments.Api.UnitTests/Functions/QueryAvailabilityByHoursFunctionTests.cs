@@ -16,6 +16,7 @@ using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
+
 public class QueryAvailabilityByHoursFunctionTests
 {
     private readonly Mock<IBookingAvailabilityStateService> _bookingAvailabilityStateService = new();
@@ -198,7 +199,7 @@ public class QueryAvailabilityByHoursFunctionTests
     public async Task RunAsync_ReturnsEmptyHoursArray()
     {
         var slots = new List<SessionInstance>();
-        
+
         _featureToggleHelper.Setup(x => x.IsFeatureEnabled(Flags.MultiServiceJointBookings))
             .ReturnsAsync(true);
         _siteService.Setup(x => x.GetSiteByIdAsync(It.IsAny<string>(), It.IsAny<string>()))

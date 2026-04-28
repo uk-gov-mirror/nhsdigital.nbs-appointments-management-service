@@ -63,7 +63,7 @@ public class BookingNotifierTests
                 dic.ContainsKey("reference") &&
                 dic.ContainsKey("siteLocation") &&
                 dic.ContainsKey("vaccine") &&
-                dic.ContainsKey("serviceURL") 
+                dic.ContainsKey("serviceURL")
         ))).Verifiable();
 
         await _sut.Notify(nameof(BookingMade), Service, Reference, Site, FirstName, date, time, NotificationType.Email,
@@ -74,9 +74,10 @@ public class BookingNotifierTests
     [Fact]
     public async Task PassesValuesToSmsGovNotifyService()
     {
-        var clinicalService = new ClinicalServiceType() { 
-            ServiceType = "COVID-19" , 
-            Url = "https://www.nhs.uk/bookcovid" 
+        var clinicalService = new ClinicalServiceType()
+        {
+            ServiceType = "COVID-19",
+            Url = "https://www.nhs.uk/bookcovid"
         };
 
         _notificationConfigurationService
@@ -148,13 +149,13 @@ public class BookingNotifierTests
         await _sut.Notify(nameof(BookingMade), Service, Reference, Site, FirstName, date, time, NotificationType.Email, Email, NhsNumber);
 
         _notificationClient.Verify(x => x.SendEmailAsync(
-            It.IsAny<string>(), 
-            It.IsAny<string>(), 
+            It.IsAny<string>(),
+            It.IsAny<string>(),
             It.Is<Dictionary<string, dynamic>>(dic =>
-                dic.ContainsKey("siteLocation") &&                     
+                dic.ContainsKey("siteLocation") &&
                 (dic.GetValueOrDefault("siteLocation") as string).Contains(hasPrefixText ? prefixText : "")
             )
-        ), Times.Once); 
+        ), Times.Once);
     }
 
 

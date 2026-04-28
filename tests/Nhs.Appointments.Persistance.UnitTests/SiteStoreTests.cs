@@ -4,6 +4,7 @@ using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Persistance.Models;
 
 namespace Nhs.Appointments.Persistance.UnitTests;
+
 public class SiteStoreTests
 {
     private readonly Mock<ITypedDocumentCosmosStore<SiteDocument>> _siteStore = new();
@@ -35,7 +36,7 @@ public class SiteStoreTests
 
         _siteStore.Setup(x => x.GetDocument(It.IsAny<string>()))
             .ReturnsAsync(new SiteDocument
-            { 
+            {
                 Id = "some-site-id",
                 Name = "Test Site",
                 Address = "Test Address",

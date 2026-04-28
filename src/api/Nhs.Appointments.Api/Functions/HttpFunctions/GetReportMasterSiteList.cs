@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using FluentValidation;
@@ -13,6 +14,7 @@ using Nhs.Appointments.Api.File;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Inspectors;
+using Nhs.Appointments.Core.OdsCodes;
 using Nhs.Appointments.Core.Reports.MasterSiteList;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
@@ -21,6 +23,8 @@ namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 
 public class GetReportMasterSiteListFunction(
     ISiteService siteService,
+    IWellKnowOdsCodesService wellKnowOdsCodesService,
+    IAccessibilityDefinitionsService accessibilityDefinitionsService,
     IMasterSiteListReportCsvWriter masterSiteListReportCsvWriter,
     IFeatureToggleHelper featureToggleHelper,
     IValidator<EmptyRequest> validator,
@@ -48,12 +52,27 @@ public class GetReportMasterSiteListFunction(
 
     protected override string ResponseType => ApiResponseType.File;
 
-    protected override async Task<ApiResult<FileResponse>> HandleRequest(EmptyRequest request,
-        ILogger logger)
+    protected override async Task<ApiResult<FileResponse>> HandleRequest(EmptyRequest request, ILogger logger)
     {
         var sites = await siteService.GetAllSites(includeDeleted: true, ignoreCache: true);
 
-        var csv = await masterSiteListReportCsvWriter.CompileMasterSiteListReportCsv(sites);
+        // Fetch ODS lookups AND Accessibility Definitions
+        var odsLookup = await wellKnowOdsCodesService.GetWellKnownOdsCodeEntries();
+        var accessibilityDefinitions = await accessibilityDefinitionsService.GetAccessibilityDefinitions();
+
+        // Map to SiteForReport
+        var sitesForReport = sites.Select(site =>
+        {
+            var regionalName = odsLookup.FirstOrDefault(l => l.OdsCode == site.Region)?.DisplayName ?? "";
+            var icbName = odsLookup.FirstOrDefault(l => l.OdsCode == site.IntegratedCareBoard)?.DisplayName ?? "";
+
+            return new SiteForReport(site, regionalName, icbName);
+        });
+
+        // Pass the enriched collection to the writer
+        // If your CsvWriter needs the definitions to build headers, 
+        // you would pass 'accessibilityDefinitions' here too.
+        var csv = await masterSiteListReportCsvWriter.CompileMasterSiteListReportCsv(sitesForReport, accessibilityDefinitions);
 
         return ApiResult<FileResponse>.Success(new FileResponse(csv.fileName, csv.fileContent));
     }

@@ -339,3 +339,7 @@
 .nhsuk-breadcrumb {
   margin: 2vh 0;
 }
+
+.display-none {
+  display: none;
+}

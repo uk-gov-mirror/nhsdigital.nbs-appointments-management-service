@@ -428,11 +428,7 @@ const EditSessionTimeAndCapacityForm = ({
               legend="How many vaccinators or vaccination spaces do you have?"
               error={errors.newSession?.capacity?.message}
             >
-              <label
-                id="capacity"
-                htmlFor="capacity"
-                style={{ display: 'none' }}
-              >
+              <label id="capacity" htmlFor="capacity" className="display-none">
                 How many vaccinators or vaccination spaces do you have?
               </label>
               <TextInput

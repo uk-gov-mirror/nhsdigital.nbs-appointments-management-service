@@ -38,7 +38,7 @@ const NhsFooter = ({ buildNumber }: NhsFooterProps) => {
         >
           Accessibility statement
         </Footer.ListItem>
-        <span aria-hidden style={{ display: 'none' }}>
+        <span aria-hidden className="display-none">
           {buildNumber}
         </span>
       </Footer.Meta>

@@ -21,17 +21,16 @@ export function middleware(request: NextRequest) {
         .replace(/\s{2,}/g, ' ')
         .trim();
 
-    const requestHeaders = new Headers(request.headers);
-    requestHeaders.set('x-nonce', nonce);
-    requestHeaders.set('Content-Security-Policy', csp);
+    const headers: HeadersInit = {
+      'x-nonce': nonce,
+      'Content-Security-Policy': csp,
+    };
 
     if (!request.nextUrl.pathname.endsWith('login')) {
-      requestHeaders.set('mya-last-requested-path', pathAndQuery);
+      headers['mya-last-requested-path'] = pathAndQuery;
     }
 
-    const response = NextResponse.next({
-      headers: requestHeaders,
-    });
+    const response = NextResponse.next({ headers });
 
     response.headers.set(
       'x-forwarded-host',

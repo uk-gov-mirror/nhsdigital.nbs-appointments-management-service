@@ -318,11 +318,7 @@ const TimeAndCapacityStep = ({
               legend="How many vaccinators or vaccination spaces do you have?"
               error={errors.session?.capacity?.message}
             >
-              <label
-                id="capacity"
-                htmlFor="capacity"
-                style={{ display: 'none' }}
-              >
+              <label id="capacity" htmlFor="capacity" className="display-none">
                 How many vaccinators or vaccination spaces do you have?
               </label>
               <TextInput
@@ -385,7 +381,7 @@ const TimeAndCapacityStep = ({
               <label
                 id="slot-length"
                 htmlFor="slot-length"
-                style={{ display: 'none' }}
+                className="display-none"
               >
                 How long are your appointments?
               </label>

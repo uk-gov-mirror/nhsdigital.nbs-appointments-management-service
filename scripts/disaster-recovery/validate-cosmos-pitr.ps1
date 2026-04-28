@@ -46,5 +46,6 @@ if ($ageInDays -gt $retentionDays) {
     exit 1
 }
 
-Write-Host "Validation Successful. The requested point-in-time is within the recovery window."
-Write-Host "##vso[task.setvariable variable=ConvertedUtcTime;isOutput=true]$($restoreTime.ToString('yyyy-MM-ddTHH:mm:ssZ'))"
+$azureFormatDate = $restoreTime.ToString("yyyy-MM-dd HH:mm:ss +00:00")
+Write-Host "##vso[task.setvariable variable=ConvertedUtcTime;isOutput=true]$azureFormatDate"
+Write-Host "Validation Successful. Output set: $azureFormatDate"

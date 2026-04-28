@@ -57,14 +57,14 @@ public class CacheServiceTests
     [Fact]
     public void LazySlidingCacheValuesSet()
     {
-        var expensiveOperationExpiration = _timeProvider.GetUtcNow().Add(ExpensiveOperationTimespan);
-        var cacheValue = _sut.GetLazySlidingCacheValue(DefaultCacheKey, DefaultOptions(expensiveOperationExpiration));
+        var operation = new FakeOperation<bool>(true);
+        var cacheValue = _sut.GetLazySlidingCacheValue(DefaultCacheKey, new LazySlideCacheOptions<bool>(operation.StartOperation, DefaultSlideThreshold, DefaultCacheExpiration));
         Assert.False(cacheValue.IsCompleted);
         
         _memoryCache.TryGetValue(CacheService.LazySlideCacheKey(DefaultCacheKey), out var keyValue1);
         keyValue1.Should().BeNull();
 
-        _timeProvider.Advance(ExpensiveOperationTimespan.Add(TimeSpan.FromMinutes(1)));
+        operation.EndOperation();
 
         cacheValue?.Result.Should().BeTrue();
         Assert.True(cacheValue.IsCompleted);
@@ -468,4 +468,25 @@ public class CacheServiceTests
 
         Assert.Equal(returnObj, value);
     }
+}
+
+public class FakeOperation<T>(T returnedValue) : IDisposable
+{
+    private readonly CancellationTokenSource CancellationTokenSource = new();
+    private CancellationToken CancellationToken => CancellationTokenSource.Token;
+
+    public int OperationCalls = 0;
+    public Task<T> StartOperation()
+    {
+        OperationCalls++;
+        while(!CancellationToken.IsCancellationRequested)
+        {
+        }
+
+        return Task.FromResult(returnedValue);
+    }
+    
+    public void EndOperation() => CancellationTokenSource.Cancel();
+
+    public void Dispose() => CancellationTokenSource?.Dispose();
 }

@@ -38,6 +38,8 @@ internal class AzureStorageLeaseManager : ILeaseManager
         return new LeaseContext(key, () => leaseClient.Release());
     }
 
+    public Task<ILeaseContext> AcquireAsync(string key) => throw new NotImplementedException();
+
     private BlobLeaseClient GetLeaseClient(string blobName)
     {
         var blobClient = _azureBlobStorage.GetBlobClientFromContainerAndBlobName(_options.ContainerName, blobName);

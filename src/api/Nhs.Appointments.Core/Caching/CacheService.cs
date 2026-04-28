@@ -14,7 +14,7 @@ public class CacheService(ICacheStore cacheStore, ILeaseManager leaseManager, Ti
             throw new ArgumentException("Configuration is not supported, AbsoluteExpiration must be greater than the SlideThreshold");
         }
         
-        var cache = await cacheStore.TryGetAsync<LazySlideCacheObject>(cacheKey);
+        var cache = await cacheStore.TryGetAsync<LazySlideCacheObject>(lazySlideCacheKey);
 
         if (!cache.Success)
         {
@@ -44,7 +44,7 @@ public class CacheService(ICacheStore cacheStore, ILeaseManager leaseManager, Ti
             }
         }
 
-        using (leaseManager.Acquire(cacheKey))
+        using (await leaseManager.AcquireAsync(cacheKey))
         {
             var newValue = await options.UpdateOperation();
 
@@ -78,17 +78,22 @@ public class CacheService(ICacheStore cacheStore, ILeaseManager leaseManager, Ti
 
     private async Task<T> SlideCache<T>(string lazySlideCacheKey, LazySlideCacheOptions<T> options, DateTimeOffset dateTime)
     {
-        using (leaseManager.Acquire(lazySlideCacheKey))
+        using (leaseManager.AcquireAsync(lazySlideCacheKey))
         {
             var cache = await cacheStore.TryGetAsync<LazySlideCacheObject>(lazySlideCacheKey);
             
             if (cache.Success)
             {
                 ArgumentNullException.ThrowIfNull(cache.Response);
-                if (cache.Response.DueToSlide(options.SlideThreshold, timeProvider.GetUtcNow()))
+                if (cache.Response.DueToSlide(options.SlideThreshold, dateTime))
                 {
-                    await cacheStore.SetAsync(lazySlideCacheKey, new LazySlideCacheObject(cache.Response, dateTime),
+                    _ = cacheStore.SetAsync(lazySlideCacheKey, new LazySlideCacheObject(cache.Response.Value, dateTime),
                         dateTime.Add(options.AbsoluteExpiration));
+                }
+                else
+                {
+                    // Lock acquired and all valid, return cache
+                    return (T)cache.Response.Value;
                 }
             }
             else

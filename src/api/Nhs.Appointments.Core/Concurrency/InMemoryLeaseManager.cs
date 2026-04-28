@@ -34,4 +34,26 @@ internal class InMemoryLeaseManager : ILeaseManager
 
         return new LeaseContext(key, () => mutex.Release());
     }
+
+    public async Task<ILeaseContext> AcquireAsync(string key)
+    {
+        SemaphoreSlim mutex;
+
+        lock (_locks)
+        {
+            if (!_locks.TryGetValue(key, out var value))
+            {
+                value = new SemaphoreSlim(1,1);
+                _locks.Add(key, value);
+            }
+            mutex = value;
+        }
+        
+        if (!(await mutex.WaitAsync(_options.Timeout)))
+        {
+            throw new AbandonedMutexException($"Abandoned attempt to acquire lock for key {key}");
+        }
+        
+        return new LeaseContext(key, () => mutex.Release());
+    }
 }

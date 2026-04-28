@@ -1543,6 +1543,8 @@ public class FakeLeaseManager : ILeaseManager
         WaitHandle.WaitOne();
         return new FakeLeaseContext();
     }
+
+    public Task<ILeaseContext> AcquireAsync(string key) => throw new NotImplementedException();
 }
 
 public class FakeLeaseContext : ILeaseContext

@@ -38,7 +38,7 @@ foreach ($containerApp in $containerApps) {
   $revisions = @(az containerapp revision list `
     --name $containerApp `
     --resource-group $resourceGroup `
-    --query "[?active].name" `
+    --query "[?properties.active].name" `
     -o tsv)
 
   if (-not $revisions) {

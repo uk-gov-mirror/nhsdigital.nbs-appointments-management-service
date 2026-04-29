@@ -65,7 +65,7 @@ foreach ($containerApp in $containerApps) {
 foreach ($job in $containerAppJobs) {
   Write-Host "Stopping container app job '$job'"
 
-  az containerapp job stop `
+  az containerapp job delete `
     --name $job `
     --resource-group $resourceGroup
 

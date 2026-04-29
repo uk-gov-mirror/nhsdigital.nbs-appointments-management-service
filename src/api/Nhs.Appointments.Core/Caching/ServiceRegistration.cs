@@ -36,6 +36,7 @@ public static class ServiceRegistration
                 EndPoints = { configuration.GetValue<string>("REDIS_ENDPOINT") ?? throw new NullReferenceException("RedisEndpoint not set in configuration") },
                 Password = configuration.GetValue<string>("REDIS_PASSWORD") ?? throw new NullReferenceException("RedisPassword not set in configuration"),
             })
+            .AddSingleton<IRedisConnection, RedisConnection>()
             .AddTransient<ICacheStore, RedisCacheStore>();
     }
     

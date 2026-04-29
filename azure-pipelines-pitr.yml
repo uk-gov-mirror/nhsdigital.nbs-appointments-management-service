@@ -100,27 +100,11 @@ stages:
             deploy:
               steps:
                 - task: AzureCLI@2
-                  displayName: "Restart Web and Function Apps"
+                  displayName: "Run Restart Services Script"
                   inputs:
                     azureSubscription: "vaccs-mya-dev-uks"
                     scriptType: "pscore"
-                    scriptLocation: "inlineScript"
-                    inlineScript: |
-                      $rg = "vaccs-mya-dev-uks"
-
-                      # Start the Web App
-                      $webApp = "vaccs-mya-app-dev-uks"
-                      Write-Host "Starting Web App: $webApp..."
-                      az webapp start --name $webApp --resource-group $rg
-
-                      # Start the Function Apps
-                      $functions = @(
-                        "vaccs-mya-func-dev-uks",
-                        "vaccs-mya-sbfunc-dev-uks",
-                        "vaccs-mya-timerfunc-dev-uks"
-                      )
-
-                      foreach ($app in $functions) {
-                        Write-Host "Starting Function App: $app..."
-                        az functionapp start --name $app --resource-group $rg
-                      }
+                    scriptLocation: "scriptPath"
+                    # Ensure this path matches your repo structure
+                    scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/restart-services.ps1"
+                    arguments: "-ResourceGroup 'vaccs-mya-dev-uks'"

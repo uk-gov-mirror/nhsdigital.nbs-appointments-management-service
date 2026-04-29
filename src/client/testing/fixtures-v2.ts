@@ -210,7 +210,7 @@ export const test = base.extend<MyaFixtures>({
       env.COSMOS_ENDPOINT,
       env.COSMOS_TOKEN,
     );
-    const mockOidcClient = new MockOidcClient(env.MOCK_OIDC_SERVER_BASE_URL);
+    const mockOidcClient = new MockOidcClient(env.OIDC_SERVER_BASE_URL);
     const featureFlagClient = new FeatureFlagClient(env.NBS_API_BASE_URL);
 
     const testId = generateUniqueTestId(testInfo);

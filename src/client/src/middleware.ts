@@ -12,8 +12,8 @@ export function middleware(request: NextRequest) {
   const permittedConnectUrls = [
     process.env.NBS_API_BASE_URL!,
     process.env.AUTH_HOST!,
-    process.env.MOCK_OIDC_SERVER_BASE_URL!,
-    process.env.MOCK_AUTHENTICATION_ISSUER_URL!,
+    process.env.OIDC_SERVER_BASE_URL!,
+    process.env.AUTHENTICATION_ISSUER_URL!,
     'https://js.monitor.azure.com',
     'https://dc.services.visualstudio.com',
   ];

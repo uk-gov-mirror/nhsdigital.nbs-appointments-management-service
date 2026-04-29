@@ -10,8 +10,8 @@ const environment = {
   COSMOS_TOKEN: process.env.COSMOS_TOKEN ?? '',
   BUILD_NUMBER: process.env.BUILD_NUMBER ?? '',
   NBS_API_BASE_URL: process.env.NBS_API_BASE_URL ?? 'http://localhost:7071',
-  MOCK_OIDC_SERVER_BASE_URL:
-    process.env.MOCK_OIDC_SERVER_BASE_URL ?? 'http://localhost:8020',
+  OIDC_SERVER_BASE_URL:
+    process.env.OIDC_SERVER_BASE_URL ?? 'http://localhost:8020',
 };
 
 export default environment;

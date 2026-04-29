@@ -49,7 +49,6 @@ stages:
     dependsOn:
       - StopWebApp
       - Validation
-
     variables:
       RestoreTimeUtc: $[ stageDependencies.Validation.ValidateInput.outputs['ValidateStep.ConvertedUtcTime'] ]
     jobs:
@@ -70,31 +69,24 @@ stages:
                   --restore-timestamp "$(RestoreTimeUtc)"
 
   - stage: UpdateConfig
-    displayName: "Update ActiveCosmosDBAccountName in Key Vault "
+    displayName: "Update Key Vault Configuration"
     dependsOn: CosmosPITR
     jobs:
       - job: Update
         steps:
           - task: AzureCLI@2
-            displayName: "Update KV Secret"
+            displayName: "Execute KV Update Script"
             inputs:
               azureSubscription: "vaccs-mya-dev-uks"
               scriptType: "pscore"
-              scriptLocation: "inlineScript"
-              inlineScript: |
-                $vaultName = "vaccs-mya-kv-dev-uks"
-                $secretName = "ActiveCosmosDBAccountName"
-                $newDbName = "vaccs-mya-cdb-dev-uks-secondary"
+              scriptLocation: "scriptPath"
+              scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/update-active-db-config.ps1"
+              arguments: >
+                -vaultName "vaccs-mya-kv-dev-uks"
+                -resourceGroup "vaccs-mya-dev-uks"
+                -cosmosAccountName "vaccs-mya-cdb-dev-uks-secondary" 
 
-                Write-Host "Upserting secret '$secretName' in vault '$vaultName'..."
-                az keyvault secret set --vault-name $vaultName --name $secretName --value $newDbName
 
-                Write-Host "PITR Switchover Complete. Functions are now pointing to: $newDbName"
-
-  # new stage, restart requires approval
-  # something like this
-  # Write-Host "Restarting Function App: $functionAppName..."
-  # az functionapp restart --name $functionAppName --resource-group $resourceGroup
   - stage: RestartServices
     displayName: "Restart Apps to Pick Up New Config"
     dependsOn: UpdateConfig

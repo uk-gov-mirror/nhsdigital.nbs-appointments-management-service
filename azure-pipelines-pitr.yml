@@ -107,4 +107,4 @@ stages:
                     scriptLocation: "scriptPath"
                     # Ensure this path matches your repo structure
                     scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/restart-services.ps1"
-                    arguments: "-ResourceGroup 'vaccs-mya-dev-uks'"
+                    arguments: "-resourceGroup vaccs-mya-dev-uks -region uks"

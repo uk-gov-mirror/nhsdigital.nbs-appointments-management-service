@@ -273,9 +273,7 @@ const EditSessionTimeAndCapacityForm = ({
                 />
 
                 <div className="nhsuk-time-input-custom__item">
-                  <div style={{ display: 'inline-block', fontSize: 'x-large' }}>
-                    :
-                  </div>
+                  <div className="time-colon">:</div>
                 </div>
 
                 <Controller
@@ -367,9 +365,7 @@ const EditSessionTimeAndCapacityForm = ({
                 />
 
                 <div className="nhsuk-time-input-custom__item">
-                  <div style={{ display: 'inline-block', fontSize: 'x-large' }}>
-                    :
-                  </div>
+                  <div className="time-colon">:</div>
                 </div>
 
                 <Controller

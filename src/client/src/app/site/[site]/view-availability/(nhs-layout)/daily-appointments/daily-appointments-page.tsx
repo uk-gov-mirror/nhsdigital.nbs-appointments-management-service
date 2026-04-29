@@ -108,7 +108,7 @@ export const DailyAppointmentsPage = ({
               params.set('page', String(page - 1));
               window.history.pushState(null, '', `?${params.toString()}`);
             }}
-            style={{ cursor: 'pointer' }}
+            className="cursor-pointer"
             labelText={`Page ${page - 1}`}
           >
             Previous
@@ -121,7 +121,7 @@ export const DailyAppointmentsPage = ({
               params.set('page', String(page + 1));
               window.history.pushState(null, '', `?${params.toString()}`);
             }}
-            style={{ cursor: 'pointer' }}
+            className="cursor-pointer"
             labelText={`Page ${page + 1}`}
           >
             Next

@@ -347,3 +347,62 @@
 .max-width-250 {
   max-width: 250;
 }
+
+.button-group {
+  display: 'flex';
+  gap: '1rem';
+  padding: 0;
+  margin: 0;
+  list-style: 'none';
+}
+
+.button-group-vertical {
+  flex-direction: 'column';
+  align-items: 'stretch';
+}
+
+.button-group-horizontal {
+  flex-direction: 'row';
+  align-items: 'center';
+}
+
+.checkbox-or-all {
+  margin-bottom: 8;
+  margin-left: 12;
+  display: 'block';
+}
+
+.navigation {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.cursor-pointer {
+  cursor: 'pointer';
+}
+
+.time-colon {
+  display: 'inline-block';
+  font-size: 'x-large';
+}
+
+.change-availability-button {
+  margin-right: '1rem';
+}
+
+.add-role-assignment-wrapper {
+  display: 'flex';
+  justify-content: 'flex-end';
+}
+
+.add-role-assignment-button {
+  font-size: 'large';
+}
+
+.margin-bottom-0 {
+  margin-bottom: 0;
+}
+
+.margin-bottom-32 {
+  margin-bottom: '32px';
+}

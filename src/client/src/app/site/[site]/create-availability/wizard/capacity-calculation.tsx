@@ -19,9 +19,9 @@ const CapacityCalculation = (props: CapacityCalculationProps) => {
   return (
     <InsetText>
       <strong>
-        <p style={{ marginBottom: 0 }}>Capacity calculator</p>
+        <p className="margin-bottom-0">Capacity calculator</p>
       </strong>
-      <p style={{ marginBottom: 0 }}>
+      <p className="margin-bottom-0">
         <strong>{capacity.appointmentsPerSession}</strong> total appointments in
         the session
         {capacity.appointmentsPerHour !== undefined && (

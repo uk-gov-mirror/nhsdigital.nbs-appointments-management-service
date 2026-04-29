@@ -74,12 +74,9 @@ const Page = async ({ params, searchParams }: PageProps) => {
         {canChangeAvailability && (
           <Button
             href={`/manage-your-appointments/site/${siteFromPath}/change-availability?returnUrl=${encodedReturnUrl}`}
-            className="no-print"
+            className="no-print change-availability-button"
             small
             secondarySolid
-            style={{
-              marginRight: '1rem',
-            }}
           >
             Change availability
           </Button>

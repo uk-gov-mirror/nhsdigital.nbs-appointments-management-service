@@ -11,7 +11,6 @@ type Props = {
   href?: string;
   children?: ReactNode;
   actionLinks?: ReactNode;
-  maxWidth?: number;
 };
 
 /**
@@ -26,12 +25,10 @@ const Card = ({
   href,
   children,
   actionLinks,
-  maxWidth,
 }: Props) => {
   return (
     <div
       className={`nhsuk-card nhsuk-card--${type} ${href ? 'nhsuk-card--clickable' : ''}`}
-      style={maxWidth ? { maxWidth } : undefined}
     >
       <div className={`nhsuk-card__content nhsuk-card__content--${type}`}>
         <div className="card-title-wrapper">

@@ -130,8 +130,7 @@ const EditServicesForm = ({
           return (
             <fieldset
               key={serviceType}
-              className="nhsuk-fieldset app-checkbox-group"
-              style={{ marginBottom: '32px' }}
+              className="nhsuk-fieldset app-checkbox-group margin-bottom-32"
             >
               <legend className="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
                 {groupTitle}

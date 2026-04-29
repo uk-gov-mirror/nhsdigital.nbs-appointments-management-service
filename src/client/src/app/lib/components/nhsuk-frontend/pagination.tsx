@@ -19,10 +19,9 @@ type PaginationProps = {
 const Pagination = ({ previous, next }: PaginationProps) => {
   return (
     <nav
-      className="nhsuk-pagination no-print"
+      className="nhsuk-pagination navigation no-print"
       role="navigation"
       aria-label="Pagination"
-      style={{ marginTop: 0, marginBottom: 0 }}
     >
       <ul className="nhsuk-list nhsuk-pagination__list">
         {previous !== null && (

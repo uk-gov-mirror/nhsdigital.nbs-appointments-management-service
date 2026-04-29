@@ -8,18 +8,11 @@ type Props = {
 const ButtonGroup = ({ children, vertical = false }: Props) => {
   return (
     <ol
-      className={`nhsuk-list nhsuk-u-margin-0 nhsuk-button-group-flat ${
-        vertical ? 'flex-col' : 'flex-row'
+      className={`nhsuk-list nhsuk-u-margin-0 nhsuk-button-group-flat button-group ${
+        vertical
+          ? 'flex-col button-group-vertical'
+          : 'flex-row button-group-horizontal'
       }`}
-      style={{
-        display: 'flex',
-        flexDirection: vertical ? 'column' : 'row',
-        gap: '1rem',
-        padding: 0,
-        margin: 0,
-        listStyle: 'none',
-        alignItems: vertical ? 'stretch' : 'center',
-      }}
     >
       {Children.toArray(children).map((child, index) => (
         <li key={index} className="nhsuk-u-margin-0">

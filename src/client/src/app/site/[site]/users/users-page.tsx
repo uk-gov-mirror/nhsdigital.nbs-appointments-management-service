@@ -23,8 +23,8 @@ export const UsersPage = ({
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        {canSeeAdminControls === true && (
+      <div className="add-role-assignment-wrapper">
+        {canSeeAdminControls && (
           <span>
             <AddRoleAssignmentsButton />
           </span>
@@ -41,7 +41,7 @@ export const UsersPage = ({
 };
 
 const AddRoleAssignmentsButton = () => (
-  <div style={{ fontSize: 'large' }}>
+  <div className="add-role-assignment-button">
     <Link href={`users/manage`} className="nhsuk-link">
       <Button type="button">Add user</Button>
     </Link>

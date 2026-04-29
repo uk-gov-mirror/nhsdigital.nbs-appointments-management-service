@@ -199,10 +199,8 @@ const SummaryStep = ({
                 </SummaryList.Action>
               ) : (
                 <SummaryList.Action
+                  className="cursor-pointer"
                   onClick={item.action.onClick}
-                  style={{
-                    cursor: 'pointer',
-                  }}
                 >
                   {item.action.text}
                 </SummaryList.Action>

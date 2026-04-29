@@ -68,7 +68,7 @@ foreach ($job in $containerAppJobs) {
   az containerapp job delete `
     --name $job `
     --resource-group $resourceGroup `
-    -- yes
+    --yes
 
   if ($LASTEXITCODE -ne 0) {
     Write-Warning "Failed to delete container app job '$job'"

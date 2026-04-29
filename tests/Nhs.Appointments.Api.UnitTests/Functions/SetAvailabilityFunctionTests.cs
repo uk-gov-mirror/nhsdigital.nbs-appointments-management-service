@@ -93,7 +93,7 @@ public class SetAvailabilityFunctionTests
     {
         _siteService.Setup(x => x.GetSiteByIdAsync("test-site", It.IsAny<string>()))
             .ReturnsAsync(null as Site);
-        
+
         var sessions = new List<Session>
         {
             new()

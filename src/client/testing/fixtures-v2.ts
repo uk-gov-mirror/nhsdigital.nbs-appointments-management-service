@@ -1,7 +1,7 @@
 // We need this to avoid SSL errors when running tests locally
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-import { test as base, TestInfo } from '@playwright/test';
+import { test as base, expect, TestInfo } from '@playwright/test';
 import {
   buildBookingDocument,
   buildDailyAvailabilityDocument,
@@ -135,6 +135,20 @@ type MyaFixtures = {
 };
 
 export const test = base.extend<MyaFixtures>({
+  page: async ({ page }, use) => {
+    const cspErrors: string[] = [];
+    page.on('console', msg => {
+      if (
+        msg.type() === 'error' &&
+        msg.text().includes('Content Security Policy')
+      ) {
+        cspErrors.push(`[CSP ERROR]: ${msg.text()} at ${page.url()}`);
+        expect(cspErrors).toHaveLength(0);
+      }
+    });
+
+    await use(page);
+  },
   monthViewAvailabilityPage: async ({ page }, use) => {
     await use(new MonthViewAvailabilityPage(page));
   },

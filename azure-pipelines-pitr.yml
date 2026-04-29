@@ -84,8 +84,7 @@ stages:
               arguments: >
                 -vaultName "vaccs-mya-kv-dev-uks"
                 -resourceGroup "vaccs-mya-dev-uks"
-                -cosmosAccountName "vaccs-mya-cdb-dev-uks-secondary" 
-
+                -cosmosAccountName "vaccs-mya-cdb-dev-uks-secondary"
 
   - stage: RestartServices
     displayName: "Restart Apps to Pick Up New Config"
@@ -110,16 +109,15 @@ stages:
                       $rg = "vaccs-mya-dev-uks"
 
                       # Start the Web App
-                      $webApp = "nbs-mya-app-dev-uks"
+                      $webApp = "vaccs-mya-app-dev-uks"
                       Write-Host "Starting Web App: $webApp..."
                       az webapp start --name $webApp --resource-group $rg
 
                       # Start the Function Apps
                       $functions = @(
-                        "nbs-mya-func-dev-uks",
-                        "nbs-mya-hlfunc-dev-uks",
-                        "nbs-mya-sbfunc-dev-uks",
-                        "nbs-mya-timerfunc-dev-uks"
+                        "vaccs-mya-func-dev-uks",
+                        "vaccs-mya-sbfunc-dev-uks",
+                        "vaccs-mya-timerfunc-dev-uks"
                       )
 
                       foreach ($app in $functions) {

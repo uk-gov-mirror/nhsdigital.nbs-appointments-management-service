@@ -295,7 +295,7 @@ export const SessionModificationConfirmation = ({
           )}
 
           {texts.impactCard(decision) && (
-            <Card style={{ maxWidth: 250 }}>
+            <Card className="max-width-250">
               <Card.Heading>
                 {String(newlyUnsupportedBookingsCount)}
               </Card.Heading>

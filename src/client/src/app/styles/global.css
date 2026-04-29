@@ -343,3 +343,7 @@
 .display-none {
   display: none;
 }
+
+.max-width-250 {
+  max-width: 250;
+}

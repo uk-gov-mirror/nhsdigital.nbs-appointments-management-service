@@ -96,7 +96,7 @@ export const SessionModificationConfirmed = ({
 
       {modificationAction === 'cancel-appointments' && (
         <>
-          <Card style={{ maxWidth: 250 }}>
+          <Card className="max-width-250">
             <Card.Heading>{String(newlyUnsupportedBookingsCount)}</Card.Heading>
             <BodyText>
               {`${newlyUnsupportedBookingsCount > 1 ? 'Bookings' : 'Booking'} have been cancelled`}

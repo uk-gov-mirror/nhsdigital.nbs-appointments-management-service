@@ -46,7 +46,7 @@ const EditSessionConfirmed = ({
             This session has been updated and the new time and capacity has been
             saved.
           </div>
-          <Card style={{ maxWidth: 250 }}>
+          <Card className="max-width-250">
             <Card.Heading>
               {newlyUnsupportedBookingsCount.toString()}
             </Card.Heading>

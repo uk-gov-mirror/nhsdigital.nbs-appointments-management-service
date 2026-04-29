@@ -54,7 +54,7 @@ const EditServicesConfirmed = ({
               : 'booking has'}{' '}
             been cancelled.
           </div>
-          <Card style={{ maxWidth: 250 }}>
+          <Card className="max-width-250">
             <Card.Heading>
               {newlyUnsupportedBookingsCount.toString()}
             </Card.Heading>

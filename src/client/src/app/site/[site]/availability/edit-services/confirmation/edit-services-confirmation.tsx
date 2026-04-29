@@ -244,7 +244,7 @@ export const EditServicesConfirmationPage = ({
           )}
 
           {newlyUnsupportedBookingsCount && decision != 'remove-services' && (
-            <Card style={{ maxWidth: 250 }}>
+            <Card className="max-width-250">
               <Card.Heading>
                 {String(newlyUnsupportedBookingsCount)}
               </Card.Heading>

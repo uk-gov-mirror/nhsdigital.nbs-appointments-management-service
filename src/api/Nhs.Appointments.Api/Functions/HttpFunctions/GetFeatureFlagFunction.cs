@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -7,12 +10,8 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Api.Models;
-using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
 using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Users;
-using Nhs.Appointments.Core.Metrics;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 
@@ -20,7 +19,6 @@ public class GetFeatureFlagFunction(
     IValidator<GetFeatureFlagRequest> validator,
     IUserContextProvider userContextProvider,
     ILogger<GetFeatureFlagFunction> logger,
-    IMetricsRecorder metricsRecorder,
     IFeatureToggleHelper featureToggleHelper)
     : BaseApiFunction<GetFeatureFlagRequest, GetFeatureFlagResponse>(validator, userContextProvider, logger)
 {

@@ -11,7 +11,6 @@ using Microsoft.OpenApi.Models;
 using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Inspectors;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 
@@ -21,8 +20,7 @@ public class GetSiteFunction(
     ISiteService siteService,
     IValidator<SiteBasedResourceRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<GetSiteFunction> logger,
-    IMetricsRecorder metricsRecorder)
+    ILogger<GetSiteFunction> logger)
     : SiteBasedResourceFunction<Site>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetSite", tags: ["Sites"], Summary = "Get single site by Id")]

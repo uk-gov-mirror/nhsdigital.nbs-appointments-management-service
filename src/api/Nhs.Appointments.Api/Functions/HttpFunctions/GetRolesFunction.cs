@@ -9,7 +9,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Api.Models;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
@@ -18,8 +17,7 @@ public class GetRolesFunction(
     IRolesService rolesService,
     IValidator<GetRolesRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<GetRolesFunction> logger,
-    IMetricsRecorder metricsRecorder)
+    ILogger<GetRolesFunction> logger)
     : BaseApiFunction<GetRolesRequest, GetRolesResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetRoles", tags: ["Roles"], Summary = "Get user roles in the system")]

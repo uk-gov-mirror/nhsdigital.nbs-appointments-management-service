@@ -12,7 +12,6 @@ using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Core.Inspectors;
-using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Core.Users;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
@@ -21,8 +20,7 @@ public class TriggerAutoCancelledBookingsFunction(
     IBookingWriteService bookingWriteService,
     IValidator<EmptyRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<TriggerAutoCancelledBookingsFunction> logger,
-    IMetricsRecorder metricsRecorder)
+    ILogger<TriggerAutoCancelledBookingsFunction> logger)
     : BaseApiFunction<EmptyRequest, EmptyResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "TriggerAutoCancelledBookingsFunction", tags: ["System"],

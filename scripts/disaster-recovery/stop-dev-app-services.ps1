@@ -63,14 +63,15 @@ foreach ($containerApp in $containerApps) {
 }
 
 foreach ($job in $containerAppJobs) {
-  Write-Host "Stopping container app job '$job'"
+  Write-Host "Deleting container app job '$job'"
 
   az containerapp job delete `
     --name $job `
-    --resource-group $resourceGroup
+    --resource-group $resourceGroup `
+    -- yes
 
   if ($LASTEXITCODE -ne 0) {
-    Write-Warning "Failed to stop container app job '$job'"
+    Write-Warning "Failed to delete container app job '$job'"
     $LASTEXITCODE = 0
   }
 }

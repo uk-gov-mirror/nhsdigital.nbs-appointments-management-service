@@ -31,7 +31,9 @@ describe('ButtonGroup', () => {
     );
 
     const list = screen.getByRole('list');
-    expect(list).toHaveStyle({ flexDirection: 'row' });
+    expect(list).toHaveClass('button-group');
+    expect(list).toHaveClass('button-group-horizontal');
+    expect(list).toHaveClass('flex-row');
   });
 
   it('renders vertically when vertical is true', () => {
@@ -43,6 +45,8 @@ describe('ButtonGroup', () => {
     );
 
     const list = screen.getByRole('list');
-    expect(list).toHaveStyle({ flexDirection: 'column' });
+    expect(list).toHaveClass('button-group');
+    expect(list).toHaveClass('button-group-vertical');
+    expect(list).toHaveClass('flex-col');
   });
 });

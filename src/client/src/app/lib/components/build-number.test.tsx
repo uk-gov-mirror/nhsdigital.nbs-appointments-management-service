@@ -23,8 +23,7 @@ describe('Build Number', () => {
       screen.getByText('Build number: test-build-number'),
     ).toBeInTheDocument();
 
-    expect(
-      screen.getByText('Build number: test-build-number'),
-    ).not.toBeVisible();
+    const list = screen.getByText('Build number: test-build-number');
+    expect(list).toHaveClass('display-none');
   });
 });

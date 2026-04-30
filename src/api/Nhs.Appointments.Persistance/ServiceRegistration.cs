@@ -38,6 +38,7 @@ public static class ServiceRegistration
     {
         services
             .AddScoped<IAvailabilityStore, AvailabilityDocumentStore>()
+            .AddScoped<IRecurrenceStore, RecurrenceStore>()
             .AddScoped<IAvailabilityCreatedEventStore, AvailabilityCreatedEventDocumentStore>()
             .AddScoped<IBookingsDocumentStore, BookingCosmosDocumentStore>()
             .AddScoped<IReferenceNumberDocumentStore, ReferenceGroupCosmosDocumentStore>()
@@ -65,6 +66,7 @@ public static class ServiceRegistration
             .AddTransient<IBookingQueryService, BookingQueryService>()
             .AddTransient<IAccessibilityDefinitionsService, AccessibilityDefinitionsService>()
             .AddTransient<IAvailabilityWriteService, AvailabilityWriteService>()
+            .AddTransient<IRecurrenceWriteService, RecurrenceWriteService>()
             .AddTransient<IAvailabilityQueryService, AvailabilityQueryService>()
             .AddTransient<IBookingAvailabilityStateService, BookingAvailabilityStateService>()
             .AddTransient<IEulaService, EulaService>()

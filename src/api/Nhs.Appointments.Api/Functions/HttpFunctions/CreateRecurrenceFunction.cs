@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Availability;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Audit.Functions;
+using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Inspectors;
 using Nhs.Appointments.Core.Sites;
@@ -24,8 +26,9 @@ public class CreateRecurrenceFunction(
     ILogger<CreateRecurrenceFunction> logger,
     IMetricsRecorder metricsRecorder,
     ISiteService siteService,
+    IRecurrenceWriteService recurrenceWriteService,
     IFeatureToggleHelper featureToggleHelper)
-    : BaseApiFunction<CreateRecurrenceRequest, EmptyResponse>(validator, userContextProvider: userContextProvider, logger,
+    : BaseApiFunction<CreateRecurrenceRequest, Guid>(validator, userContextProvider: userContextProvider, logger,
         metricsRecorder)
 {
     [OpenApiOperation("CreateRecurrence", ["Availability"],
@@ -51,7 +54,7 @@ public class CreateRecurrenceFunction(
             : ProblemResponse(HttpStatusCode.NotImplemented, null);
     }
 
-    protected override async Task<ApiResult<EmptyResponse>> HandleRequest(CreateRecurrenceRequest request,
+    protected override async Task<ApiResult<Guid>> HandleRequest(CreateRecurrenceRequest request,
         ILogger logger)
     {
         if (await siteService.GetSiteByIdAsync(request.Site) is null)
@@ -59,8 +62,7 @@ public class CreateRecurrenceFunction(
             return Failed(HttpStatusCode.NotFound, "Site provided was not found.");
         }
         
-        //TODO apply service
-        
-        return Success(new EmptyResponse());
+        var createdRecurrenceId = await recurrenceWriteService.CreateRecurrence(request.Site, request.RecurrencePattern, request.Label, request.RecurrenceExceptions);
+        return Success(createdRecurrenceId);
     }
 }

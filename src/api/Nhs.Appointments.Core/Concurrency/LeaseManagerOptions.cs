@@ -1,6 +1,6 @@
-﻿namespace Nhs.Appointments.Core.Concurrency;
+namespace Nhs.Appointments.Core.Concurrency;
 
-public class SiteLeaseManagerOptions
+public class LeaseManagerOptions
 {
     public TimeSpan Timeout { get; set; }
     public string ContainerName { get; set; }

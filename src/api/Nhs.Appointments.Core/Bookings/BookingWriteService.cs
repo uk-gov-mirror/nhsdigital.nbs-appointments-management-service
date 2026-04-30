@@ -48,7 +48,7 @@ public class BookingWriteService(
     IBookingsDocumentStore bookingDocumentStore,
     IBookingQueryService bookingQueryService,
     IReferenceNumberProvider referenceNumberProvider,
-    ISiteLeaseManager siteLeaseManager,
+    ILeaseManager leaseManager,
     IBookingAvailabilityStateService bookingAvailabilityStateService,
     IBookingEventFactory eventFactory,
     IMessageBus bus,
@@ -62,7 +62,9 @@ public class BookingWriteService(
         var from = booking.From;
         var to = booking.From.AddMinutes(booking.Duration);
 
-        using var leaseContent = siteLeaseManager.Acquire(booking.Site, booking.Date);
+        var leaseKey = LeaseKeys.SiteKeyFactory.Create(booking.Site, booking.Date);
+
+        using var leaseContent = leaseManager.Acquire(leaseKey);
 
         var availableSlots = await bookingAvailabilityStateService.GetAvailableSlots(booking.Site, from, to);
 
@@ -354,7 +356,9 @@ public class BookingWriteService(
     {
         var bookingDayRange = new BookingDayRange(day);
 
-        using var leaseContent = siteLeaseManager.Acquire(site, day);
+        var leaseKey = LeaseKeys.SiteKeyFactory.Create(site, day);
+
+        using var leaseContent = leaseManager.Acquire(leaseKey);
 
         var recalculations =
             (await bookingAvailabilityStateService.BuildRecalculations(site, bookingDayRange.Start, bookingDayRange.End,

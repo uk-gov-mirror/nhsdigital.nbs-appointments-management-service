@@ -33,7 +33,7 @@ public class LeaseKeysTests
     }
 
     [Theory]
-    [MemberData(nameof(MemberDataForSiteLeaseFactory))]
+    [MemberData(nameof(MemberDataForSiteKeyFactory))]
     public void SiteAndDateSupplied_SiteKeyIsCreated_ReturnsCorrectValue(string siteId, DateOnly date, string expectedKey)
     {
         // Arrange - not required.
@@ -44,7 +44,7 @@ public class LeaseKeysTests
         LeaseKeys.SiteKeyFactory.Create(siteId, date).Should().Be(expectedKey);
     }
 
-    public static IEnumerable<object[]> MemberDataForSiteLeaseFactory()
+    public static IEnumerable<object[]> MemberDataForSiteKeyFactory()
     {
         var guid1 = Guid.NewGuid().ToString();
         var guid2 = Guid.NewGuid().ToString();

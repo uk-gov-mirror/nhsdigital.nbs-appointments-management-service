@@ -120,6 +120,10 @@ services:
       - ContainerRetry__Configurations__5__BackoffRetryType=2
       - ContainerRetry__Configurations__5__InitialValueMs=200
       - ContainerRetry__Configurations__5__CutoffRetryMs=10000
+      - ContainerRetry__Configurations__6__ContainerName=recurrence_data
+      - ContainerRetry__Configurations__6__BackoffRetryType=2
+      - ContainerRetry__Configurations__6__InitialValueMs=200
+      - ContainerRetry__Configurations__6__CutoffRetryMs=10000
       - CANCEL_A_DATE_RANGE_MAXIMUM_DAYS=90
       - TZ=UTC
   splunk:

@@ -163,6 +163,7 @@ public static class FunctionConfigurationExtensions
         await database.Database.CreateContainerIfNotExistsAsync(id: "index_data", partitionKeyPath: "/docType");
         await database.Database.CreateContainerIfNotExistsAsync(id: "audit_data", partitionKeyPath: "/user");
         await database.Database.CreateContainerIfNotExistsAsync(id: "aggregated_data", partitionKeyPath: "/date");
+        await database.Database.CreateContainerIfNotExistsAsync(id: "recurrence_data", partitionKeyPath: "/site");
     }
 
     private static CosmosClientOptions GetCosmosOptions(string cosmosEndpoint, bool ignoreSslCert)

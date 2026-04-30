@@ -4,7 +4,7 @@ namespace Nhs.Appointments.Persistance;
 
 public static class ReferenceGroupSelector
 {
-    public static string GetQuietest(IEnumerable<BookingReferenceGroupDocument> referenceGroupDocuments)
+    public static string GetLeastBusy(IEnumerable<BookingReferenceGroupDocument> referenceGroupDocuments)
     {
         return referenceGroupDocuments
                 .OrderBy(g => g.SiteCount)

@@ -23,4 +23,6 @@ public static class LeaseKeys
             return $"{siteId}_{date:yyyyMMdd}";
         }
     }
+
+    public const string ReferenceGroupKey = "reference_group";
 }

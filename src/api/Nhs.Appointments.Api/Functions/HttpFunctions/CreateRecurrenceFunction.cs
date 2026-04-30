@@ -46,12 +46,9 @@ public class CreateRecurrenceFunction(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "availability/create-recurrence")]
         HttpRequest req)
     {
-        //TODO apply toggle
-        // return await featureToggleHelper.IsFeatureEnabled(Flags.Recurrence)
-        //     ? await base.RunAsync(req)
-        //     : ProblemResponse(HttpStatusCode.NotImplemented, null);
-
-        return await base.RunAsync(req);
+        return await featureToggleHelper.IsFeatureEnabled(Flags.Recurrence)
+            ? await base.RunAsync(req)
+            : ProblemResponse(HttpStatusCode.NotImplemented, null);
     }
 
     protected override async Task<ApiResult<EmptyResponse>> HandleRequest(CreateRecurrenceRequest request,

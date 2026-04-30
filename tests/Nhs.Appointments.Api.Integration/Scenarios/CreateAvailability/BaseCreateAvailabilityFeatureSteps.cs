@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Nhs.Appointments.Api.Availability;
 using Nhs.Appointments.Api.Integration.Data;
 using Nhs.Appointments.Api.Json;
 using Nhs.Appointments.Api.Models;
@@ -130,6 +131,38 @@ public abstract class BaseCreateAvailabilityFeatureSteps : AuditFeatureSteps
 
         var payload = JsonResponseWriter.Serialize(request);
         _response = await GetHttpClientForTest().PostAsync("http://localhost:7071/api/availability/apply-template",
+            new StringContent(payload));
+        _statusCode = _response.StatusCode;
+    }
+    
+    [When("I create the following recurring availability at the default site")]
+    [And("I create the following recurring availability at the default site")]
+    public async Task CreateRecurrence(DataTable dataTable)
+    {
+        var request = dataTable.Rows.Skip(1).Take(1).Select(row =>
+        {
+            var recurrencePattern = new RecurrencePattern
+            {
+                StartDate = dataTable.GetNaturalLanguageDateRowValueOrDefault(row, "StartDate"),
+                EndDate = dataTable.GetNaturalLanguageDateRowValueOrDefault(row, "EndDate"),
+                ByDay = dataTable.GetRowValueOrDefault(row, "ByDay").Split(",").Select(Enum.Parse<DayOfWeek>).ToArray(),
+                Session = new Session
+                {
+                    From = TimeOnly.Parse(dataTable.GetRowValueOrDefault(row, "From")),
+                    Until = TimeOnly.Parse(dataTable.GetRowValueOrDefault(row, "Until")),
+                    Services = dataTable.GetRowValueOrDefault(row, "Services").Split(",").Select(s => s.Trim()).ToArray(),
+                    SlotLength = dataTable.GetIntRowValueOrDefault(row, "SlotLength", 10),
+                    Capacity = dataTable.GetIntRowValueOrDefault(row, "Capacity", 1)
+                },
+                Frequency = "Weekly",
+                Interval = 1
+            };
+            
+            return new CreateRecurrenceRequest(GetSiteId(dataTable.GetRowValueOrDefault(row, "Site")), recurrencePattern, dataTable.GetRowValueOrDefault(row, "Label"), null);
+        }).Single();
+
+        var payload = JsonResponseWriter.Serialize(request);
+        _response = await GetHttpClientForTest().PostAsync("http://localhost:7071/api/availability/create-recurrence",
             new StringContent(payload));
         _statusCode = _response.StatusCode;
     }

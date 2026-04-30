@@ -23,4 +23,21 @@ public static class LeaseKeys
             return $"{siteId}_{date:yyyyMMdd}";
         }
     }
+    
+    public static class InMemoryKeyFactory
+    {
+        /// <summary>
+        /// This factory method creates a In Memory Key that logically separates leases <paramref name="realm"/> and <paramref name="leaseKey"/> values.
+        /// </summary>
+        /// <param name="realm">The logical separator</param>
+        /// <param name="leaseKey">The lease key requested</param>
+        /// <returns>A key for in memory leases</returns>
+        public static string Create(string realm, string leaseKey)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(realm, nameof(realm));
+            ArgumentException.ThrowIfNullOrEmpty(leaseKey, nameof(leaseKey));
+
+            return $"{realm}_{leaseKey}";
+        }
+    }
 }

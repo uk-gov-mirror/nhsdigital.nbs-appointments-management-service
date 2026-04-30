@@ -2,16 +2,21 @@
 
 public class LeaseManagerFactory : ILeaseManagerFactory
 {
-    private readonly IEnumerable<ILeaseManager> _leaseManagers;
+    private readonly ILeaseManager[] _leaseManagers;
     
-    public LeaseManagerFactory(IEnumerable<ILeaseManager> leaseManagers)
+    public LeaseManagerFactory(ILeaseManager[] leaseManagers)
     {
+        if (leaseManagers.Length == 0)
+        {
+            throw new ArgumentException("No lease managers have been registered");
+        }
+
         _leaseManagers = leaseManagers;
     }
 
-    public ILeaseManager Create(string mode = null)
+    public ILeaseManager Create(LeaseManagerMode? mode = null)
     {
-        if (string.IsNullOrEmpty(mode))
+        if (mode is null)
         {
             return ResolveDefault();
         }

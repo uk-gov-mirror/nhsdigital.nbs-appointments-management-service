@@ -25,7 +25,7 @@ internal class AzureStorageLeaseManager : ILeaseManager
         _defaultOptions = options.Value;
     }
 
-    public string Mode => LeaseManagerMode.DistributedAzureBlob;
+    public LeaseManagerMode Mode => LeaseManagerMode.DistributedAzureBlob;
 
     public ILeaseContext Acquire(string leaseKey, LeaseManagerOptions options = null)
     {

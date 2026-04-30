@@ -13,7 +13,7 @@ internal class InMemoryLeaseManager : ILeaseManager
         _defaultOptions = options.Value;
     }
 
-    public string Mode => LeaseManagerMode.InMemory;
+    public LeaseManagerMode Mode => LeaseManagerMode.InMemory;
 
     public ILeaseContext Acquire(string leaseKey, LeaseManagerOptions options = null)
     {
@@ -57,7 +57,8 @@ internal class InMemoryLeaseManager : ILeaseManager
     }
 
     private string BuildInMemoryKey(string leaseKey, LeaseManagerOptions options = null) =>
-        $"{options?.Realm ?? _defaultOptions.Realm}_{leaseKey}";
+        LeaseKeys.InMemoryKeyFactory.Create(options?.Realm ?? _defaultOptions.Realm, leaseKey);
+    
     private TimeSpan ResolveTimeout(LeaseManagerOptions options = null) =>
         options?.Timeout ?? _defaultOptions.Timeout;
 }

@@ -2,5 +2,5 @@
 
 public interface ILeaseManagerFactory
 {
-    ILeaseManager Create(string mode = null);
+    ILeaseManager Create(LeaseManagerMode? mode = null);
 }

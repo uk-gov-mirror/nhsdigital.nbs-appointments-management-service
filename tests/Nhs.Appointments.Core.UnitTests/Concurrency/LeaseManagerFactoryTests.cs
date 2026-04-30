@@ -6,23 +6,20 @@ public class LeaseManagerFactoryTests
 {
     private readonly Mock<ILeaseManager> _leaseManagerInMemory = new();
     private readonly Mock<ILeaseManager> _leaseManagerDistributed = new();
-    private readonly Mock<ILeaseManager> _leaseManagerRandom = new();
     
     public LeaseManagerFactoryTests()
     {
         _leaseManagerInMemory.Setup(x => x.Mode).Returns(LeaseManagerMode.InMemory);
         _leaseManagerDistributed.Setup(x => x.Mode).Returns(LeaseManagerMode.DistributedAzureBlob);
-        _leaseManagerRandom.Setup(x => x.Mode).Returns("Random");
     }
     
     [Fact]
     public void Default_Create_InMemoryLeaseManager_WhenNoDistributed()
     {
         var sut = new LeaseManagerFactory(
-            new List<ILeaseManager>
-            {
-                _leaseManagerInMemory.Object
-            });
+        [
+            _leaseManagerInMemory.Object
+        ]);
         
         sut.Create().Mode.Should().Be(LeaseManagerMode.InMemory);   
     }
@@ -31,11 +28,10 @@ public class LeaseManagerFactoryTests
     public void Default_Create_Distributed_WhenAllRegistered()
     {
         var sut = new LeaseManagerFactory(
-            new List<ILeaseManager>
-            {
+            [
                 _leaseManagerInMemory.Object,
                 _leaseManagerDistributed.Object,
-            });
+            ]);
         
         sut.Create().Mode.Should().Be(LeaseManagerMode.DistributedAzureBlob);   
     }
@@ -44,10 +40,9 @@ public class LeaseManagerFactoryTests
     public void Default_Create_Distributed_WhenJustDistributed()
     {
         var sut = new LeaseManagerFactory(
-            new List<ILeaseManager>
-            {
+        [
                 _leaseManagerDistributed.Object,
-            });
+            ]);
         
         sut.Create().Mode.Should().Be(LeaseManagerMode.DistributedAzureBlob);   
     }
@@ -55,58 +50,33 @@ public class LeaseManagerFactoryTests
     [Fact]
     public void Default_Create_Throws_WhenEmpty()
     {
-        var sut = new LeaseManagerFactory(
-            new List<ILeaseManager>());
-        
-        var exception = Assert.Throws<ArgumentException>(() => sut.Create());   
-        exception.Message.Should().Be("No default lease manager found");   
-    }
-    
-    [Fact]
-    public void Default_Create_Throws_WhenNothingDefault()
-    {
-        var sut = new LeaseManagerFactory(
-            new List<ILeaseManager>()
-            {
-                _leaseManagerRandom.Object,
-            });
-        
-        var exception = Assert.Throws<ArgumentException>(() => sut.Create());   
-        exception.Message.Should().Be("No default lease manager found");   
+        var exception = Assert.Throws<ArgumentException>(() => new LeaseManagerFactory([]));   
+        exception.Message.Should().Be("No lease managers have been registered");  
     }
     
     [Theory]
     [InlineData(LeaseManagerMode.InMemory)]
     [InlineData(LeaseManagerMode.DistributedAzureBlob)]
-    [InlineData("Random")]
-    public void Mode_Create_BringsBackRequest(string mode)
+    public void Mode_Create_BringsBackRequest(LeaseManagerMode mode)
     {
         var sut = new LeaseManagerFactory(
-            new List<ILeaseManager>()
-            {
-                _leaseManagerRandom.Object,
+        [
                 _leaseManagerDistributed.Object,
                 _leaseManagerInMemory.Object,
-            });
+            ]);
         
         sut.Create(mode).Mode.Should().Be(mode);   
     }
     
-    [Theory]
-    [InlineData("anything")]
-    [InlineData("*")]
-    [InlineData("something")]
-    public void Mode_Create_Throws_WhenNotFound(string mode)
+    [Fact]
+    public void Mode_Create_Throws_WhenNotFound()
     {
         var sut = new LeaseManagerFactory(
-            new List<ILeaseManager>()
-            {
-                _leaseManagerRandom.Object,
-                _leaseManagerDistributed.Object,
+            [
                 _leaseManagerInMemory.Object,
-            });
+            ]);
         
-        var exception = Assert.Throws<ArgumentException>(() => sut.Create(mode));   
-        exception.Message.Should().Be($"No lease manager found for mode: {mode}");   
+        var exception = Assert.Throws<ArgumentException>(() => sut.Create(LeaseManagerMode.DistributedAzureBlob));   
+        exception.Message.Should().Be($"No lease manager found for mode: {LeaseManagerMode.DistributedAzureBlob}");   
     }
 }

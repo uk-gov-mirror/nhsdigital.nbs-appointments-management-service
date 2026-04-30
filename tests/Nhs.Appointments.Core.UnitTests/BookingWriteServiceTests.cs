@@ -1545,7 +1545,7 @@ public class FakeLeaseManager : ILeaseManager
 
     public AutoResetEvent WaitHandle { get; }
 
-    public string Mode => "TestingMode";
+    public LeaseManagerMode Mode => LeaseManagerMode.InMemory;
 
     public ILeaseContext Acquire(string leaseKey, LeaseManagerOptions options = null)
     {

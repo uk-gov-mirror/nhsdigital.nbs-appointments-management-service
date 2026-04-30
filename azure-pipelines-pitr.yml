@@ -86,6 +86,43 @@ stages:
                 -resourceGroup "vaccs-mya-dev-uks"
                 -cosmosAccountName "vaccs-mya-cdb-dev-uks-secondary"
 
+  - stage: CreateAuditBlobStorageAccount
+    displayName: "Create new audit blob storage account"
+    dependsOn: UpdateConfig
+    jobs:
+      - job: Create
+        steps:
+          - task: AzureCLI@2
+            displayName: "Create secondary audit blob storage account"
+            inputs:
+              azureSubscription: "vaccs-mya-dev-uks"
+              scriptType: "pscore"
+              scriptLocation: "scriptPath"
+              scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/create-audit-blob-storage.ps1"
+              arguments: >
+                - resouceGroup: "vaccs-mya-dev-uks"
+                - blobAccountName: "vaccsmyastrgaudit2devuks"
+                - subscriptionId: "85913fdb-7f11-4963-8519-70879ffd2910"
+
+  - stage: UpdateAuditJob
+    displayName: "Update audit job to point to new storage account"
+    dependsOn: CreateAuditBlobStorageAccount
+    jobs:
+      - job: Update
+        steps:
+          - task: AzureCLI@2
+            displayName: "Update audit container app to point to new storage account"
+            inputs:
+              azureSubscription: "vaccs-mya-dev-uks"
+              scriptType: "pscore"
+              scriptLocation: "scriptPath"
+              scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/update-audit-storage-account.ps1"
+              arguments: >
+                - resouceGroup: "vaccs-mya-dev-uks"
+                - blobAccountName: "vaccsmyastrgaudit2devuks"
+                - containerApp: "vaccs-mya-auditor-dev-uks"
+
+
   - stage: RestartServices
     displayName: "Restart Apps to Pick Up New Config"
     dependsOn: UpdateConfig

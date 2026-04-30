@@ -31,8 +31,9 @@ public class ReferenceNumberProvider : IReferenceNumberProvider
 
     private async Task<int> GetReferenceGroup(string siteId)
     {
+        // TODO: Move this to use the site cache, as this will become the next bottleneck.
         var referenceGroup = await _siteStore.GetReferenceGroup(siteId);
-        if (referenceGroup == 0)
+        if (referenceGroup == SiteConstants.UNASSIGNED_REFERENCE_GROUP)
         {
             referenceGroup = await _referenceNumberDocumentStore.AssignReferenceGroup();
             await _siteStore.SaveReferenceGroup(siteId, referenceGroup);

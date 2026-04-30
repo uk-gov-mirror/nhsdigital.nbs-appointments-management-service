@@ -19,7 +19,7 @@ public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore) : IS
         return siteDocuments?.Select(MapToSite) ?? [];
     }
 
-    public async Task<int> GetReferenceNumberGroup(string site)
+    public async Task<int> GetReferenceGroup(string site)
     {
         var siteDocument = await cosmosStore.GetDocument(site);
         return siteDocument.ReferenceNumberGroup;
@@ -51,11 +51,11 @@ public class SiteStore(ITypedDocumentCosmosStore<SiteDocument> cosmosStore) : IS
         return !originalDocument.isDeleted.HasValue || !originalDocument.isDeleted.Value;
     }
 
-    public async Task AssignPrefix(string site, int prefix)
+    public async Task SaveReferenceGroup(string site, int referenceGroup)
     {
-        var updatePrefix = PatchOperation.Set("/referenceNumberGroup", prefix);
+        var updateReferenceGroup = PatchOperation.Set("/referenceNumberGroup", referenceGroup);
         var partitionKey = cosmosStore.GetDocumentType();
-        await cosmosStore.PatchDocument(partitionKey, site, updatePrefix);
+        await cosmosStore.PatchDocument(partitionKey, site, updateReferenceGroup);
     }
 
     public async Task<OperationResult> UpdateAccessibilities(string siteId, IEnumerable<Accessibility> accessibilities)

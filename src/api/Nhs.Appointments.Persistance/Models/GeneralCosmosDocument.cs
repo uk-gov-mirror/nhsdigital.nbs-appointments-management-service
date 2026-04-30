@@ -33,6 +33,12 @@ public class CoreDataCosmosDocument : LastUpdatedByCosmosDocument
 
 }
 
+[CosmosDocument("booking_reference_data", "docType")]
+public class BookingReferenceDataCosmosDocument : TypedCosmosDocument
+{
+
+}
+
 [CosmosDocument("aggregated_data", "date")]
 public class AggregatedDataCosmosDocument : TypedCosmosDocument
 {

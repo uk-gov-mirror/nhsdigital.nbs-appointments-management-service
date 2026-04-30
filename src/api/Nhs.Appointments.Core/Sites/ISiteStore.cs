@@ -13,8 +13,8 @@ public interface ISiteStore
     
     Task<OperationResult> UpdateSiteReferenceDetails(string siteId, string odsCode, string icb, string region);
     
-    Task AssignPrefix(string site, int prefix);
-    Task<int> GetReferenceNumberGroup(string site);
+    Task SaveReferenceGroup(string site, int referenceGroup);
+    Task<int> GetReferenceGroup(string site);
     Task<IEnumerable<Site>> GetAllSites();
 
     Task<OperationResult> SaveSiteAsync(string siteId, string odsCode, string name, string address, string phoneNumber,

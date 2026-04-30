@@ -123,7 +123,6 @@ public static class FunctionConfigurationExtensions
             .AddScoped<ILastUpdatedByResolver, LastUpdatedByResolver>()
             .AddTransient<IUserCsvWriter, UserCsvWriter>();
 
-        var leaseManagerConnection = Environment.GetEnvironmentVariable("LEASE_MANAGER_CONNECTION");
         builder.Services.AddConcurrency(configuration);
 
         builder.Services.AddHttpClient();

@@ -41,6 +41,7 @@ public static class ServiceRegistration
             .AddScoped<IAvailabilityCreatedEventStore, AvailabilityCreatedEventDocumentStore>()
             .AddScoped<IBookingsDocumentStore, BookingCosmosDocumentStore>()
             .AddScoped<IReferenceNumberDocumentStore, ReferenceGroupCosmosDocumentStore>()
+            .AddScoped<ICoreReferenceNumberMigrationDocumentStore, CoreReferenceNumberGroupCosmosDocumentStore>()
             .AddScoped<IEulaStore, EulaStore>()
             .AddScoped<IUserStore, UserStore>()
             .AddScoped<IRolesStore, RolesStore>()

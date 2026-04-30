@@ -35,7 +35,6 @@ using Nhs.Appointments.Core.Okta;
 using Nhs.Appointments.Core.Reports.MasterSiteList;
 using Nhs.Appointments.Core.Reports.SiteSummary;
 using Nhs.Appointments.Core.Reports.Users;
-using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Persistance;
 
 namespace Nhs.Appointments.Api;
@@ -160,6 +159,7 @@ public static class FunctionConfigurationExtensions
         var database = await cosmosClient.CreateDatabaseIfNotExistsAsync(id: "appts");
         await database.Database.CreateContainerIfNotExistsAsync(id: "booking_data", partitionKeyPath: "/site");
         await database.Database.CreateContainerIfNotExistsAsync(id: "core_data", partitionKeyPath: "/docType");
+        await database.Database.CreateContainerIfNotExistsAsync(id: "booking_reference_data", partitionKeyPath: "/docType");
         await database.Database.CreateContainerIfNotExistsAsync(id: "index_data", partitionKeyPath: "/docType");
         await database.Database.CreateContainerIfNotExistsAsync(id: "audit_data", partitionKeyPath: "/user");
         await database.Database.CreateContainerIfNotExistsAsync(id: "aggregated_data", partitionKeyPath: "/date");

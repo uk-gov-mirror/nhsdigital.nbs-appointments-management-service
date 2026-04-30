@@ -4,6 +4,7 @@ using DataExtract.Documents;
 using Microsoft.FeatureManagement;
 using Nhs.Appointments.Core.Logger;
 using Nhs.Appointments.Persistance.Models;
+using Nhs.Appointments.Core.Configuration;
 
 var builder = Host.CreateApplicationBuilder(args);
 var azureAppConfigConnection = Environment.GetEnvironmentVariable("APP_CONFIG_CONNECTION");
@@ -12,8 +13,8 @@ builder.Configuration.Sources.Clear();
 builder.Configuration
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", false, true)
-    .AddEnvironmentVariables()
-    .AddNbsAzureKeyVault();
+    .AddNbsAzureKeyVault()
+    .AddMyaConfiguration();
 
 // Handle Feature Flag (Local vs Cloud)
 if (azureAppConfigConnection == "local")

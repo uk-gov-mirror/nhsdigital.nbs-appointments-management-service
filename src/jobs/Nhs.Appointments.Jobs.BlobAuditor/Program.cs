@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Linq;
+using Nhs.Appointments.Core.Configuration;
 using Nhs.Appointments.Core.Logger;
 using Nhs.Appointments.Jobs.BlobAuditor;
 using Nhs.Appointments.Jobs.BlobAuditor.Sink;
@@ -14,7 +15,7 @@ builder.Configuration.Sources.Clear();
 builder.Configuration
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddEnvironmentVariables();
+    .AddMyaConfiguration();
 
 builder.Services.Configure<List<SinkExclusion>>(
     builder.Configuration.GetSection("SinkExclusions"));

@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Linq;
+using Nhs.Appointments.Core.Configuration;
 using Nhs.Appointments.Core.Logger;
 using Nhs.Appointments.Jobs.Aggregator;
 using Nhs.Appointments.Jobs.ChangeFeed;
@@ -12,7 +13,7 @@ builder.Configuration.Sources.Clear();
 builder.Configuration
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddEnvironmentVariables();
+    .AddMyaConfiguration();
     
 builder.UseAppointmentsSerilog();
 var applicationName = builder.Configuration.GetValue<string>("Application_Name") ?? throw new NullReferenceException("Application_Name is required");

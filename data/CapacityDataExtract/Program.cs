@@ -2,6 +2,7 @@ using CapacityDataExtracts;
 using DataExtract;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Nhs.Appointments.Core.Configuration;
 using Nhs.Appointments.Core.Logger;
 using Nhs.Appointments.Persistance.Models;
 
@@ -11,8 +12,8 @@ builder.Configuration.Sources.Clear();
 builder.Configuration
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddEnvironmentVariables()
-            .AddNbsAzureKeyVault();
+            .AddNbsAzureKeyVault()
+            .AddMyaConfiguration();
 
 builder.UseAppointmentsSerilog();
 

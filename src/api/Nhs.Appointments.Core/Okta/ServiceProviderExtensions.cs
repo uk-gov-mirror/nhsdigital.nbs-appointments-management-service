@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Okta.Sdk.Api;
 using Okta.Sdk.Client;
+using OktaConfig = Okta.Sdk.Client.Configuration;
 
 namespace Nhs.Appointments.Core.Okta;
 
@@ -54,7 +55,7 @@ public static class ServiceProviderExtensions
                 N = Convert.ToBase64String(keyParams.Modulus),
             };
 
-            return new UserApi(new Configuration
+            return new UserApi(new OktaConfig
             {
                 OktaDomain = oktaOptions.Domain,
                 AuthorizationMode = AuthorizationMode.PrivateKey,

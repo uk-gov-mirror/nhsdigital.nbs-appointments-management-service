@@ -1,4 +1,3 @@
-using Azure.Identity;
 using FluentValidation;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
@@ -22,6 +21,7 @@ using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Core.BulkImport;
 using Nhs.Appointments.Core.ClinicalServices;
+using Nhs.Appointments.Core.Configuration;
 using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Json;
 using Nhs.Appointments.Core.Messaging;
@@ -45,24 +45,11 @@ public static class FunctionConfigurationExtensions
     public static IFunctionsWorkerApplicationBuilder ConfigureFunctionDependencies(
         this IFunctionsWorkerApplicationBuilder builder)
     {
-        // Set up configuration
-        var initialConfig = new ConfigurationBuilder()
-                .AddEnvironmentVariables()
-                .Build();
+        var configuration = new ConfigurationBuilder()
+                    .AddMyaConfiguration()
+                    .Build();
 
-        var vaultUri = initialConfig["KEY_VAULT_URI"];
-
-        var configurationBuilder = new ConfigurationBuilder()
-            .AddEnvironmentVariables();
-
-        if (!string.IsNullOrEmpty(vaultUri))
-        {
-            configurationBuilder.AddAzureKeyVault(
-                new Uri(vaultUri),
-                new DefaultAzureCredential());
-        }
-
-        var configuration = configurationBuilder.Build();
+        builder.Services.AddSingleton<IConfiguration>(configuration);
 
         builder.Services.AddRequestInspectors();
         builder.Services.AddSingleton<IFeatureToggleHelper, FeatureToggleHelper>();
@@ -137,7 +124,7 @@ public static class FunctionConfigurationExtensions
             .AddScoped<ILastUpdatedByResolver, LastUpdatedByResolver>()
             .AddTransient<IUserCsvWriter, UserCsvWriter>();
 
-        var leaseManagerConnection = Environment.GetEnvironmentVariable("LEASE_MANAGER_CONNECTION");
+        var leaseManagerConnection = configuration["LEASE_MANAGER_CONNECTION"];
         if (leaseManagerConnection == "local")
         {
             builder.Services.AddInMemoryLeasing();
@@ -149,10 +136,9 @@ public static class FunctionConfigurationExtensions
 
         builder.Services.AddHttpClient();
 
-        var cosmosEndpoint = configuration["COSMOS-ENDPOINT"] ?? configuration["COSMOS_ENDPOINT"];
-        var cosmosToken = configuration["COSMOS-TOKEN"] ?? configuration["COSMOS_TOKEN"];
-        var ignoreSslCertSetting =
-            Environment.GetEnvironmentVariable("COSMOS_IGNORE_SSL_CERT", EnvironmentVariableTarget.Process);
+        var cosmosEndpoint = configuration["COSMOS_ENDPOINT"];
+        var cosmosToken = configuration["COSMOS_TOKEN"];
+        var ignoreSslCertSetting = configuration["COSMOS_IGNORE_SSL_CERT"];
         bool.TryParse(ignoreSslCertSetting, out var ignoreSslCert);
         var cosmosOptions = GetCosmosOptions(cosmosEndpoint, ignoreSslCert);
 

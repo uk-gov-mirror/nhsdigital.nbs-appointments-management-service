@@ -37,7 +37,7 @@ public static class ServiceRegistration
         });
 
         return services
-            .AddSingleton<IAzureBlobStorage, AzureBlobStorage>()
+            .AddTransient<IAzureBlobStorage, AzureBlobStorage>()
             .AddTransient<ILeaseManager, AzureStorageLeaseManager>();
     }
 }

@@ -10,6 +10,7 @@ public static class Flags
     public const string CancelADateRangeWithBookings = "CancelADateRangeWithBookings";
     public const string CancellationReasonBookingsReporting = "CancellationReasonBookingsReporting";
     public const string SiteTypeBookingsReporting = "SiteTypeBookingsReporting";
+    public const string Recurrence = "Recurrence";
 
     #region TestFlags
     //a simple on/off global flag

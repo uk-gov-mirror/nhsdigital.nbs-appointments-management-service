@@ -8,6 +8,7 @@ public static class FeatureToggleCollectionNames
     public const string CancelDayCollection = $"{Flags.CancelDay}_Toggle";
     public const string MultiServiceJointBookingsCollection = $"{Flags.MultiServiceJointBookings}_Toggle";
     public const string ReportsUpliftCollection = $"{Flags.ReportsUplift}_Toggle";
+    public const string RecurrenceCollection = $"{Flags.Recurrence}_Toggle";
 
     public const string CancelDateRangeAndBookingsCollection = $"{Flags.CancelADateRange}|{Flags.CancelADateRangeWithBookings}_Toggle";
 
@@ -31,5 +32,10 @@ public class ReportsUpliftCollection : ICollectionFixture<object>
 
 [CollectionDefinition(FeatureToggleCollectionNames.CancelDateRangeAndBookingsCollection)]
 public class CancelDateRangeAndBookingsCollection : ICollectionFixture<object>
+{
+}
+
+[CollectionDefinition(FeatureToggleCollectionNames.RecurrenceCollection)]
+public class RecurrenceCollection : ICollectionFixture<object>
 {
 }

@@ -207,6 +207,9 @@ services:
       - AuditWorkerConfigurations__3__ContainerName=index_data
       - AuditWorkerConfigurations__3__PollingIntervalSeconds=2
       - AuditWorkerConfigurations__3__LeaseContainerName=audit_data_lease
+      - AuditWorkerConfigurations__4__ContainerName=recurrence_data
+      - AuditWorkerConfigurations__4__PollingIntervalSeconds=2
+      - AuditWorkerConfigurations__4__LeaseContainerName=audit_data_lease
       - SinkExclusions__0__Source=booking_data
       - SinkExclusions__0__ExcludedPaths__0=contactDetails
       - SinkExclusions__0__ExcludedPaths__1=attendeeDetails.firstName

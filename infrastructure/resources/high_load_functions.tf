@@ -83,6 +83,7 @@ resource "azurerm_windows_function_app" "nbs_mya_high_load_func_app" {
     Auth__Providers__1__RequiresStateForAuthorize                          = true
     CANCEL_A_DATE_RANGE_MAXIMUM_DAYS                                       = var.cancel_a_date_range_maximum_days
     APPLICATION_NAME                                                       = "High Load Function App"
+    KEY_VAULT_URI                                                          = azurerm_key_vault.nbs_mya_key_vault.vault_uri
     "AzureWebJobs.NotifyBookingCancelled.Disabled"                         = true
     "AzureWebJobs.NotifyBookingMade.Disabled"                              = true
     "AzureWebJobs.NotifyBookingReminder.Disabled"                          = true
@@ -238,6 +239,7 @@ resource "azurerm_windows_function_app_slot" "nbs_mya_high_load_func_app_preview
     Auth__Providers__1__RequiresStateForAuthorize                          = true
     CANCEL_A_DATE_RANGE_MAXIMUM_DAYS                                       = var.cancel_a_date_range_maximum_days
     APPLICATION_NAME                                                       = "High Load Function App"
+    KEY_VAULT_URI                                                          = azurerm_key_vault.nbs_mya_key_vault.vault_uri
     "AzureWebJobs.NotifyBookingCancelled.Disabled"                         = true
     "AzureWebJobs.NotifyBookingMade.Disabled"                              = true
     "AzureWebJobs.NotifyBookingReminder.Disabled"                          = true

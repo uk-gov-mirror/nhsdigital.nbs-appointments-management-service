@@ -57,6 +57,7 @@ resource "azurerm_windows_function_app" "nbs_mya_service_bus_func_app" {
     DISABLE_SITE_CACHE                                                     = var.disable_site_cache
     CANCEL_A_DATE_RANGE_MAXIMUM_DAYS                                       = var.cancel_a_date_range_maximum_days
     APPLICATION_NAME                                                       = "Service Bus Function App"
+    KEY_VAULT_URI                                                          = azurerm_key_vault.nbs_mya_key_vault.vault_uri
     "AzureWebJobs.ApplyAvailabilityTemplateFunction.Disabled"              = true
     "AzureWebJobs.AuthenticateCallbackFunction.Disabled"                   = true
     "AzureWebJobs.AuthenticateFunction.Disabled"                           = true
@@ -192,6 +193,7 @@ resource "azurerm_windows_function_app_slot" "nbs_mya_service_bus_func_app_previ
     SITE_SUMMARY_MINIMUM_PARALLELIZATION                                   = var.site_summary_minimum_parallelization
     CANCEL_A_DATE_RANGE_MAXIMUM_DAYS                                       = var.cancel_a_date_range_maximum_days
     APPLICATION_NAME                                                       = "Service Bus Function App"
+    KEY_VAULT_URI                                                          = azurerm_key_vault.nbs_mya_key_vault.vault_uri
     "AzureWebJobs.ApplyAvailabilityTemplateFunction.Disabled"              = true
     "AzureWebJobs.AuthenticateCallbackFunction.Disabled"                   = true
     "AzureWebJobs.AuthenticateFunction.Disabled"                           = true

@@ -82,6 +82,7 @@ resource "azurerm_windows_function_app" "nbs_mya_http_func_app" {
     SITE_SUPPORTS_SERVICE_BATCH_MULTIPLIER                         = var.site_supports_service_batch_multiplier
     CANCEL_A_DATE_RANGE_MAXIMUM_DAYS                               = var.cancel_a_date_range_maximum_days
     APPLICATION_NAME                                               = "HTTP Function App"
+    KEY_VAULT_URI                                                  = azurerm_key_vault.nbs_mya_key_vault.vault_uri
     "AzureWebJobs.QueryAvailabilityFunction.Disabled"              = var.disable_query_availability_function
     "AzureWebJobs.NotifyBookingCancelled.Disabled"                 = true
     "AzureWebJobs.NotifyBookingMade.Disabled"                      = true
@@ -189,6 +190,7 @@ resource "azurerm_windows_function_app_slot" "nbs_mya_http_func_app_preview" {
     SITE_SUPPORTS_SERVICE_BATCH_MULTIPLIER                         = var.site_supports_service_batch_multiplier
     CANCEL_A_DATE_RANGE_MAXIMUM_DAYS                               = var.cancel_a_date_range_maximum_days
     APPLICATION_NAME                                               = "HTTP Function App"
+    KEY_VAULT_URI                                                  = azurerm_key_vault.nbs_mya_key_vault.vault_uri
     "AzureWebJobs.QueryAvailabilityFunction.Disabled"              = var.disable_query_availability_function
     "AzureWebJobs.NotifyBookingCancelled.Disabled"                 = true
     "AzureWebJobs.NotifyBookingMade.Disabled"                      = true

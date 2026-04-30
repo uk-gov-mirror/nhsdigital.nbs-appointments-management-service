@@ -137,6 +137,10 @@ resource "azurerm_container_app_job" "nbs_mya_booking_extracts_job" {
         secret_name = "container-cosmos-password"
       }
       env {
+        name  = "KEY_VAULT_URI"
+        value = azurerm_key_vault.nbs_mya_key_vault.vault_uri
+      }
+      env {
         name = "FileSenderOptions__Type"
         value = var.data_extract_file_sender_options_type
       }
@@ -258,6 +262,10 @@ resource "azurerm_container_app_job" "nbs_mya_capacity_extracts_job" {
       env {
         name  = "COSMOS_TOKEN"
         secret_name = "container-cosmos-password"
+      }
+      env {
+        name  = "KEY_VAULT_URI"
+        value = azurerm_key_vault.nbs_mya_key_vault.vault_uri
       }
       env {
         name = "FileSenderOptions__Type"
@@ -383,6 +391,11 @@ resource "azurerm_container_app" "nbs_mya_auditor" {
       env {
         name  = "COSMOS_ENDPOINT"
         value = var.cosmos_endpoint != "" ? var.cosmos_endpoint : azurerm_cosmosdb_account.nbs_mya_cosmos_db[0].endpoint
+      }
+
+      env {
+        name  = "KEY_VAULT_URI"
+        value = azurerm_key_vault.nbs_mya_key_vault.vault_uri
       }
 
       env {
@@ -530,6 +543,11 @@ resource "azurerm_container_app" "nbs_mya_aggregator" {
       env {
         name        = "SPLUNK_HEC_TOKEN"
         secret_name = "splunk-hec-token"
+      }
+
+      env {
+        name  = "KEY_VAULT_URI"
+        value = azurerm_key_vault.nbs_mya_key_vault.vault_uri
       }
 
       env {

@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Reflection;
-using System.Threading.Tasks;
+using Azure.Identity;
 using FluentValidation;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
@@ -35,8 +30,13 @@ using Nhs.Appointments.Core.Okta;
 using Nhs.Appointments.Core.Reports.MasterSiteList;
 using Nhs.Appointments.Core.Reports.SiteSummary;
 using Nhs.Appointments.Core.Reports.Users;
-using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Persistance;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Nhs.Appointments.Api;
 
@@ -46,8 +46,22 @@ public static class FunctionConfigurationExtensions
         this IFunctionsWorkerApplicationBuilder builder)
     {
         // Set up configuration
+        var initialConfig = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .Build();
+
+        var vaultUri = initialConfig["KEY_VAULT_URI"];
+
         var configurationBuilder = new ConfigurationBuilder()
             .AddEnvironmentVariables();
+
+        if (!string.IsNullOrEmpty(vaultUri))
+        {
+            configurationBuilder.AddAzureKeyVault(
+                new Uri(vaultUri),
+                new DefaultAzureCredential());
+        }
+
         var configuration = configurationBuilder.Build();
 
         builder.Services.AddRequestInspectors();
@@ -135,8 +149,8 @@ public static class FunctionConfigurationExtensions
 
         builder.Services.AddHttpClient();
 
-        var cosmosEndpoint = Environment.GetEnvironmentVariable("COSMOS_ENDPOINT", EnvironmentVariableTarget.Process);
-        var cosmosToken = Environment.GetEnvironmentVariable("COSMOS_TOKEN", EnvironmentVariableTarget.Process);
+        var cosmosEndpoint = configuration["COSMOS-ENDPOINT"] ?? configuration["COSMOS_ENDPOINT"];
+        var cosmosToken = configuration["COSMOS-TOKEN"] ?? configuration["COSMOS_TOKEN"];
         var ignoreSslCertSetting =
             Environment.GetEnvironmentVariable("COSMOS_IGNORE_SSL_CERT", EnvironmentVariableTarget.Process);
         bool.TryParse(ignoreSslCertSetting, out var ignoreSslCert);

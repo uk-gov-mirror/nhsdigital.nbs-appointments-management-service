@@ -9,41 +9,60 @@ namespace Nhs.Appointments.Core.Concurrency;
 internal class AzureStorageLeaseManager : ILeaseManager
 {
     private readonly IAzureBlobStorage _azureBlobStorage;
-    private readonly LeaseManagerOptions _options;
-    private readonly int _acquireTimeInSeconds;
+    private readonly LeaseManagerOptions _defaultOptions;
     private readonly int _delayRetryTimeInMilliseconds;
 
     public AzureStorageLeaseManager(
         IOptions<LeaseManagerOptions> options, 
         IAzureBlobStorage azureBlobStorage, 
-        int acquireTimeInSeconds = 20, 
         int delayRetryTimeInMilliseconds = 100
         )
     {
-        ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(acquireTimeInSeconds, 0, nameof(acquireTimeInSeconds));
         ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(delayRetryTimeInMilliseconds, 0, nameof(delayRetryTimeInMilliseconds));
 
         _azureBlobStorage = azureBlobStorage ?? throw new ArgumentNullException(nameof(azureBlobStorage));
-        _options = options.Value;
-        _acquireTimeInSeconds = acquireTimeInSeconds;
         _delayRetryTimeInMilliseconds = delayRetryTimeInMilliseconds;
+        _defaultOptions = options.Value;
     }
 
-    public ILeaseContext Acquire(string leaseKey)
+    public string Mode => LeaseManagerMode.DistributedAzureBlob;
+
+    public ILeaseContext Acquire(string leaseKey, LeaseManagerOptions options = null)
     {
-        var leaseClient = GetLeaseClient(leaseKey);
-        var leasePipeline = CreateResiliencePipeline();
-        leasePipeline.Execute(() => leaseClient.Acquire(TimeSpan.FromSeconds(_acquireTimeInSeconds)));
+        var leaseClient = GetLeaseClient(ResolveContainerName(options),leaseKey);
+        CreateResiliencePipeline().Execute(() => leaseClient.Acquire(ResolveTimeout(options)));
+
+        return new LeaseContext(leaseKey, () => leaseClient.Release());
+    }
+    
+    public async Task<ILeaseContext> AcquireAsync(string leaseKey, LeaseManagerOptions options = null)
+    {
+        var leaseClient = await GetLeaseClientAsync(ResolveContainerName(options),leaseKey);
+        await CreateResiliencePipeline().ExecuteAsync(
+            async (cancellationToken) => await leaseClient.AcquireAsync(
+                ResolveTimeout(options), 
+                cancellationToken: cancellationToken));
 
         return new LeaseContext(leaseKey, () => leaseClient.Release());
     }
 
-    private BlobLeaseClient GetLeaseClient(string blobName)
+    private BlobLeaseClient GetLeaseClient(string containerName, string blobName)
     {
-        var blobClient = _azureBlobStorage.GetBlobClientFromContainerAndBlobName(_options.ContainerName, blobName);
+        var blobClient = _azureBlobStorage.GetBlobClientFromContainerAndBlobName(containerName, blobName);
         if (blobClient.Exists() == false)
         {
             blobClient.Upload(BinaryData.FromString(""));
+        }
+
+        return blobClient.GetBlobLeaseClient();
+    }
+    
+    private async Task<BlobLeaseClient> GetLeaseClientAsync(string containerName, string blobName)
+    {
+        var blobClient = await _azureBlobStorage.GetBlobClientFromContainerAndBlobNameAsync(containerName, blobName);
+        if (await blobClient.ExistsAsync() == false)
+        {
+            await blobClient.UploadAsync(BinaryData.FromString(""));
         }
 
         return blobClient.GetBlobLeaseClient();
@@ -63,5 +82,9 @@ internal class AzureStorageLeaseManager : ILeaseManager
                 Delay = TimeSpan.FromMilliseconds(_delayRetryTimeInMilliseconds)
             })
             .Build();
-    }                
+    }
+
+    private string ResolveContainerName(LeaseManagerOptions options = null) => options?.Realm ?? _defaultOptions.Realm;
+    private TimeSpan ResolveTimeout(LeaseManagerOptions options = null) =>
+        options?.Timeout ?? _defaultOptions.Timeout;
 }

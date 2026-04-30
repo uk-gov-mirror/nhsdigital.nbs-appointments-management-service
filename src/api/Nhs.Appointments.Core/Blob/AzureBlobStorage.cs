@@ -6,7 +6,7 @@ public class AzureBlobStorage(BlobServiceClient blobServiceClient) : IAzureBlobS
 {
     public async Task<Stream> GetBlobUploadStream(string containerName, string blobName)
     {
-        var blobClient = GetBlobClientFromContainerAndBlobName(containerName, blobName);
+        var blobClient = await GetBlobClientFromContainerAndBlobNameAsync(containerName, blobName);
 
         return await blobClient.OpenWriteAsync(true);
     }
@@ -18,6 +18,13 @@ public class AzureBlobStorage(BlobServiceClient blobServiceClient) : IAzureBlobS
         return containerClient.GetBlobClient(blobName);
     }
 
+    public async Task<BlobClient> GetBlobClientFromContainerAndBlobNameAsync(string containerName, string blobName)
+    {
+        var containerClient = await ResolveContainerClientAsync(containerName);
+        
+        return containerClient.GetBlobClient(blobName);
+    }
+
     private BlobContainerClient ResolveContainerClient(string containerName)
     {
         var containers = blobServiceClient.GetBlobContainers();
@@ -25,5 +32,14 @@ public class AzureBlobStorage(BlobServiceClient blobServiceClient) : IAzureBlobS
         return containers.Any(x => x.Name.Equals(containerName)) 
             ? blobServiceClient.GetBlobContainerClient(containerName) 
             : blobServiceClient.CreateBlobContainer(containerName);
+    }
+    
+    private async Task<BlobContainerClient> ResolveContainerClientAsync(string containerName)
+    {
+        var exists = await blobServiceClient.GetBlobContainersAsync().AnyAsync(x => x.Name.Equals(containerName));
+        
+        return exists
+            ? blobServiceClient.GetBlobContainerClient(containerName) 
+            : await blobServiceClient.CreateBlobContainerAsync(containerName);
     }
 }

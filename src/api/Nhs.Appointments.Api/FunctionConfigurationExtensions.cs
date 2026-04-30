@@ -124,14 +124,7 @@ public static class FunctionConfigurationExtensions
             .AddTransient<IUserCsvWriter, UserCsvWriter>();
 
         var leaseManagerConnection = Environment.GetEnvironmentVariable("LEASE_MANAGER_CONNECTION");
-        if (leaseManagerConnection == "local")
-        {
-            builder.Services.AddInMemoryLeasing();
-        }
-        else
-        {
-            builder.Services.AddAzureBlobStoreLeasing(leaseManagerConnection, "leases");
-        }
+        builder.Services.AddConcurrency(configuration);
 
         builder.Services.AddHttpClient();
 

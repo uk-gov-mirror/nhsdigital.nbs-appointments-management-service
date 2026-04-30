@@ -5,18 +5,45 @@ namespace Nhs.Appointments.Core.Concurrency;
 internal class InMemoryLeaseManager : ILeaseManager
 {
     private readonly Dictionary<string, SemaphoreSlim> _locks;
-    private readonly LeaseManagerOptions _options;
+    private readonly LeaseManagerOptions _defaultOptions;
 
     public InMemoryLeaseManager(IOptions<LeaseManagerOptions> options)
     {
         _locks = new Dictionary<string, SemaphoreSlim>();
-        _options = options.Value;
+        _defaultOptions = options.Value;
     }
 
-    public ILeaseContext Acquire(string leaseKey)
+    public string Mode => LeaseManagerMode.InMemory;
+
+    public ILeaseContext Acquire(string leaseKey, LeaseManagerOptions options = null)
+    {
+        var inMemoryLeaseKey = BuildInMemoryKey(leaseKey, options);
+        var mutex = ResolveMutex(inMemoryLeaseKey, options);
+        if (!mutex.Wait(ResolveTimeout(options)))
+        {
+            throw new AbandonedMutexException($"Abandoned attempt to acquire lock for lease key {inMemoryLeaseKey}");
+        }
+
+        return new LeaseContext(inMemoryLeaseKey, () => mutex.Release());
+    }
+
+    public async Task<ILeaseContext> AcquireAsync(string leaseKey, LeaseManagerOptions options = null)
+    {
+        var inMemoryLeaseKey = BuildInMemoryKey(leaseKey, options);
+        var mutex = ResolveMutex(inMemoryLeaseKey, options);
+
+        if (!(await mutex.WaitAsync(ResolveTimeout(options))))
+        {
+            throw new AbandonedMutexException($"Abandoned attempt to acquire lock for lease key {inMemoryLeaseKey}");
+        }
+
+        return new LeaseContext(inMemoryLeaseKey, () => mutex.Release());
+    }
+
+    private SemaphoreSlim ResolveMutex(string leaseKey, LeaseManagerOptions options = null)
     {
         SemaphoreSlim mutex;
-
+        
         lock (_locks)
         {
             if (!_locks.ContainsKey(leaseKey))
@@ -25,12 +52,12 @@ internal class InMemoryLeaseManager : ILeaseManager
             }
             mutex = _locks[leaseKey];
         }
-
-        if (!mutex.Wait(_options.Timeout))
-        {
-            throw new AbandonedMutexException($"Abandoned attempt to acquire lock for lease key {leaseKey}");
-        }
-
-        return new LeaseContext(leaseKey, () => mutex.Release());
+        
+        return mutex;
     }
+
+    private string BuildInMemoryKey(string leaseKey, LeaseManagerOptions options = null) =>
+        $"{options?.Realm ?? _defaultOptions.Realm}_{leaseKey}";
+    private TimeSpan ResolveTimeout(LeaseManagerOptions options = null) =>
+        options?.Timeout ?? _defaultOptions.Timeout;
 }

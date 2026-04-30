@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Azure;
+using Microsoft.Extensions.Configuration;
 using Nhs.Appointments.Core.Blob;
 using Nhs.Appointments.Core.Concurrency;
 
@@ -6,19 +7,30 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceRegistration
 {
-    public static IServiceCollection AddInMemoryLeasing(this IServiceCollection services)
+    public static IServiceCollection AddConcurrency(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<LeaseManagerOptions>(opts => opts.Timeout = TimeSpan.FromSeconds(15));
-        return services.AddSingleton<ILeaseManager, InMemoryLeaseManager>();
+        var leaseManagerConnection = configuration.GetValue<string>("LEASE_MANAGER_CONNECTION");
+
+        services
+            .AddTransient<ILeaseManagerFactory, LeaseManagerFactory>()
+            .Configure<LeaseManagerOptions>(opts =>
+            {
+                opts.Timeout =
+                    TimeSpan.FromSeconds(configuration.GetValue("LEASE_MANAGER_DEFAULT_TIME_OUT_SECONDS", 15));
+                opts.Realm = configuration.GetValue("LEASE_MANAGER_DEFAULT_REALM", "leases");
+            })
+            .AddSingleton<ILeaseManager, InMemoryLeaseManager>();
+        
+        if (!string.IsNullOrEmpty(leaseManagerConnection))
+        {
+            services.AddAzureBlobStoreLeasing(leaseManagerConnection);
+        }
+        
+        return services;
     }
 
-    public static IServiceCollection AddAzureBlobStoreLeasing(this IServiceCollection services, string connectionString, string containerName)
+    private static IServiceCollection AddAzureBlobStoreLeasing(this IServiceCollection services, string connectionString)
     {
-        services.Configure<LeaseManagerOptions>(opts => { 
-            opts.Timeout = TimeSpan.FromSeconds(30);
-            opts.ContainerName = containerName;
-        });
-                    
         services.AddAzureClients(x =>
         {
             x.AddBlobServiceClient(connectionString);
@@ -26,6 +38,6 @@ public static class ServiceRegistration
 
         return services
             .AddSingleton<IAzureBlobStorage, AzureBlobStorage>()
-            .AddSingleton<ILeaseManager, AzureStorageLeaseManager>();
+            .AddTransient<ILeaseManager, AzureStorageLeaseManager>();
     }
 }

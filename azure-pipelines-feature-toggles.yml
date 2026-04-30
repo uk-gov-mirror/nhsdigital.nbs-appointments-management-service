@@ -14,4 +14,6 @@ stages:
       - template: "features/scripts/deploy-feature-toggles.yml"
         parameters:
           env: ${{env}}
+          # this is an adhoc pipeline that doesnt depend on the deploy stage to run
+          dependsOnDeployment: false
           isValidBranch: ${{ or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix/')) }}

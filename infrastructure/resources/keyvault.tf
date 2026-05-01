@@ -35,22 +35,25 @@ resource "azurerm_role_assignment" "pipeline_secret_access" {
 
 locals {
   principals_map = merge(
-    { for i, v in azurerm_container_app_job.nbs_mya_booking_extracts_job : "booking_extracts_job_${i}" => v.identity[0].principal_id },
-    { for i, v in azurerm_container_app_job.nbs_mya_capacity_extracts_job : "capacity_extracts_job_${i}" => v.identity[0].principal_id },
-    { for i, v in azurerm_container_app.nbs_mya_auditor : "auditor_${i}" => v.identity[0].principal_id },
-    { for i, v in azurerm_container_app.nbs_mya_aggregator : "aggregator_${i}" => v.identity[0].principal_id },
+    # Container App Jobs
+    { for v in azurerm_container_app_job.nbs_mya_booking_extracts_job : "booking_extracts_job_${v.name}" => v.identity[0].principal_id },
+    { for v in azurerm_container_app_job.nbs_mya_capacity_extracts_job : "capacity_extracts_job_${v.name}" => v.identity[0].principal_id },
 
-    { for i, v in azurerm_windows_function_app.nbs_mya_high_load_func_app : "high_load_${i}" => v.identity[0].principal_id },
-    { for i, v in azurerm_windows_function_app_slot.nbs_mya_high_load_func_app_preview : "high_load_preview_${i}" => v.identity[0].principal_id },
-    
-    { for i, v in azurerm_windows_function_app.nbs_mya_http_func_app : "http_${i}" => v.identity[0].principal_id },
-    { for i, v in azurerm_windows_function_app_slot.nbs_mya_http_func_app_preview : "http_preview_${i}" => v.identity[0].principal_id },
-    
-    { for i, v in azurerm_windows_function_app.nbs_mya_service_bus_func_app : "sb_func_${i}" => v.identity[0].principal_id },
-    { for i, v in azurerm_windows_function_app_slot.nbs_mya_service_bus_func_app_preview : "sb_preview_${i}" => v.identity[0].principal_id },
-    
-    { for i, v in azurerm_windows_function_app.nbs_mya_timer_func_app : "timer_${i}" => v.identity[0].principal_id },
-    { for i, v in azurerm_windows_function_app_slot.nbs_mya_timer_func_app_preview : "timer_preview_${i}" => v.identity[0].principal_id }
+    # Container Apps
+    { for v in azurerm_container_app.nbs_mya_auditor : "auditor_${v.name}" => v.identity[0].principal_id },
+    { for v in azurerm_container_app.nbs_mya_aggregator : "aggregator_${v.name}" => v.identity[0].principal_id },
+
+    # Function Apps (Standard) - Using try() to handle potential empty identity blocks
+    { for i, v in azurerm_windows_function_app.nbs_mya_high_load_func_app : "high_load_${i}" => try(v.identity[0].principal_id, null) },
+    { for i, v in azurerm_windows_function_app.nbs_mya_http_func_app : "http_${i}" => try(v.identity[0].principal_id, null) },
+    { for i, v in azurerm_windows_function_app.nbs_mya_service_bus_func_app : "sb_func_${i}" => try(v.identity[0].principal_id, null) },
+    { for i, v in azurerm_windows_function_app.nbs_mya_timer_func_app : "timer_${i}" => try(v.identity[0].principal_id, null) },
+
+    # Function App Slots (Preview)
+    { for i, v in azurerm_windows_function_app_slot.nbs_mya_high_load_func_app_preview : "high_load_preview_${i}" => try(v.identity[0].principal_id, null) },
+    { for i, v in azurerm_windows_function_app_slot.nbs_mya_http_func_app_preview : "http_preview_${i}" => try(v.identity[0].principal_id, null) },
+    { for i, v in azurerm_windows_function_app_slot.nbs_mya_service_bus_func_app_preview : "sb_preview_${i}" => try(v.identity[0].principal_id, null) },
+    { for i, v in azurerm_windows_function_app_slot.nbs_mya_timer_func_app_preview : "timer_preview_${i}" => try(v.identity[0].principal_id, null) }
   )
 }
 

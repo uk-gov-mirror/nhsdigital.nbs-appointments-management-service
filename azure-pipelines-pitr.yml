@@ -142,7 +142,7 @@ stages:
 
   - stage: RestartServices
     displayName: "Restart Apps to Pick Up New Config"
-    dependsOn: UpdateAuditJob
+    dependsOn: UpdateAuditContainerApp
     # This 'environment' line triggers the manual approval check if configured in ADO
     jobs:
       - deployment: Restart

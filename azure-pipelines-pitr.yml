@@ -44,11 +44,29 @@ stages:
               scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/stop-dev-app-services.ps1"
               arguments: "-resourceGroup vaccs-mya-dev-uks -region uks"
 
+  - stage: DecommissionSourceDB
+    displayName: "Take Source DB Offline"
+    dependsOn: StopWebApp
+    jobs:
+      - job: TakeOffline
+        steps:
+          - checkout: self
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: "vaccs-mya-dev-uks"
+              scriptType: "pscore"
+              scriptLocation: "scriptPath"
+              scriptPath: "$(Build.SourcesDirectory)/scripts/disaster-recovery/take-offline-source-db.ps1"
+              arguments: >
+                -sourceAccount "vaccs-mya-cdb-dev-uks"
+                -resourceGroup "vaccs-mya-dev-uks"
+
   - stage: CosmosPITR
     displayName: "Perform Cosmos DB PITR"
     dependsOn:
       - StopWebApp
       - Validation
+      - DecommissionSourceDB
     variables:
       RestoreTimeUtc: $[ stageDependencies.Validation.ValidateInput.outputs['ValidateStep.ConvertedUtcTime'] ]
     jobs:
@@ -121,7 +139,6 @@ stages:
                 - resouceGroup: "vaccs-mya-dev-uks"
                 - blobAccountName: "vaccsmyastrgaudit2devuks"
                 - containerApp: "vaccs-mya-auditor-dev-uks"
-
 
   - stage: RestartServices
     displayName: "Restart Apps to Pick Up New Config"

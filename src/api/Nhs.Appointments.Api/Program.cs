@@ -5,10 +5,15 @@ using Nhs.Appointments.Api.Features;
 using Nhs.Appointments.Core.Logger;
 using Nhs.Appointments.Api.Middleware;
 using Nhs.Appointments.Audit;
+using Nhs.Appointments.Core.Configuration;
 
 var host = new HostBuilder()
+    .ConfigureAppConfiguration(config =>
+    {
+        config.AddMyaConfiguration(args);
+    })
     .ConfigureFeatureDependencies()
-    .ConfigureFunctionsWebApplication(builder =>
+    .ConfigureFunctionsWebApplication((context, builder) =>
     {
         builder
             .UseMiddleware<TypeDecoratorMiddleware>()
@@ -16,7 +21,7 @@ var host = new HostBuilder()
             .UseMiddleware<AuthorizationMiddleware>()
             .UseMiddleware<NoCacheMiddleware>()
             .AddAudit()
-            .ConfigureFunctionDependencies();
+            .ConfigureFunctionDependencies(context.Configuration);
     })
     .UseAppointmentsSerilog()
     .Build();

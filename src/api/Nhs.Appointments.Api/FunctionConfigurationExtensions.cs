@@ -43,14 +43,9 @@ namespace Nhs.Appointments.Api;
 public static class FunctionConfigurationExtensions
 {
     public static IFunctionsWorkerApplicationBuilder ConfigureFunctionDependencies(
-        this IFunctionsWorkerApplicationBuilder builder)
+        this IFunctionsWorkerApplicationBuilder builder,
+        IConfiguration configuration)
     {
-        var configuration = new ConfigurationBuilder()
-                    .AddMyaConfiguration()
-                    .Build();
-
-        builder.Services.AddSingleton<IConfiguration>(configuration);
-
         builder.Services.AddRequestInspectors();
         builder.Services.AddSingleton<IFeatureToggleHelper, FeatureToggleHelper>();
         builder.Services.AddCustomAuthentication(configuration);

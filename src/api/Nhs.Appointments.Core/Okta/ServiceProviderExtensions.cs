@@ -10,7 +10,10 @@ namespace Nhs.Appointments.Core.Okta;
 
 public static class ServiceProviderExtensions
 {
-    public static IServiceCollection AddOktaUserDirectory(this IServiceCollection services, IConfigurationRoot configuration)
+    public static IServiceCollection AddOktaUserDirectory(
+        this IServiceCollection services, 
+        IConfiguration configuration
+    )
     {
         var oktaConfig = configuration.GetSection("Okta").Get<OktaConfiguration>();
 

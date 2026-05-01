@@ -16,8 +16,10 @@ namespace Nhs.Appointments.Api.Notifications;
 
 public static class ServiceRegistration
 {
-    public static IServiceCollection AddUserNotifications(this IServiceCollection services,
-        IConfigurationRoot configuration)
+    public static IServiceCollection AddUserNotifications(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
     {
         services.Configure<GovNotifyRetryOptions>(
             configuration.GetSection("GovNotifyRetryOptions")

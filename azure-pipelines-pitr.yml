@@ -145,7 +145,7 @@ stages:
     dependsOn: UpdateConfig
     # This 'environment' line triggers the manual approval check if configured in ADO
     jobs:
-      - deployment: Restart
+      - deployment: UpdateAuditJob
         # NOTE: For this to work, you MUST set up an Approval check on that environment in the Azure DevOps UI.
         # Go to Pipelines -> Environments -> 'mya-dev-recovery' -> Approvals and Checks.
         environment: "mya-dev-recovery"

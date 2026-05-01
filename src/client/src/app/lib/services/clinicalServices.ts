@@ -6,6 +6,7 @@ export const SERVICE_TYPE_TITLES: Record<string, string> = {
   'COVID-19 and flu': 'Flu and COVID-19 co-admin services',
   RSV: 'RSV services',
   'RSV and COVID-19': 'RSV and COVID-19 co-admin services',
+  MenB: 'MenB services',
 };
 
 export const groupServicesByType = (services: ClinicalService[]) => {

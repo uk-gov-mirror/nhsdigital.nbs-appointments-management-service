@@ -61,6 +61,12 @@
       "label": "RSV and COVID 18+",
       "serviceType": "RSV and COVID-19",
       "url": "https://www.nhs.uk/book-rsv"
+    },
+    {
+      "id": "MENB:ALL",
+      "label": "MenB 17 to 18",
+      "serviceType": "MenB",
+      "url": ""
     }
   ]
 }

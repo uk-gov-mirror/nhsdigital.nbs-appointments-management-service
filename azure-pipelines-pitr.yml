@@ -142,10 +142,10 @@ stages:
 
   - stage: RestartServices
     displayName: "Restart Apps to Pick Up New Config"
-    dependsOn: UpdateConfig
+    dependsOn: UpdateAuditJob
     # This 'environment' line triggers the manual approval check if configured in ADO
     jobs:
-      - deployment: UpdateAuditJob
+      - deployment: Restart
         # NOTE: For this to work, you MUST set up an Approval check on that environment in the Azure DevOps UI.
         # Go to Pipelines -> Environments -> 'mya-dev-recovery' -> Approvals and Checks.
         environment: "mya-dev-recovery"

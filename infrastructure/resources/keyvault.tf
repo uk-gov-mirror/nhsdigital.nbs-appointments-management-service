@@ -34,15 +34,23 @@ resource "azurerm_role_assignment" "pipeline_secret_access" {
 
 locals {
   principals_list = [
-    # ADD try() HERE: These are the ones currently blocking your plan
-    { for i, v in azurerm_container_app_job.nbs_mya_booking_extracts_job : "booking_extracts_job_${i}" => try(v.identity[0].principal_id, "") },
-    { for i, v in azurerm_container_app_job.nbs_mya_capacity_extracts_job : "capacity_extracts_job_${i}" => try(v.identity[0].principal_id, "") },
+    # Container App Jobs - Using 'can' to verify identity exists before accessing
+    { for i in range(length(azurerm_container_app_job.nbs_mya_booking_extracts_job)) : 
+      "booking_extracts_job_${i}" => can(azurerm_container_app_job.nbs_mya_booking_extracts_job[i].identity[0].principal_id) ? azurerm_container_app_job.nbs_mya_booking_extracts_job[i].identity[0].principal_id : "" 
+    },
+    { for i in range(length(azurerm_container_app_job.nbs_mya_capacity_extracts_job)) : 
+      "capacity_extracts_job_${i}" => can(azurerm_container_app_job.nbs_mya_capacity_extracts_job[i].identity[0].principal_id) ? azurerm_container_app_job.nbs_mya_capacity_extracts_job[i].identity[0].principal_id : "" 
+    },
     
-    # AND HERE:
-    { for i, v in azurerm_container_app.nbs_mya_auditor : "auditor_${i}" => try(v.identity[0].principal_id, "") },
-    { for i, v in azurerm_container_app.nbs_mya_aggregator : "aggregator_${i}" => try(v.identity[0].principal_id, "") },
+    # Container Apps
+    { for i in range(length(azurerm_container_app.nbs_mya_auditor)) : 
+      "auditor_${i}" => can(azurerm_container_app.nbs_mya_auditor[i].identity[0].principal_id) ? azurerm_container_app.nbs_mya_auditor[i].identity[0].principal_id : "" 
+    },
+    { for i in range(length(azurerm_container_app.nbs_mya_aggregator)) : 
+      "aggregator_${i}" => can(azurerm_container_app.nbs_mya_aggregator[i].identity[0].principal_id) ? azurerm_container_app.nbs_mya_aggregator[i].identity[0].principal_id : "" 
+    },
 
-    # (Keep the rest of your Function Apps and Slots as they are, as they already use try)
+    # Keep your existing Function App / Slot logic with try() as they seem stable
     { for i, v in azurerm_windows_function_app.nbs_mya_high_load_func_app : "high_load_${i}" => try(v.identity[0].principal_id, "") },
     { for i, v in azurerm_windows_function_app.nbs_mya_http_func_app : "http_${i}" => try(v.identity[0].principal_id, "") },
     { for i, v in azurerm_windows_function_app.nbs_mya_service_bus_func_app : "sb_func_${i}" => try(v.identity[0].principal_id, "") },

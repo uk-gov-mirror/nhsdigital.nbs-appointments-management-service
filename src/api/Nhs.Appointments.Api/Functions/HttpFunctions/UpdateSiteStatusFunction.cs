@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +14,6 @@ using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Inspectors;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 
@@ -21,8 +21,7 @@ public class UpdateSiteStatusFunction(
     ISiteService siteService,
     IValidator<SetSiteStatusRequest> validator,
     ILogger<UpdateSiteStatusFunction> logger,
-    IUserContextProvider userContextProvider,
-    IMetricsRecorder metricsRecorder) : BaseApiFunction<SetSiteStatusRequest, EmptyResponse>(validator, userContextProvider, logger, metricsRecorder)
+    IUserContextProvider userContextProvider) : BaseApiFunction<SetSiteStatusRequest, EmptyResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "Set Site Status", tags: ["SiteStatus"], Summary = "Set a site's status to online or offline")]
     [OpenApiRequestBody("application/json", typeof(SetSiteStatusRequest), Required = true)]

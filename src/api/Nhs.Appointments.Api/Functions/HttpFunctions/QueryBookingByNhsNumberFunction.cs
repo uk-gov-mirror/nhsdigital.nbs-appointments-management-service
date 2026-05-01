@@ -20,10 +20,8 @@ public class QueryBookingByNhsNumberFunction(
     IBookingQueryService bookingQueryService,
     IValidator<QueryBookingByNhsNumberRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<QueryBookingByNhsNumberFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<QueryBookingByNhsNumberRequest, IEnumerable<Booking>>(validator, userContextProvider, logger,
-        metricsRecorder)
+    ILogger<QueryBookingByNhsNumberFunction> logger)
+    : BaseApiFunction<QueryBookingByNhsNumberRequest, IEnumerable<Booking>>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "QueryBookingByNhsNumber", tags: ["Booking"],
         Summary = "Query bookings by Nhs Number")]

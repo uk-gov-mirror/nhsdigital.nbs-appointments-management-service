@@ -1,3 +1,4 @@
+using System.Text;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
@@ -11,7 +12,6 @@ using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Users;
-using System.Text;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
 
@@ -19,7 +19,6 @@ public class ProposeCancelDateRangeFunctionTests
 {
     private readonly Mock<IBookingAvailabilityStateService> _bookingAvailabilityStateService = new();
     private readonly Mock<ILogger<ProposeCancelDateRangeFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
     private readonly Mock<IFeatureToggleHelper> _featureToggleHelper = new();
     private readonly Mock<IValidator<ProposeCancelDateRangeRequest>> _validator = new();
@@ -33,7 +32,6 @@ public class ProposeCancelDateRangeFunctionTests
             _validator.Object,
             _userContextProvider.Object,
             _logger.Object,
-            _metricsRecorder.Object,
             _featureToggleHelper.Object
         );
 

@@ -1,3 +1,4 @@
+using System.Text;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,6 @@ using Nhs.Appointments.Core.OdsCodes;
 using Nhs.Appointments.Core.Reports.MasterSiteList;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
-using System.Text;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
 
@@ -22,7 +22,6 @@ public class GetReportMasterSiteListFunctionTests
     private readonly Mock<IFeatureToggleHelper> _featureToggleHelper = new();
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
     private readonly Mock<ILogger<GetReportMasterSiteListFunction>> _mockLogger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly Mock<TimeProvider> _timeProvider = new();
     private readonly Mock<IWellKnowOdsCodesService> _odsCodesService = new();
     private readonly Mock<IAccessibilityDefinitionsService> _accessibilityService = new();
@@ -41,9 +40,7 @@ public class GetReportMasterSiteListFunctionTests
             _featureToggleHelper.Object,
             new EmptyValidator(),
             _userContextProvider.Object,
-            _mockLogger.Object,
-            _metricsRecorder.Object
-        );
+            _mockLogger.Object);
     }
 
     [Fact(DisplayName = "Returns NotImplemented when toggled OFF")]

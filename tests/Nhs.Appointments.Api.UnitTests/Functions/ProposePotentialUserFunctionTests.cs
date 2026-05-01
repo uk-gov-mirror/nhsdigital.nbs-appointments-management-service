@@ -15,7 +15,6 @@ namespace Nhs.Appointments.Api.Tests.Functions;
 public class ProposePotentialUserFunctionTests
 {
     private readonly Mock<ILogger<ProposePotentialUserFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly ProposePotentialUserFunction _sut;
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
 
@@ -23,7 +22,7 @@ public class ProposePotentialUserFunctionTests
 
     public ProposePotentialUserFunctionTests() =>
         _sut = new ProposePotentialUserFunction(_userService.Object, new ProposePotentialUserRequestValidator(),
-            _userContextProvider.Object, _logger.Object, _metricsRecorder.Object);
+            _userContextProvider.Object, _logger.Object);
 
     [Fact]
     public async Task ProposePotentialUser_ShouldReturnOk()

@@ -13,7 +13,6 @@ using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.File;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Extensions;
-using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Inspectors;
 using Nhs.Appointments.Core.Reports.SiteSummary;
 using Nhs.Appointments.Core.Sites;
@@ -28,10 +27,8 @@ public class GetReportSiteSummaryFunction(
     ISiteReportCsvWriter siteReportCsvWriter,
     IValidator<SiteReportRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<GetAccessibilityDefinitionsFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<SiteReportRequest, FileResponse>(validator, userContextProvider, logger,
-        metricsRecorder)
+    ILogger<GetAccessibilityDefinitionsFunction> logger)
+    : BaseApiFunction<SiteReportRequest, FileResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetDailyReport", tags: ["DailyReport"],
         Summary = "Get Daily Report")]

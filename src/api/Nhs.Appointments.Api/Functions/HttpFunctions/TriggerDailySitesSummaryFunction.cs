@@ -20,9 +20,8 @@ public class TriggerDailySitesSummaryFunction(
     ISitesSummaryTrigger sitesSummaryTrigger,
     IValidator<EmptyRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<TriggerDailySitesSummaryFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<EmptyRequest, EmptyResponse>(validator, userContextProvider, logger, metricsRecorder)
+    ILogger<TriggerDailySitesSummaryFunction> logger)
+    : BaseApiFunction<EmptyRequest, EmptyResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "TriggerDailySitesSummaryFunction", tags: ["System"],
         Summary = "Utility function to manually trigger daily Sites summary")]

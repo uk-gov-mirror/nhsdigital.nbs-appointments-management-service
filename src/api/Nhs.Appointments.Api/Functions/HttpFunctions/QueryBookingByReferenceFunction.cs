@@ -23,9 +23,8 @@ public class QueryBookingByReferenceFunction(
     IValidator<QueryBookingByReferenceRequest> validator,
     IUserContextProvider userContextProvider,
     ILogger<QueryBookingByReferenceFunction> logger,
-    IMetricsRecorder metricsRecorder,
     ISiteService siteService)
-    : BaseApiFunction<QueryBookingByReferenceRequest, Booking>(validator, userContextProvider, logger, metricsRecorder)
+    : BaseApiFunction<QueryBookingByReferenceRequest, Booking>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "QueryBookingByReference", tags: ["Booking"],
         Summary = "Get a booking by booking reference")]

@@ -17,7 +17,6 @@ namespace Nhs.Appointments.Api.Tests.Functions;
 public class GetSitesPreviewFunctionTests
 {
     private readonly Mock<ILogger<GetSitesPreviewFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly Mock<IPermissionChecker> _permissionChecker = new();
     private readonly GetSitesPreviewFunction _sut;
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
@@ -32,7 +31,6 @@ public class GetSitesPreviewFunctionTests
             _validator.Object,
             _userContextProvider.Object,
             _logger.Object,
-            _metricsRecorder.Object,
             _permissionChecker.Object,
             _wellKnowOdsCodesService.Object
         );

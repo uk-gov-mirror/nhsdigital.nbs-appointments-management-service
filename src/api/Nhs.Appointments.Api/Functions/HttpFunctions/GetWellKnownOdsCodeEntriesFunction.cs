@@ -18,10 +18,8 @@ public class GetWellKnownOdsCodeEntriesFunction(
     IWellKnowOdsCodesService wellKnowOdsCodesService,
     IValidator<EmptyRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<GetWellKnownOdsCodeEntriesFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<EmptyRequest, IEnumerable<WellKnownOdsEntry>>(validator, userContextProvider, logger,
-        metricsRecorder)
+    ILogger<GetWellKnownOdsCodeEntriesFunction> logger)
+    : BaseApiFunction<EmptyRequest, IEnumerable<WellKnownOdsEntry>>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetWellKnownOdsCodeEntries", tags: ["wellKnownOdsCodeEntries"],
         Summary = "Get information for well known ods codes.")]

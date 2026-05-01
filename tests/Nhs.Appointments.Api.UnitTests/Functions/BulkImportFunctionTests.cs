@@ -9,7 +9,6 @@ using Moq;
 using Nhs.Appointments.Api.Factories;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
-using Nhs.Appointments.Core;
 using Nhs.Appointments.Core.BulkImport;
 using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.UnitTests;
@@ -21,7 +20,6 @@ public class BulkImportFunctionTests
 {
     private readonly Mock<IDataImportHandlerFactory> _mockDataImportFactory = new();
     private readonly Mock<ILogger<BulkImportFunction>> _mockLogger = new();
-    private readonly Mock<IMetricsRecorder> _mockMetricsRecorder = new();
     private readonly Mock<ISiteDataImportHandler> _mockSiteDataImporter = new();
     private readonly Mock<IUserContextProvider> _mockUserContextProvider = new();
     private readonly Mock<IUserDataImportHandler> _mockUserDataImporter = new();
@@ -36,8 +34,7 @@ public class BulkImportFunctionTests
             _mockDataImportFactory.Object,
             _mockValidator.Object,
             _mockUserContextProvider.Object,
-            _mockLogger.Object,
-            _mockMetricsRecorder.Object);
+            _mockLogger.Object);
 
         _mockValidator.Setup(x => x.ValidateAsync(It.IsAny<BulkImportRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());

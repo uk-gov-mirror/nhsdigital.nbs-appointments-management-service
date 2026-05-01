@@ -22,10 +22,9 @@ public class GetSitesPreviewFunction(
     IValidator<EmptyRequest> validator,
     IUserContextProvider userContextProvider,
     ILogger<GetSitesPreviewFunction> logger,
-    IMetricsRecorder metricsRecorder,
     IPermissionChecker permissionChecker,
     IWellKnowOdsCodesService wellKnowOdsCodesService)
-    : BaseApiFunction<EmptyRequest, IEnumerable<SitePreview>>(validator, userContextProvider, logger, metricsRecorder)
+    : BaseApiFunction<EmptyRequest, IEnumerable<SitePreview>>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetSitesPreview", tags: ["Site"],
         Summary = "Gets preview of sites available to user")]

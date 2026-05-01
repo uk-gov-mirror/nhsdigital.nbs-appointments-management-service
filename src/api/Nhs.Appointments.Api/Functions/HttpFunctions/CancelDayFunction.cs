@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +12,6 @@ using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Inspectors;
 using Nhs.Appointments.Core.Users;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 
@@ -20,8 +19,7 @@ public class CancelDayFunction(
     IAvailabilityWriteService availabilityWriteService,
     IValidator<CancelDayRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<CancelDayFunction> logger,
-    IMetricsRecorder metricsRecorder) : BaseApiFunction<CancelDayRequest, CancelDayResponse>(validator, userContextProvider, logger, metricsRecorder)
+    ILogger<CancelDayFunction> logger) : BaseApiFunction<CancelDayRequest, CancelDayResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "CancelDay", tags: ["Availability", "Booking"], Summary = "Cancel all sessions and bookings on a given day")]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, "application/json", typeof(CancelDayResponse),

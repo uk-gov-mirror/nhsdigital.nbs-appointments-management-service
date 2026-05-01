@@ -1,3 +1,4 @@
+using System.Text;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
@@ -11,7 +12,6 @@ using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
-using System.Text;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
 
@@ -19,7 +19,6 @@ public class ConfirmProvisionalBookingFunctionTests
 {
     private readonly Mock<IBookingWriteService> _bookingService = new();
     private readonly Mock<ILogger<ConfirmProvisionalBookingFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly ConfirmProvisionalBookingFunction _sut;
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
     private readonly Mock<IValidator<ConfirmBookingRequest>> _validator = new();
@@ -33,7 +32,6 @@ public class ConfirmProvisionalBookingFunctionTests
             _validator.Object,
             _userContextProvider.Object,
             _logger.Object,
-            _metricsRecorder.Object,
             _siteService.Object,
             _bookingQueryService.Object);
         _validator.Setup(x => x.ValidateAsync(It.IsAny<ConfirmBookingRequest>(), It.IsAny<CancellationToken>()))

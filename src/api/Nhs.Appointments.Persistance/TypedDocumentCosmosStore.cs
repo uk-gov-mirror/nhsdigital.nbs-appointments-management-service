@@ -5,6 +5,7 @@ using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Nhs.Appointments.Core;
+using Nhs.Appointments.Core.Metrics;
 using Nhs.Appointments.Persistance.Models;
 
 namespace Nhs.Appointments.Persistance;

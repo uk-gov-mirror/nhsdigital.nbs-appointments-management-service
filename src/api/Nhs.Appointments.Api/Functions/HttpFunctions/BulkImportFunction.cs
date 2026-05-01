@@ -22,10 +22,8 @@ public class BulkImportFunction(
     IDataImportHandlerFactory dataImportHandlerFactory,
     IValidator<BulkImportRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<BulkImportFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<BulkImportRequest, IEnumerable<ReportItem>>(validator, userContextProvider, logger,
-        metricsRecorder)
+    ILogger<BulkImportFunction> logger)
+    : BaseApiFunction<BulkImportRequest, IEnumerable<ReportItem>>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "Bulk Import", tags: ["BulkImport"], Summary = "Bulk import of users and sites")]
     [OpenApiRequestBody("application/json", typeof(SetAvailabilityRequest), Required = true)]

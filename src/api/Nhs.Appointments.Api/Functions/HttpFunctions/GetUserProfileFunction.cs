@@ -12,48 +12,45 @@ using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Extensions;
 using Nhs.Appointments.Core.Users;
 
-namespace Nhs.Appointments.Api.Functions.HttpFunctions
+namespace Nhs.Appointments.Api.Functions.HttpFunctions;
+
+public class GetUserProfileFunction(
+    IUserService userService,
+    IValidator<EmptyRequest> validator,
+    IUserContextProvider userContextProvider,
+    ILogger<GetUserProfileFunction> logger) : BaseApiFunction<EmptyRequest, UserProfile>(validator, userContextProvider, logger)
 {
-    public class GetUserProfileFunction(
-        IUserService userService,
-        IValidator<EmptyRequest> validator,
-        IUserContextProvider userContextProvider,
-        ILogger<GetUserProfileFunction> logger,
-        IMetricsRecorder metricsRecorder
-    ) : BaseApiFunction<EmptyRequest, UserProfile>(validator, userContextProvider, logger, metricsRecorder)
+    [OpenApiOperation(operationId: "GetUserProfile", tags: ["User"],
+        Summary = "Gets information about the signed in user")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, "application/json", typeof(UserProfile),
+        Description = "Information about the signed in user")]
+    [Function("GetUserProfileFunction")]
+    public override Task<IActionResult> RunAsync(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "user/profile")]
+        HttpRequest req)
     {
-        [OpenApiOperation(operationId: "GetUserProfile", tags: ["User"],
-            Summary = "Gets information about the signed in user")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, "application/json", typeof(UserProfile),
-            Description = "Information about the signed in user")]
-        [Function("GetUserProfileFunction")]
-        public override Task<IActionResult> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "user/profile")]
-            HttpRequest req)
+        return base.RunAsync(req);
+    }
+
+    protected override async Task<ApiResult<UserProfile>> HandleRequest(EmptyRequest request, ILogger logger)
+    {
+        var userEmail = Principal.Claims.GetUserEmail();
+
+        var user = await userService.GetUserAsync(userEmail);
+        if (user is null)
         {
-            return base.RunAsync(req);
+            return Success(new UserProfile(userEmail, false, null));
         }
 
-        protected override async Task<ApiResult<UserProfile>> HandleRequest(EmptyRequest request, ILogger logger)
-        {
-            var userEmail = Principal.Claims.GetUserEmail();
+        var hasSites = user.RoleAssignments
+            .Where(ra => ra.Scope.StartsWith("site:") || ra.Scope.StartsWith("global"))
+            .Count() > 0;
 
-            var user = await userService.GetUserAsync(userEmail);
-            if (user is null)
-            {
-                return Success(new UserProfile(userEmail, false, null));
-            }
+        return ApiResult<UserProfile>.Success(new UserProfile(userEmail, hasSites, user.LatestAcceptedEulaVersion));
+    }
 
-            var hasSites = user.RoleAssignments
-                .Where(ra => ra.Scope.StartsWith("site:") || ra.Scope.StartsWith("global"))
-                .Count() > 0;
-
-            return ApiResult<UserProfile>.Success(new UserProfile(userEmail, hasSites, user.LatestAcceptedEulaVersion));
-        }
-
-        protected override Task<IEnumerable<ErrorMessageResponseItem>> ValidateRequest(EmptyRequest request)
-        {
-            return Task.FromResult(Enumerable.Empty<ErrorMessageResponseItem>());
-        }
+    protected override Task<IEnumerable<ErrorMessageResponseItem>> ValidateRequest(EmptyRequest request)
+    {
+        return Task.FromResult(Enumerable.Empty<ErrorMessageResponseItem>());
     }
 }

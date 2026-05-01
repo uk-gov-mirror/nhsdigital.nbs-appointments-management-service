@@ -4,7 +4,6 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Nhs.Appointments.Api.Functions;
@@ -16,15 +15,13 @@ namespace Nhs.Appointments.Api.Tests.Functions;
 public class BaseApiFunctionTests
 {
     private readonly TestLogger _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly TestableBaseApiFunction _sut;
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
     private readonly Mock<IValidator<string>> _validator = new();
 
     public BaseApiFunctionTests()
     {
-        _sut = new TestableBaseApiFunction(_validator.Object, _userContextProvider.Object, _logger,
-            _metricsRecorder.Object);
+        _sut = new TestableBaseApiFunction(_validator.Object, _userContextProvider.Object, _logger);
     }
 
     [Fact]
@@ -169,8 +166,7 @@ internal class TestableBaseApiFunction : BaseApiFunction<string, string>
     public TestableBaseApiFunction(
         IValidator<string> validator,
         IUserContextProvider userContextProvider,
-        ILogger logger,
-        IMetricsRecorder metricsRecorder) : base(validator, userContextProvider, logger, metricsRecorder)
+        ILogger logger) : base(validator, userContextProvider, logger)
     {
     }
 

@@ -13,6 +13,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Availability;

@@ -24,11 +24,9 @@ public class QueryBookingsFunction(
     IValidator<QueryBookingsRequest> validator,
     IUserContextProvider userContextProvider,
     ILogger<QueryBookingsFunction> logger,
-    IMetricsRecorder metricsRecorder,
     IFeatureToggleHelper featureToggleHelper,
     ISiteService siteService)
-    : BaseApiFunction<QueryBookingsRequest, IEnumerable<Booking>>(validator, userContextProvider, logger,
-        metricsRecorder)
+    : BaseApiFunction<QueryBookingsRequest, IEnumerable<Booking>>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "QueryBooking", tags: ["Booking"],
         Summary = "Query bookings for a site within a date range")]

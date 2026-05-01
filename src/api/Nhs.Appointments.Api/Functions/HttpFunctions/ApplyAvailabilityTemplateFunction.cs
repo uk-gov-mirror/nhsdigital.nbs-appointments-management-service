@@ -24,10 +24,8 @@ public class ApplyAvailabilityTemplateFunction(
     IValidator<ApplyAvailabilityTemplateRequest> validator,
     IUserContextProvider userContextProvider,
     ILogger<ApplyAvailabilityTemplateFunction> logger,
-    IMetricsRecorder metricsRecorder,
     ISiteService siteService)
-    : BaseApiFunction<ApplyAvailabilityTemplateRequest, EmptyResponse>(validator, userContextProvider: userContextProvider, logger,
-        metricsRecorder)
+    : BaseApiFunction<ApplyAvailabilityTemplateRequest, EmptyResponse>(validator, userContextProvider: userContextProvider, logger)
 {
     [OpenApiOperation("ApplyAvailabilityTemplate", ["Availability"],
         Summary = "Set appointment availability for a date range")]

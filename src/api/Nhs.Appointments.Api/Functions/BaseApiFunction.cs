@@ -9,7 +9,6 @@ using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Nhs.Appointments.Api.File;
 using Nhs.Appointments.Api.Json;
 using Nhs.Appointments.Api.Models;
@@ -20,8 +19,7 @@ namespace Nhs.Appointments.Api.Functions;
 public abstract class BaseApiFunction<TRequest, TResponse>(
     IValidator<TRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger logger,
-    IMetricsRecorder metricsRecorder)
+    ILogger logger)
 {
     protected ClaimsPrincipal Principal => userContextProvider.UserPrincipal;
 
@@ -44,10 +42,7 @@ public abstract class BaseApiFunction<TRequest, TResponse>(
             }
 
             ApiResult<TResponse> response;
-            metricsRecorder.BeginRecording(GetType().Name);
             response = await HandleRequest(request, logger);
-
-            WriteMetrics();
 
             if (response.IsSuccess)
             {
@@ -107,18 +102,6 @@ public abstract class BaseApiFunction<TRequest, TResponse>(
     {
         var error = new { message };
         return ProblemResponse(status, error);
-    }
-
-    private void WriteMetrics()
-    {
-        if (metricsRecorder.Metrics != null)
-        {
-            foreach (var metric in metricsRecorder.Metrics)
-            {
-                var json = JsonConvert.SerializeObject(metric);
-                logger.LogInformation("{Source}: {Metric}", metricsRecorder.Source, json);
-            }
-        }
     }
 
     protected ApiResult<TResponse> Success(TResponse response) => ApiResult<TResponse>.Success(response);

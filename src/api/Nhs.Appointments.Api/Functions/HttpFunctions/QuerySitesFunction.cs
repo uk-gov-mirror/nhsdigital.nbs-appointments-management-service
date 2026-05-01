@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -6,13 +9,9 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Models;
-using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Inspectors;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
-using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 
@@ -20,8 +19,7 @@ public class QuerySitesFunction(
     ISiteService siteService,
     IValidator<QuerySitesRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<QuerySitesFunction> logger,
-    IMetricsRecorder metricsRecorder) : BaseApiFunction<QuerySitesRequest, IEnumerable<SiteWithDistance>>(validator, userContextProvider, logger, metricsRecorder)
+    ILogger<QuerySitesFunction> logger) : BaseApiFunction<QuerySitesRequest, IEnumerable<SiteWithDistance>>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "QuerySites", tags: ["Sites"], Summary = "Query sites")]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, "application/json", typeof(IEnumerable<SiteWithDistance>),

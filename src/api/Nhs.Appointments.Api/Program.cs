@@ -10,7 +10,7 @@ using Nhs.Appointments.Core.Configuration;
 var host = new HostBuilder()
     .ConfigureAppConfiguration(config =>
     {
-        config.AddMyaConfiguration(args);
+        config.AddMyaConfiguration();
     })
     .ConfigureFeatureDependencies()
     .ConfigureFunctionsWebApplication((context, builder) =>

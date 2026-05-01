@@ -34,21 +34,25 @@ resource "azurerm_role_assignment" "pipeline_secret_access" {
 
 
 locals {
-  mya_principals = [
-    azurerm_container_app_job.nbs_mya_booking_extracts_job.identity[0].principal_id,
-    azurerm_container_app_job.nbs_mya_capacity_extracts_job.identity[0].principal_id,
-    azurerm_container_app.nbs_mya_auditor.identity[0].principal_id,
-    azurerm_container_app.nbs_mya_aggregator.identity[0].principal_id,
+  mya_principals = flatten([
+    # Container App Jobs
+    azurerm_container_app_job.nbs_mya_booking_extracts_job[*].identity[0].principal_id,
+    azurerm_container_app_job.nbs_mya_capacity_extracts_job[*].identity[0].principal_id,
 
-    azurerm_windows_function_app.nbs_mya_high_load_func_app.identity[0].principal_id,
-    azurerm_windows_function_app_slot.nbs_mya_high_load_func_app_preview.identity[0].principal_id,
-    azurerm_windows_function_app.nbs_mya_http_func_app.identity[0].principal_id,
-    azurerm_windows_function_app_slot.nbs_mya_http_func_app_preview.identity[0].principal_id,
-    azurerm_windows_function_app.nbs_mya_service_bus_func_app.identity[0].principal_id,
-    azurerm_windows_function_app_slot.nbs_mya_service_bus_func_app_preview.identity[0].principal_id,
-    azurerm_windows_function_app.nbs_mya_timer_func_app.identity[0].principal_id,
-    azurerm_windows_function_app_slot.nbs_mya_timer_func_app_preview.identity[0].principal_id,
-  ]
+    # Container Apps
+    azurerm_container_app.nbs_mya_auditor[*].identity[0].principal_id,
+    azurerm_container_app.nbs_mya_aggregator[*].identity[0].principal_id,
+
+    # Function Apps & Slots
+    azurerm_windows_function_app.nbs_mya_high_load_func_app[*].identity[0].principal_id,
+    azurerm_windows_function_app_slot.nbs_mya_high_load_func_app_preview[*].identity[0].principal_id,
+    azurerm_windows_function_app.nbs_mya_http_func_app[*].identity[0].principal_id,
+    azurerm_windows_function_app_slot.nbs_mya_http_func_app_preview[*].identity[0].principal_id,
+    azurerm_windows_function_app.nbs_mya_service_bus_func_app[*].identity[0].principal_id,
+    azurerm_windows_function_app_slot.nbs_mya_service_bus_func_app_preview[*].identity[0].principal_id,
+    azurerm_windows_function_app.nbs_mya_timer_func_app[*].identity[0].principal_id,
+    azurerm_windows_function_app_slot.nbs_mya_timer_func_app_preview[*].identity[0].principal_id,
+  ])
 }
 
 resource "azurerm_role_assignment" "vault_access" {

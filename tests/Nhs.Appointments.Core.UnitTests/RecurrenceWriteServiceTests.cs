@@ -50,7 +50,7 @@ public class RecurrenceWriteServiceTests
                 DateRange = new DateRange
                 {
                     StartDate = DateOnly.ParseExact("2027-05-01", "yyyy-MM-dd"),
-                    EndDate = DateOnly.ParseExact("2027-05-04", "yyyy-MM-dd"),
+                    EndDate = DateOnly.ParseExact("2027-05-05", "yyyy-MM-dd"),
                 }
             },
             new()

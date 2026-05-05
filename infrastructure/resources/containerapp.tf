@@ -205,9 +205,10 @@ resource "azurerm_container_app_job" "nbs_mya_booking_extracts_job" {
 }
 
 resource "azurerm_role_assignment" "nbs_mya_booking_extracts_job_kv_access" {
+  count                = var.create_booking_data_extracts ? 1 : 0
   scope                = azurerm_key_vault.nbs_mya_key_vault.id
   role_definition_name = "Key Vault Secrets User"
-  principal_id         = azurerm_container_app_job.nbs_mya_booking_extracts_job.identity[0].principal_id
+  principal_id         = azurerm_container_app_job.nbs_mya_booking_extracts_job[0].identity[0].principal_id
 }
 
 resource "azurerm_container_app_job" "nbs_mya_capacity_extracts_job" {
@@ -334,9 +335,10 @@ resource "azurerm_container_app_job" "nbs_mya_capacity_extracts_job" {
 }
 
 resource "azurerm_role_assignment" "nbs_mya_capacity_extracts_job_kv_access" {
+  count                = var.create_capacity_data_extracts ? 1 : 0
   scope                = azurerm_key_vault.nbs_mya_key_vault.id
   role_definition_name = "Key Vault Secrets User"
-  principal_id         = azurerm_container_app_job.nbs_mya_capacity_extracts_job.identity[0].principal_id
+  principal_id         = azurerm_container_app_job.nbs_mya_capacity_extracts_job[0].identity[0].principal_id
 }
 
 resource "azurerm_container_app" "nbs_mya_auditor" {
@@ -507,9 +509,10 @@ resource "azurerm_container_app" "nbs_mya_auditor" {
 }
 
 resource "azurerm_role_assignment" "nbs_mya_auditor_kv_access" {
+  count                = var.auditor_enable ? 1 : 0
   scope                = azurerm_key_vault.nbs_mya_key_vault.id
   role_definition_name = "Key Vault Secrets User"
-  principal_id         = azurerm_container_app.nbs_mya_auditor.identity[0].principal_id
+  principal_id         = azurerm_container_app.nbs_mya_auditor[0].identity[0].principal_id
 }
 
 resource "azurerm_container_app" "nbs_mya_aggregator" {
@@ -615,7 +618,8 @@ resource "azurerm_container_app" "nbs_mya_aggregator" {
 }
 
 resource "azurerm_role_assignment" "nbs_mya_aggregator_kv_access" {
+  count                = var.aggregator_changefeed_enable ? 1 : 0
   scope                = azurerm_key_vault.nbs_mya_key_vault.id
   role_definition_name = "Key Vault Secrets User"
-  principal_id         = azurerm_container_app.nbs_mya_aggregator.identity[0].principal_id
+  principal_id         = azurerm_container_app.nbs_mya_aggregator[0].identity[0].principal_id
 }

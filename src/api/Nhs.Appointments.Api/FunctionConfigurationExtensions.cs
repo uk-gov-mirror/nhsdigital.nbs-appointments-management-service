@@ -36,6 +36,7 @@ using Nhs.Appointments.Core.Reports.MasterSiteList;
 using Nhs.Appointments.Core.Reports.SiteSummary;
 using Nhs.Appointments.Core.Reports.Users;
 using Nhs.Appointments.Persistance;
+using Nhs.Appointments.Persistance.ReferenceGroups;
 
 namespace Nhs.Appointments.Api;
 
@@ -97,7 +98,7 @@ public static class FunctionConfigurationExtensions
             })
             .ConfigureSiteService(configuration)
             .AddTypedCosmosDataStores()
-            .AddDocumentStores()
+            .AddDocumentStores(configuration)
             .AddServices()
             .AddTransient<IAvailabilityGrouperFactory, AvailabilityGrouperFactory>()
             .AddTransient<IReferenceNumberProvider, ReferenceNumberProvider>()

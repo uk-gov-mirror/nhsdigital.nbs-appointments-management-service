@@ -103,6 +103,7 @@ resource "azurerm_windows_function_app" "nbs_mya_http_func_app" {
     "AzureWebJobs.QueryAvailabilityByDaysFunction.Disabled"        = var.disable_query_availability_function
     "AzureWebJobs.QueryAvailabilityByHoursFunction.Disabled"       = var.disable_query_availability_function
     "AzureWebJobs.QueryAvailabilityBySlotsFunction.Disabled"       = var.disable_query_availability_function
+    migrate_reference_groups                                       = var.migrate_reference_groups
   }
 
   sticky_settings {
@@ -210,6 +211,7 @@ resource "azurerm_windows_function_app_slot" "nbs_mya_http_func_app_preview" {
     "AzureWebJobs.QueryAvailabilityByDaysFunction.Disabled"        = var.disable_query_availability_function
     "AzureWebJobs.QueryAvailabilityByHoursFunction.Disabled"       = var.disable_query_availability_function
     "AzureWebJobs.QueryAvailabilityBySlotsFunction.Disabled"       = var.disable_query_availability_function
+    migrate_reference_groups                                       = var.migrate_reference_groups
   }
 
   identity {

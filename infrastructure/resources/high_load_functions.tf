@@ -152,6 +152,7 @@ resource "azurerm_windows_function_app" "nbs_mya_high_load_func_app" {
     "AzureWebJobs.GetSiteUsersReportFunction.Disabled"                     = true
     "AzureWebJobs.ProposeCancelDateRangeFunction.Disabled"                 = true
     "AzureWebJobs.CancelDateRangeFunction.Disabled"                        = true
+    migrate_reference_groups                                               = var.migrate_reference_groups
   }
 
   sticky_settings {
@@ -307,6 +308,7 @@ resource "azurerm_windows_function_app_slot" "nbs_mya_high_load_func_app_preview
     "AzureWebJobs.GetSiteUsersReportFunction.Disabled"                     = true
     "AzureWebJobs.ProposeCancelDateRangeFunction.Disabled"                 = true
     "AzureWebJobs.CancelDateRangeFunction.Disabled"                        = true
+    migrate_reference_groups                                               = var.migrate_reference_groups
   }
 
   identity {

@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nhs.Appointments.Core;
 using Nhs.Appointments.Core.Availability;
@@ -13,6 +14,7 @@ using Nhs.Appointments.Core.Reports.SiteSummary;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
 using Nhs.Appointments.Persistance.Models;
+using Nhs.Appointments.Persistance.ReferenceGroups;
 
 namespace Nhs.Appointments.Persistance;
 
@@ -34,14 +36,24 @@ public static class ServiceRegistration
         return services;
     }
     
-    public static IServiceCollection AddDocumentStores(this IServiceCollection services)
+    public static IServiceCollection AddDocumentStores(this IServiceCollection services, IConfiguration configuration)
     {
+        if (configuration.GetValue("MIGRATE_REFERENCE_GROUPS", false))
+        {
+            services
+                .AddScoped<IReferenceNumberDocumentStore, CoreReferenceGroupCosmosDocumentStore>();
+        }
+        else
+        {
+            services
+                .AddScoped<IReferenceNumberDocumentStore, ReferenceGroupCosmosDocumentStore>()
+                .AddScoped<ICoreReferenceGroupMigrationDocumentStore, CoreReferenceGroupCosmosDocumentStore>();
+        }
+
         services
             .AddScoped<IAvailabilityStore, AvailabilityDocumentStore>()
             .AddScoped<IAvailabilityCreatedEventStore, AvailabilityCreatedEventDocumentStore>()
             .AddScoped<IBookingsDocumentStore, BookingCosmosDocumentStore>()
-            .AddScoped<IReferenceNumberDocumentStore, ReferenceGroupCosmosDocumentStore>()
-            .AddScoped<ICoreReferenceNumberMigrationDocumentStore, CoreReferenceNumberGroupCosmosDocumentStore>()
             .AddScoped<IEulaStore, EulaStore>()
             .AddScoped<IUserStore, UserStore>()
             .AddScoped<IRolesStore, RolesStore>()

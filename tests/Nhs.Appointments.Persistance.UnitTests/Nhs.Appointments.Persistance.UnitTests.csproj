@@ -28,4 +28,10 @@
     <ProjectReference Include="..\..\src\api\Nhs.Appointments.Persistance\Nhs.Appointments.Persistance.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ReferenceGroups\core_reference_group_document.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

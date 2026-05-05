@@ -114,6 +114,7 @@ module "mya_application_int" {
   auditor_sink_exclusions                                         = var.AUDITOR_SINK_EXCLUSIONS
   cancel_a_date_range_maximum_days                                = 90
   aggregator_changefeed_enable                                    = true
+  migrate_reference_groups                                        = true  
   cosmos_geo_locations = [{
     location          = "uksouth"
     failover_priority = 0

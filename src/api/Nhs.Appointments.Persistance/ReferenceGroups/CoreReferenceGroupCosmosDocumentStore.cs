@@ -3,14 +3,14 @@ using Microsoft.Extensions.Options;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Persistance.Models;
 
-namespace Nhs.Appointments.Persistance;
+namespace Nhs.Appointments.Persistance.ReferenceGroups;
 
-public class CoreReferenceNumberGroupCosmosDocumentStore(
+public class CoreReferenceGroupCosmosDocumentStore(
     ITypedDocumentCosmosStore<CoreReferenceGroupDocument> cosmosStore, 
     IOptions<ReferenceGroupOptions> options
-    ) : IReferenceNumberDocumentStore, ICoreReferenceNumberMigrationDocumentStore
+    ) : IReferenceNumberDocumentStore, ICoreReferenceGroupMigrationDocumentStore
 {
-    private const string DocumentId = "main";
+    public const string DocumentId = "main";
     private readonly ITypedDocumentCosmosStore<CoreReferenceGroupDocument> _cosmosStore = cosmosStore;
     private readonly ReferenceGroupOptions _options = options.Value;
 
@@ -19,7 +19,7 @@ public class CoreReferenceNumberGroupCosmosDocumentStore(
         var docType = _cosmosStore.GetDocumentType();
         var referenceGroupDocument = await Get();
         
-        var referenceGroup = referenceGroupDocument!.GetQuietestReferenceGroup();
+        var referenceGroup = referenceGroupDocument!.GetLeastBusyReferenceGroup();
         var patchOperation = CoreReferenceGroupDocument.IncrementSiteCountForReferenceGroup(referenceGroup);
         await _cosmosStore.PatchDocument(docType, DocumentId, patchOperation);
 
@@ -28,6 +28,8 @@ public class CoreReferenceNumberGroupCosmosDocumentStore(
 
     public async Task<int> GetNextSequenceNumber(int referenceGroup)
     {
+        ReferenceNumberProvider.EnsureReferenceGroupIsWithinRange(referenceGroup);
+
         var docType = _cosmosStore.GetDocumentType();
         var patchOperation = CoreReferenceGroupDocument.IncrementSequenceForReferenceGroup(referenceGroup);
         var referenceGroupDocument = await _cosmosStore.PatchDocument(docType, DocumentId, patchOperation);

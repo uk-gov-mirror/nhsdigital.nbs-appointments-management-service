@@ -7,7 +7,7 @@ public class CoreReferenceGroupDocument : CoreDataCosmosDocument
 {
     public ReferenceGroup[] Groups { get; set; }
 
-    public int GetQuietestReferenceGroup()
+    public int GetLeastBusyReferenceGroup()
     {
         return Groups
             .Where(g => g.Prefix > 0)
@@ -19,12 +19,12 @@ public class CoreReferenceGroupDocument : CoreDataCosmosDocument
 
     public static PatchOperation IncrementSiteCountForReferenceGroup(int referenceGroup)
     {
-        return PatchOperation.Increment($"/Groups/{referenceGroup}/SiteCount", 1);
+        return PatchOperation.Increment(SiteCountPath(referenceGroup), 1);
     }
 
     public static PatchOperation IncrementSequenceForReferenceGroup(int referenceGroup)
     {
-        return PatchOperation.Increment($"/Groups/{referenceGroup}/Sequence", 1);
+        return PatchOperation.Increment(SequencePath(referenceGroup), 1);
     }
 
     public int GetSequenceForReferenceGroup(int referenceGroup)
@@ -33,22 +33,36 @@ public class CoreReferenceGroupDocument : CoreDataCosmosDocument
             .Single(gr => gr.Prefix == referenceGroup)
             .Sequence;
     }
+
+    public static string SiteCountPath(int referenceGroup)
+    {
+        return $"/Groups/{referenceGroup}/SiteCount";
+    }
+
+    public static string SequencePath(int referenceGroup) 
+    {
+        return $"/Groups/{referenceGroup}/Sequence";
+    }
 }
 
 [CosmosDocumentType("reference_group")]
 public class BookingReferenceGroupDocument : BookingReferenceDataCosmosDocument
 {
+    public const string SiteCountPath = "/SiteCount";
+    public const string SequencePath = "/Sequence";
+
     public int SiteCount { get; set; }
+
     public int Sequence { get; set; }
 
     public static PatchOperation IncrementSiteCount()
     {
-        return PatchOperation.Increment($"/SiteCount", 1);
+        return PatchOperation.Increment(SiteCountPath, 1);
     }
 
     public static PatchOperation IncrementSequence(int increment = 1)
     {
-        return PatchOperation.Increment($"/Sequence", increment);
+        return PatchOperation.Increment(SequencePath, increment);
     }
 }
 

@@ -1,4 +1,4 @@
-namespace Nhs.Appointments.Persistance;
+namespace Nhs.Appointments.Persistance.ReferenceGroups;
 
 public class ReferenceGroupOptions
 {

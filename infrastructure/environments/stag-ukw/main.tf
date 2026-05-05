@@ -115,6 +115,7 @@ module "mya_application_stag_ukw" {
   auditor_sink_exclusions                                         = var.AUDITOR_SINK_EXCLUSIONS
   cancel_a_date_range_maximum_days                                = 90
   aggregator_changefeed_enable                                    = true
+  migrate_reference_groups                                        = true
   cosmos_booking_autoscale_settings = [{
     max_throughput = 60000
   }]

@@ -1,0 +1,513 @@
+{
+ "Groups": [
+  {
+   "Prefix": 0,
+   "SiteCount": 0,
+   "Sequence": 0
+  },
+  {
+   "Prefix": 1,
+   "SiteCount": 3,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 2,
+   "SiteCount": 3,
+   "Sequence": 6
+  },
+  {
+   "Prefix": 3,
+   "SiteCount": 3,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 4,
+   "SiteCount": 3,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 5,
+   "SiteCount": 3,
+   "Sequence": 5
+  },
+  {
+   "Prefix": 6,
+   "SiteCount": 3,
+   "Sequence": 5
+  },
+  {
+   "Prefix": 7,
+   "SiteCount": 3,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 8,
+   "SiteCount": 3,
+   "Sequence": 5
+  },
+  {
+   "Prefix": 9,
+   "SiteCount": 3,
+   "Sequence": 6
+  },
+  {
+   "Prefix": 10,
+   "SiteCount": 3,
+   "Sequence": 19
+  },
+  {
+   "Prefix": 11,
+   "SiteCount": 3,
+   "Sequence": 11
+  },
+  {
+   "Prefix": 12,
+   "SiteCount": 3,
+   "Sequence": 6
+  },
+  {
+   "Prefix": 13,
+   "SiteCount": 3,
+   "Sequence": 7
+  },
+  {
+   "Prefix": 14,
+   "SiteCount": 3,
+   "Sequence": 7
+  },
+  {
+   "Prefix": 15,
+   "SiteCount": 3,
+   "Sequence": 13
+  },
+  {
+   "Prefix": 16,
+   "SiteCount": 3,
+   "Sequence": 11
+  },
+  {
+   "Prefix": 17,
+   "SiteCount": 3,
+   "Sequence": 8
+  },
+  {
+   "Prefix": 18,
+   "SiteCount": 3,
+   "Sequence": 8
+  },
+  {
+   "Prefix": 19,
+   "SiteCount": 3,
+   "Sequence": 7
+  },
+  {
+   "Prefix": 20,
+   "SiteCount": 3,
+   "Sequence": 6
+  },
+  {
+   "Prefix": 21,
+   "SiteCount": 3,
+   "Sequence": 7
+  },
+  {
+   "Prefix": 22,
+   "SiteCount": 3,
+   "Sequence": 6
+  },
+  {
+   "Prefix": 23,
+   "SiteCount": 3,
+   "Sequence": 6
+  },
+  {
+   "Prefix": 24,
+   "SiteCount": 3,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 25,
+   "SiteCount": 3,
+   "Sequence": 6
+  },
+  {
+   "Prefix": 26,
+   "SiteCount": 3,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 27,
+   "SiteCount": 3,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 28,
+   "SiteCount": 3,
+   "Sequence": 5
+  },
+  {
+   "Prefix": 29,
+   "SiteCount": 3,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 30,
+   "SiteCount": 3,
+   "Sequence": 5
+  },
+  {
+   "Prefix": 31,
+   "SiteCount": 3,
+   "Sequence": 3
+  },
+  {
+   "Prefix": 32,
+   "SiteCount": 3,
+   "Sequence": 3
+  },
+  {
+   "Prefix": 33,
+   "SiteCount": 3,
+   "Sequence": 6
+  },
+  {
+   "Prefix": 34,
+   "SiteCount": 3,
+   "Sequence": 11
+  },
+  {
+   "Prefix": 35,
+   "SiteCount": 3,
+   "Sequence": 13
+  },
+  {
+   "Prefix": 36,
+   "SiteCount": 3,
+   "Sequence": 8
+  },
+  {
+   "Prefix": 37,
+   "SiteCount": 3,
+   "Sequence": 7
+  },
+  {
+   "Prefix": 38,
+   "SiteCount": 3,
+   "Sequence": 15
+  },
+  {
+   "Prefix": 39,
+   "SiteCount": 3,
+   "Sequence": 12
+  },
+  {
+   "Prefix": 40,
+   "SiteCount": 3,
+   "Sequence": 9
+  },
+  {
+   "Prefix": 41,
+   "SiteCount": 3,
+   "Sequence": 9
+  },
+  {
+   "Prefix": 42,
+   "SiteCount": 3,
+   "Sequence": 8
+  },
+  {
+   "Prefix": 43,
+   "SiteCount": 3,
+   "Sequence": 5
+  },
+  {
+   "Prefix": 44,
+   "SiteCount": 3,
+   "Sequence": 6
+  },
+  {
+   "Prefix": 45,
+   "SiteCount": 3,
+   "Sequence": 9
+  },
+  {
+   "Prefix": 46,
+   "SiteCount": 3,
+   "Sequence": 6
+  },
+  {
+   "Prefix": 47,
+   "SiteCount": 3,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 48,
+   "SiteCount": 3,
+   "Sequence": 3
+  },
+  {
+   "Prefix": 49,
+   "SiteCount": 3,
+   "Sequence": 5
+  },
+  {
+   "Prefix": 50,
+   "SiteCount": 3,
+   "Sequence": 5
+  },
+  {
+   "Prefix": 51,
+   "SiteCount": 3,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 52,
+   "SiteCount": 3,
+   "Sequence": 7
+  },
+  {
+   "Prefix": 53,
+   "SiteCount": 3,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 54,
+   "SiteCount": 3,
+   "Sequence": 3
+  },
+  {
+   "Prefix": 55,
+   "SiteCount": 3,
+   "Sequence": 3
+  },
+  {
+   "Prefix": 56,
+   "SiteCount": 3,
+   "Sequence": 6
+  },
+  {
+   "Prefix": 57,
+   "SiteCount": 3,
+   "Sequence": 12
+  },
+  {
+   "Prefix": 58,
+   "SiteCount": 3,
+   "Sequence": 12
+  },
+  {
+   "Prefix": 59,
+   "SiteCount": 3,
+   "Sequence": 7
+  },
+  {
+   "Prefix": 60,
+   "SiteCount": 3,
+   "Sequence": 8
+  },
+  {
+   "Prefix": 61,
+   "SiteCount": 3,
+   "Sequence": 7
+  },
+  {
+   "Prefix": 62,
+   "SiteCount": 3,
+   "Sequence": 13
+  },
+  {
+   "Prefix": 63,
+   "SiteCount": 3,
+   "Sequence": 21
+  },
+  {
+   "Prefix": 64,
+   "SiteCount": 3,
+   "Sequence": 7
+  },
+  {
+   "Prefix": 65,
+   "SiteCount": 3,
+   "Sequence": 7
+  },
+  {
+   "Prefix": 66,
+   "SiteCount": 3,
+   "Sequence": 5
+  },
+  {
+   "Prefix": 67,
+   "SiteCount": 3,
+   "Sequence": 5
+  },
+  {
+   "Prefix": 68,
+   "SiteCount": 3,
+   "Sequence": 6
+  },
+  {
+   "Prefix": 69,
+   "SiteCount": 3,
+   "Sequence": 7
+  },
+  {
+   "Prefix": 70,
+   "SiteCount": 2,
+   "Sequence": 5
+  },
+  {
+   "Prefix": 71,
+   "SiteCount": 2,
+   "Sequence": 2
+  },
+  {
+   "Prefix": 72,
+   "SiteCount": 2,
+   "Sequence": 3
+  },
+  {
+   "Prefix": 73,
+   "SiteCount": 2,
+   "Sequence": 2
+  },
+  {
+   "Prefix": 74,
+   "SiteCount": 2,
+   "Sequence": 3
+  },
+  {
+   "Prefix": 75,
+   "SiteCount": 2,
+   "Sequence": 3
+  },
+  {
+   "Prefix": 76,
+   "SiteCount": 2,
+   "Sequence": 3
+  },
+  {
+   "Prefix": 77,
+   "SiteCount": 2,
+   "Sequence": 3
+  },
+  {
+   "Prefix": 78,
+   "SiteCount": 2,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 79,
+   "SiteCount": 2,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 80,
+   "SiteCount": 2,
+   "Sequence": 3
+  },
+  {
+   "Prefix": 81,
+   "SiteCount": 2,
+   "Sequence": 2
+  },
+  {
+   "Prefix": 82,
+   "SiteCount": 2,
+   "Sequence": 2
+  },
+  {
+   "Prefix": 83,
+   "SiteCount": 2,
+   "Sequence": 3
+  },
+  {
+   "Prefix": 84,
+   "SiteCount": 2,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 85,
+   "SiteCount": 2,
+   "Sequence": 12
+  },
+  {
+   "Prefix": 86,
+   "SiteCount": 2,
+   "Sequence": 10
+  },
+  {
+   "Prefix": 87,
+   "SiteCount": 2,
+   "Sequence": 11
+  },
+  {
+   "Prefix": 88,
+   "SiteCount": 2,
+   "Sequence": 11
+  },
+  {
+   "Prefix": 89,
+   "SiteCount": 2,
+   "Sequence": 5
+  },
+  {
+   "Prefix": 90,
+   "SiteCount": 2,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 91,
+   "SiteCount": 2,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 92,
+   "SiteCount": 2,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 93,
+   "SiteCount": 2,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 94,
+   "SiteCount": 2,
+   "Sequence": 5
+  },
+  {
+   "Prefix": 95,
+   "SiteCount": 2,
+   "Sequence": 2
+  },
+  {
+   "Prefix": 96,
+   "SiteCount": 2,
+   "Sequence": 4
+  },
+  {
+   "Prefix": 97,
+   "SiteCount": 2,
+   "Sequence": 2
+  },
+  {
+   "Prefix": 98,
+   "SiteCount": 2,
+   "Sequence": 2
+  },
+  {
+   "Prefix": 99,
+   "SiteCount": 2,
+   "Sequence": 3
+  }
+ ],
+ "lastUpdatedBy": "api@test",
+ "id": "main",
+ "docType": "reference_group",
+ "_rid": "0yN+AOTjxP46AAAAAAAAAA==",
+ "_self": "dbs/0yN+AA==/colls/0yN+AOTjxP4=/docs/0yN+AOTjxP46AAAAAAAAAA==/",
+ "_etag": "\"00000000-0000-0000-cb60-8a9f980501dc\"",
+ "_attachments": "attachments/",
+ "lastUpdatedOn": "2026-04-13T16:14:01.7273516Z",
+ "_ts": 1776096841
+}

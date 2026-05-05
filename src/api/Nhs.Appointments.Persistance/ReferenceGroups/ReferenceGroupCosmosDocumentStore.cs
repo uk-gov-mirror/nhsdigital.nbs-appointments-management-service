@@ -1,28 +1,33 @@
 using Microsoft.Azure.Cosmos;
+using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Core.Concurrency;
 using Nhs.Appointments.Persistance.Models;
 
-namespace Nhs.Appointments.Persistance;
+namespace Nhs.Appointments.Persistance.ReferenceGroups;
 
 public class ReferenceGroupCosmosDocumentStore : IReferenceNumberDocumentStore
 {
-    public const int NumberOfReferenceGroups = 99;
-
     private readonly ITypedDocumentCosmosStore<BookingReferenceGroupDocument> _cosmosStore;
-    private readonly ICoreReferenceNumberMigrationDocumentStore _numberMigrationDocumentStore;
+    private readonly ICoreReferenceGroupMigrationDocumentStore _numberMigrationDocumentStore;
     private readonly ILeaseManager _leaseManager;
+    private readonly IReferenceGroupSelector _referenceGroupSelector;
+    private readonly ILogger _logger;
     private readonly string _docType;
 
     public ReferenceGroupCosmosDocumentStore(
         ITypedDocumentCosmosStore<BookingReferenceGroupDocument> cosmosStore,
-        ICoreReferenceNumberMigrationDocumentStore numberMigrationDocumentStore,
-        ILeaseManager leaseManager
+        ICoreReferenceGroupMigrationDocumentStore numberMigrationDocumentStore,
+        ILeaseManager leaseManager,
+        IReferenceGroupSelector referenceGroupSelector,
+        ILogger<ReferenceGroupCosmosDocumentStore> logger
     )
     {
         _cosmosStore = cosmosStore;
         _numberMigrationDocumentStore = numberMigrationDocumentStore;
         _leaseManager = leaseManager;
+        _referenceGroupSelector = referenceGroupSelector;
+        _logger = logger;
         _docType = _cosmosStore.GetDocumentType();
     }
 
@@ -37,7 +42,7 @@ public class ReferenceGroupCosmosDocumentStore : IReferenceNumberDocumentStore
         }
 
         // By this stage we have migrated into the new container where individual reference groups are identified by Id, and there is no "0" entry.
-        var referenceGroup = ReferenceGroupSelector.GetLeastBusy(referenceGroupDocuments);
+        var referenceGroup = _referenceGroupSelector.Select(referenceGroupDocuments);
 
         await IncrementSiteCount(referenceGroup);
 
@@ -46,6 +51,8 @@ public class ReferenceGroupCosmosDocumentStore : IReferenceNumberDocumentStore
 
     public async Task<int> GetNextSequenceNumber(int referenceGroup)
     {
+        ReferenceNumberProvider.EnsureReferenceGroupIsWithinRange(referenceGroup);
+
         BookingReferenceGroupDocument referenceGroupDocument;
         try
         {
@@ -56,6 +63,8 @@ public class ReferenceGroupCosmosDocumentStore : IReferenceNumberDocumentStore
             await MigrateDataFromCoreContainerIfNecessary();
             referenceGroupDocument = await IncrementSequenceForReferenceGroup(referenceGroup);
         }
+
+        _logger.LogInformation("Booking sequence number {sequence} requested for {referenceGroup}", referenceGroupDocument.Sequence, referenceGroup);
 
         return referenceGroupDocument.Sequence;
     }
@@ -85,19 +94,22 @@ public class ReferenceGroupCosmosDocumentStore : IReferenceNumberDocumentStore
          * If still not started, migrate.
          */
 
-        using var leaseContext = _leaseManager.Acquire(LeaseKeys.ReferenceGroupKey);
+        using (var leaseContext = _leaseManager.Acquire(LeaseKeys.ReferenceGroupKey))
+        {
+            IEnumerable<BookingReferenceGroupDocument> referenceGroupDocuments = await GetReferenceGroupDocuments();
 
-        IEnumerable<BookingReferenceGroupDocument> referenceGroupDocuments = await GetReferenceGroupDocuments();
-
-        return IsMigrationComplete(referenceGroupDocuments)
-            ? referenceGroupDocuments
-            : await MigrateDataFromCoreContainer();
+            return IsMigrationComplete(referenceGroupDocuments)
+                ? referenceGroupDocuments
+                : await MigrateDataFromCoreContainer();
+        }
     }
 
     private async Task<BookingReferenceGroupDocument[]> GetReferenceGroupDocuments() => (await _cosmosStore.RunQueryAsync(x => x.DocumentType == _docType)).ToArray();
 
     private async Task<IEnumerable<BookingReferenceGroupDocument>> MigrateDataFromCoreContainer()
     {
+        _logger.LogInformation("{status} migration of reference groups from core container", "Starting");
+
         var oldCombinedCoreDocument = await _numberMigrationDocumentStore.Get();
 
         var referenceGroupDocuments = oldCombinedCoreDocument
@@ -116,11 +128,13 @@ public class ReferenceGroupCosmosDocumentStore : IReferenceNumberDocumentStore
             await _cosmosStore.WriteAsync(referenceGroupDocument);
         }
 
+        _logger.LogInformation("{status} migration of reference groups from core container", "Completed");
+
         return referenceGroupDocuments;
     }
 
     private bool IsMigrationComplete(IEnumerable<BookingReferenceGroupDocument> referenceGroupDocuments)
     {
-        return referenceGroupDocuments.Count() == NumberOfReferenceGroups;
+        return referenceGroupDocuments.Count() == ReferenceNumberProvider.NumberOfReferenceGroups;
     }
 }

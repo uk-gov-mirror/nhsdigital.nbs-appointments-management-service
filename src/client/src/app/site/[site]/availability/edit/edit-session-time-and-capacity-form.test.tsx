@@ -161,9 +161,12 @@ describe('Edit Session Time And Capacity Form', () => {
       />,
     );
 
-    const capacityInput = screen.getByRole('spinbutton', {
+    const capacityInput = screen.getByRole('textbox', {
       name: 'How many vaccinators or vaccination spaces do you have?',
     });
+
+    expect(capacityInput).toHaveAttribute('type', 'text');
+    expect(capacityInput).toHaveAttribute('inputmode', 'numeric');
 
     expect(capacityInput).toHaveDisplayValue('2');
     await user.clear(capacityInput);
@@ -180,7 +183,7 @@ describe('Edit Session Time And Capacity Form', () => {
       />,
     );
 
-    const capacityInput = screen.getByRole('spinbutton', {
+    const capacityInput = screen.getByRole('textbox', {
       name: 'How many vaccinators or vaccination spaces do you have?',
     });
 
@@ -199,7 +202,7 @@ describe('Edit Session Time And Capacity Form', () => {
       />,
     );
 
-    const capacityInput = screen.getByRole('spinbutton', {
+    const capacityInput = screen.getByRole('textbox', {
       name: 'How many vaccinators or vaccination spaces do you have?',
     });
 

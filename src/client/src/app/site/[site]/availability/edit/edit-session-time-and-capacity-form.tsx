@@ -439,7 +439,7 @@ const EditSessionTimeAndCapacityForm = ({
                 id="capacity"
                 aria-labelledby="capacity"
                 inputMode="numeric"
-                type="number"
+                type="text"
                 width={2}
                 onChange={e =>
                   field.onChange(handlePositiveBoundedNumberInput(e, 99))

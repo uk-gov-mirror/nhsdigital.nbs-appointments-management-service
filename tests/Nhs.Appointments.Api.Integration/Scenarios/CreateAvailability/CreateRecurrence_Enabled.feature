@@ -26,6 +26,9 @@
       | StartDate     | EndDate              | ByDay          | From     | Until     | SlotLength  | Capacity | Services | Label        |
       | Tomorrow      | 20 days from today   | Monday,Friday  | 09:00    | 17:00     | 10          | 1        | COVID    | Recurrence 1 |
     Then the call should be successful
+    And the following latest created recurring availability exists at the default site
+      | StartDate     | EndDate              | ByDay          | From     | Until     | SlotLength  | Capacity | Services | Label        |
+      | Tomorrow      | 20 days from today   | Monday,Friday  | 09:00    | 17:00     | 10          | 1        | COVID    | Recurrence 1 |
     And I create the following recurring availability at the default site
       | StartDate     | EndDate              | ByDay          | From     | Until     | SlotLength  | Capacity | Services | Label        |
       | Tomorrow      | 20 days from today   | Monday,Friday  | 09:00    | 17:00     | 10          | 1        | COVID    | Recurrence 2 |
@@ -40,6 +43,9 @@
       | StartDate     | EndDate              | ByDay   | From     | Until     | SlotLength  | Capacity | Services | Label        |
       | Tomorrow      | 20 days from today   | Monday  | 09:00    | 17:00     | 10          | 1        | COVID    | Recurrence 1 |
     Then the call should be successful
+    And the following latest created recurring availability exists at the default site
+      | StartDate     | EndDate              | ByDay   | From     | Until     | SlotLength  | Capacity | Services | Label        |
+      | Tomorrow      | 20 days from today   | Monday  | 09:00    | 17:00     | 10          | 1        | COVID    | Recurrence 1 |
     And I create the following recurring availability at the default site
       | StartDate     | EndDate              | ByDay   | From     | Until     | SlotLength  | Capacity | Services | Label        |
       | Tomorrow      | 20 days from today   | Monday  | 09:00    | 17:00     | 10          | 2        | COVID    | Recurrence 2 |
@@ -54,12 +60,14 @@
       | StartDate     | EndDate              | ByDay    | From     | Until     | SlotLength | Capacity | Services | Label        |
       | Tomorrow      | 20 days from today   | Monday   | 09:00    | 17:00     | 10         | 1        | COVID    | Recurrence 1 |
     Then the call should be successful
+    And the following latest created recurring availability exists at the default site
+      | StartDate     | EndDate              | ByDay    | From     | Until     | SlotLength | Capacity | Services | Label        |
+      | Tomorrow      | 20 days from today   | Monday   | 09:00    | 17:00     | 10         | 1        | COVID    | Recurrence 1 |
     And I create the following recurring availability at the default site
       | StartDate     | EndDate              | ByDay    | From     | Until     | SlotLength | Capacity | Services | Label        |
       | Tomorrow      | 20 days from today   | Tuesday  | 09:00    | 17:00     | 10         | 1        | COVID    | Recurrence 2 |
     Then the call should be successful
     And the following latest created recurring availability exists at the default site
-
       | StartDate     | EndDate              | ByDay    | From     | Until     | SlotLength | Capacity | Services | Label        |
       | Tomorrow      | 20 days from today   | Tuesday  | 09:00    | 17:00     | 10         | 1        | COVID    | Recurrence 2 |
 
@@ -69,6 +77,9 @@
       | StartDate     | EndDate              | ByDay   | From     | Until     | SlotLength | Capacity | Services | Label        |
       | Tomorrow      | 20 days from today   | Monday  | 09:00    | 17:00     | 10         | 1        | COVID    | Recurrence 1 |
     Then the call should be successful
+    And the following latest created recurring availability exists at the default site
+      | StartDate     | EndDate              | ByDay   | From     | Until     | SlotLength | Capacity | Services | Label        |
+      | Tomorrow      | 20 days from today   | Monday  | 09:00    | 17:00     | 10         | 1        | COVID    | Recurrence 1 |
     And I create the following recurring availability at the default site
       | StartDate     | EndDate              | ByDay   | From     | Until     | SlotLength | Capacity | Services | Label        |
       | Tomorrow      | 20 days from today   | Monday  | 09:00    | 17:00     | 10         | 1        | FLU      | Recurrence 2 |
@@ -83,6 +94,9 @@
       | StartDate     | EndDate              | ByDay   | From     | Until     | SlotLength | Capacity | Services | Label        |
       | Tomorrow      | 20 days from today   | Monday  | 09:00    | 17:00     | 10         | 1        | COVID    | Recurrence 1 |
     Then the call should be successful
+    And the following latest created recurring availability exists at the default site
+      | StartDate     | EndDate              | ByDay   | From     | Until     | SlotLength | Capacity | Services | Label        |
+      | Tomorrow      | 20 days from today   | Monday  | 09:00    | 17:00     | 10         | 1        | COVID    | Recurrence 1 |
     And I create the following recurring availability at the default site
       | StartDate           | EndDate              | ByDay   | From     | Until     | SlotLength | Capacity | Services | Label        |
       | 21 days from today  | 40 days from today   | Monday  | 09:00    | 17:00     | 10         | 1        | COVID    | Recurrence 2 |
@@ -97,6 +111,9 @@
       | StartDate | EndDate            | ByDay  | From  | Until | SlotLength | Capacity | Services | Label        |
       | Tomorrow  | 20 days from today | Monday | 09:00 | 17:00 | 10         | 1        | COVID    | Short Slots  |
     Then the call should be successful
+    And the following latest created recurring availability exists at the default site
+      | StartDate | EndDate            | ByDay  | From  | Until | SlotLength | Capacity | Services | Label        |
+      | Tomorrow  | 20 days from today | Monday | 09:00 | 17:00 | 10         | 1        | COVID    | Short Slots  |
     And I create the following recurring availability at the default site
       | StartDate | EndDate            | ByDay  | From  | Until | SlotLength | Capacity | Services | Label        |
       | Tomorrow  | 20 days from today | Monday | 09:00 | 17:00 | 20         | 1        | COVID    | Long Slots   |
@@ -104,8 +121,7 @@
     And the following latest created recurring availability exists at the default site
       | StartDate | EndDate            | ByDay  | From  | Until | SlotLength | Capacity | Services | Label        |
       | Tomorrow  | 20 days from today | Monday | 09:00 | 17:00 | 20         | 1        | COVID    | Long Slots   |
-
-
+    
   Scenario: Can create a recurrence spanning a leap day
     Given the default site exists
     When I create the following recurring availability at the default site
@@ -115,7 +131,3 @@
     And the following latest created recurring availability exists at the default site
       | StartDate  | EndDate     | ByDay           | From  | Until | SlotLength | Capacity | Services | Label     |
       | 2028-02-01 | 2028-03-01  | Thursday,Friday | 09:00 | 17:00 | 10         | 1        | COVID    | Leap Test |
-
-
-
-

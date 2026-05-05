@@ -29,8 +29,8 @@ namespace Nhs.Appointments.Api.Integration.Scenarios.CreateAvailability
             {
                 var recurrencePattern = new RecurrencePattern
                 {
-                    StartDate = dataTable.GetNaturalLanguageDateRowValueOrDefault(row, "StartDate"),
-                    EndDate = dataTable.GetNaturalLanguageDateRowValueOrDefault(row, "EndDate"),
+                    StartDate = dataTable.GetExactDateRowValueOrNaturalLanguageOrDefault(row, "StartDate"),
+                    EndDate = dataTable.GetExactDateRowValueOrNaturalLanguageOrDefault(row, "EndDate"),
                     ByDay = dataTable.GetRowValueOrDefault(row, "ByDay").Split(",").Select(x => Enum.Parse<DayOfWeek>(x.Trim())).ToArray(),
                     Session = new Session
                     {
@@ -62,8 +62,8 @@ namespace Nhs.Appointments.Api.Integration.Scenarios.CreateAvailability
             {
                 var recurrencePattern = new RecurrencePattern
                 {
-                    StartDate = dataTable.GetNaturalLanguageDateRowValueOrDefault(row, "StartDate"),
-                    EndDate = dataTable.GetNaturalLanguageDateRowValueOrDefault(row, "EndDate"),
+                    StartDate = dataTable.GetExactDateRowValueOrNaturalLanguageOrDefault(row, "StartDate"),
+                    EndDate = dataTable.GetExactDateRowValueOrNaturalLanguageOrDefault(row, "EndDate"),
                     ByDay = dataTable.GetRowValueOrDefault(row, "ByDay").Split(",").Select(x => Enum.Parse<DayOfWeek>(x.Trim())).ToArray(),
                     Session = new Session
                     {
@@ -80,18 +80,21 @@ namespace Nhs.Appointments.Api.Integration.Scenarios.CreateAvailability
                 return new RecurrenceDocument
                 {
                     Id = LastCreatedRecurrenceId.ToString(),
-                    Version = 1,
+                    DocumentType = "recurrence",
+                    Version = dataTable.GetIntRowValueOrDefault(row, "Version", 1),
                     Site = GetSiteId(dataTable.GetRowValueOrDefault(row, "Site")),
                     RecurrencePattern = recurrencePattern,
                     RecurrenceExceptions = null,
                     Label = dataTable.GetRowValueOrDefault(row, "Label"),
+                    LastUpdatedBy = _userId
                 };
             }).Single();
             
             var recurrenceDocument = await CosmosReadItem<RecurrenceDocument>("recurrence_data", expectedDocument.Id,
                 new PartitionKey(expectedDocument.Site), CancellationToken.None);
 
-            recurrenceDocument.Should().BeEquivalentTo(expectedDocument);
+            recurrenceDocument.Resource.Should().BeEquivalentTo(expectedDocument, x => x.Excluding(y => y.LastUpdatedOn));
+            recurrenceDocument.Resource.LastUpdatedOn.Should().NotBeNull();
         }
     }
 

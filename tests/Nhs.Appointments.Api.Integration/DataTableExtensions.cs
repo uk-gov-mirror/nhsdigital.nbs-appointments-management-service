@@ -37,6 +37,21 @@ public static class DataTableExtensions
         return HasValue(cell) ? NaturalLanguageDate.Parse(cell) : default;
     }
     
+    public static DateOnly GetExactDateRowValueOrNaturalLanguageOrDefault(this DataTable dataTable, TableRow row,
+        string columnName)
+    {
+        var columnLocation = dataTable.Rows.ElementAt(0).Cells.SingleOrDefault(cell => cell.Value == columnName)
+            ?.Location.Column;
+        var cell = row.Cells.SingleOrDefault(cell => cell.Location.Column == columnLocation)?.Value;
+
+        if (!HasValue(cell))
+        {
+            return default;
+        }
+
+        return DateOnly.TryParseExact(cell, "yyyy-MM-dd", out var exactDate) ? exactDate : NaturalLanguageDate.Parse(cell);
+    }
+    
     public static TimeOnly GetTimeRowValueOrDefault(this DataTable dataTable, TableRow row,
         string columnName)
     {

@@ -212,9 +212,12 @@ describe('Time and Capacity Step', () => {
       </MockForm>,
     );
 
-    const capacityInput = screen.getByRole('spinbutton', {
+    const capacityInput = screen.getByRole('textbox', {
       name: 'How many vaccinators or vaccination spaces do you have?',
     });
+
+    expect(capacityInput).toHaveAttribute('type', 'text');
+    expect(capacityInput).toHaveAttribute('inputmode', 'numeric');
 
     expect(capacityInput).toHaveDisplayValue('');
     await user.clear(capacityInput);
@@ -238,7 +241,7 @@ describe('Time and Capacity Step', () => {
       </MockForm>,
     );
 
-    const capacityInput = screen.getByRole('spinbutton', {
+    const capacityInput = screen.getByRole('textbox', {
       name: 'How many vaccinators or vaccination spaces do you have?',
     });
 
@@ -279,9 +282,12 @@ describe('Time and Capacity Step', () => {
       </MockForm>,
     );
 
-    const slotLengthInput = screen.getByRole('spinbutton', {
+    const slotLengthInput = screen.getByRole('textbox', {
       name: 'How long are your appointments?',
     });
+
+    expect(slotLengthInput).toHaveAttribute('type', 'text');
+    expect(slotLengthInput).toHaveAttribute('inputmode', 'numeric');
 
     expect(slotLengthInput).toHaveDisplayValue('');
     await user.clear(slotLengthInput);
@@ -321,7 +327,7 @@ describe('Time and Capacity Step', () => {
       </MockForm>,
     );
 
-    const slotLengthInput = screen.getByRole('spinbutton', {
+    const slotLengthInput = screen.getByRole('textbox', {
       name: 'How long are your appointments?',
     });
 
@@ -365,7 +371,7 @@ describe('Time and Capacity Step', () => {
       </MockForm>,
     );
 
-    const slotLengthInput = screen.getByRole('spinbutton', {
+    const slotLengthInput = screen.getByRole('textbox', {
       name: 'How long are your appointments?',
     });
 
@@ -410,7 +416,7 @@ describe('Time and Capacity Step', () => {
       </MockForm>,
     );
 
-    const slotLengthInput = screen.getByRole('spinbutton', {
+    const slotLengthInput = screen.getByRole('textbox', {
       name: 'How long are your appointments?',
     });
 

@@ -329,7 +329,7 @@ const TimeAndCapacityStep = ({
                 id="capacity"
                 aria-labelledby="capacity"
                 inputMode="numeric"
-                type="number"
+                type="text"
                 width={2}
                 onChange={e =>
                   field.onChange(handlePositiveBoundedNumberInput(e, 99))
@@ -393,7 +393,7 @@ const TimeAndCapacityStep = ({
                 id="slot-length"
                 aria-labelledby="slot-length"
                 inputMode="numeric"
-                type="number"
+                type="text"
                 width={2}
                 suffix="minutes"
                 onChange={e => {

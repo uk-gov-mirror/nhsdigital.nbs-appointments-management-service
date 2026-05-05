@@ -24,12 +24,10 @@ public class CreateRecurrenceFunction(
     IValidator<CreateRecurrenceRequest> validator,
     IUserContextProvider userContextProvider,
     ILogger<CreateRecurrenceFunction> logger,
-    IMetricsRecorder metricsRecorder,
     ISiteService siteService,
     IRecurrenceWriteService recurrenceWriteService,
     IFeatureToggleHelper featureToggleHelper)
-    : BaseApiFunction<CreateRecurrenceRequest, Guid>(validator, userContextProvider: userContextProvider, logger,
-        metricsRecorder)
+    : BaseApiFunction<CreateRecurrenceRequest, Guid>(validator, userContextProvider: userContextProvider, logger)
 {
     [OpenApiOperation("CreateRecurrence", ["Availability"],
         Summary = "Create recurring availability for a date range")]

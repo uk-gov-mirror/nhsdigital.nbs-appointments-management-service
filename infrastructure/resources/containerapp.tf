@@ -94,10 +94,6 @@ resource "azurerm_container_app_job" "nbs_mya_booking_extracts_job" {
     value = var.container_registry_password
   }
   secret {
-    name  = "container-cosmos-password"
-    value = var.cosmos_token != "" ? var.cosmos_token : azurerm_cosmosdb_account.nbs_mya_cosmos_db[0].primary_key
-  }
-  secret {
     name  = "blob-connection-string"
     value = var.data_extract_file_sender_options_type == "blob" ? azurerm_storage_account.nbs_mya_container_app_storage_account[0].primary_blob_connection_string : "UNSET"
   }
@@ -116,6 +112,11 @@ resource "azurerm_container_app_job" "nbs_mya_booking_extracts_job" {
     value = var.splunk_hec_token
   }
 
+  secret {
+    name  = "key_vault_uri"
+    value = azurerm_key_vault.nbs_mya_key_vault.vault_uri
+  }
+
   registry {
     server   = var.container_registry_server_url
     username = var.container_registry_username
@@ -129,16 +130,8 @@ resource "azurerm_container_app_job" "nbs_mya_booking_extracts_job" {
       cpu    = 1
       memory = "2Gi"
       env {
-        name  = "COSMOS_ENDPOINT"
-        value = var.cosmos_endpoint != "" ? var.cosmos_endpoint : azurerm_cosmosdb_account.nbs_mya_cosmos_db[0].endpoint
-      }
-      env {
-        name  = "COSMOS_TOKEN"
-        secret_name = "container-cosmos-password"
-      }
-      env {
         name  = "KEY_VAULT_URI"
-        value = azurerm_key_vault.nbs_mya_key_vault.vault_uri
+        secret_name = "key_vault_uri"
       }
       env {
         name = "FileSenderOptions__Type"
@@ -230,10 +223,6 @@ resource "azurerm_container_app_job" "nbs_mya_capacity_extracts_job" {
     name  = "container-registry-password"
     value = var.container_registry_password
   }
-  secret {
-    name  = "container-cosmos-password"
-    value = var.cosmos_token != "" ? var.cosmos_token : azurerm_cosmosdb_account.nbs_mya_cosmos_db[0].primary_key
-  }
   
   secret {
     name  = "blob-connection-string"
@@ -249,6 +238,11 @@ resource "azurerm_container_app_job" "nbs_mya_capacity_extracts_job" {
     value = var.splunk_hec_token
   }
 
+  secret {
+    name  = "key_vault_uri"
+    value = azurerm_key_vault.nbs_mya_key_vault.vault_uri
+  }
+
   registry {
     server   = var.container_registry_server_url
     username = var.container_registry_username
@@ -262,16 +256,8 @@ resource "azurerm_container_app_job" "nbs_mya_capacity_extracts_job" {
       cpu    = 1
       memory = "2Gi"
       env {
-        name  = "COSMOS_ENDPOINT"
-        value = var.cosmos_endpoint != "" ? var.cosmos_endpoint : azurerm_cosmosdb_account.nbs_mya_cosmos_db[0].endpoint
-      }
-      env {
-        name  = "COSMOS_TOKEN"
-        secret_name = "container-cosmos-password"
-      }
-      env {
         name  = "KEY_VAULT_URI"
-        value = azurerm_key_vault.nbs_mya_key_vault.vault_uri
+        secret_name = "key_vault_uri"
       }
       env {
         name = "FileSenderOptions__Type"
@@ -354,11 +340,6 @@ resource "azurerm_container_app" "nbs_mya_auditor" {
   }
 
   secret {
-    name  = "container-cosmos-token"
-    value = var.cosmos_token != "" ? var.cosmos_token : azurerm_cosmosdb_account.nbs_mya_cosmos_db[0].primary_key
-  }
-
-  secret {
     name  = "auditor-blob-connection-string"
     value = azurerm_storage_account.nbs_mya_audit_storage_account.primary_connection_string
   }
@@ -366,6 +347,11 @@ resource "azurerm_container_app" "nbs_mya_auditor" {
   secret {
     name  = "splunk-hec-token"
     value = var.splunk_hec_token
+  }
+
+  secret {
+    name  = "key_vault_uri"
+    value = azurerm_key_vault.nbs_mya_key_vault.vault_uri
   }
 
   registry {
@@ -387,11 +373,6 @@ resource "azurerm_container_app" "nbs_mya_auditor" {
       }
 
       env {
-        name        = "COSMOS_TOKEN"
-        secret_name = "container-cosmos-token"
-      }
-
-      env {
         name        = "BLOB_STORAGE_CONNECTION_STRING"
         secret_name = "auditor-blob-connection-string"
       }
@@ -402,13 +383,8 @@ resource "azurerm_container_app" "nbs_mya_auditor" {
       }
 
       env {
-        name  = "COSMOS_ENDPOINT"
-        value = var.cosmos_endpoint != "" ? var.cosmos_endpoint : azurerm_cosmosdb_account.nbs_mya_cosmos_db[0].endpoint
-      }
-
-      env {
         name  = "KEY_VAULT_URI"
-        value = azurerm_key_vault.nbs_mya_key_vault.vault_uri
+        secret_name = "key_vault_uri"
       }
 
       env {
@@ -528,13 +504,13 @@ resource "azurerm_container_app" "nbs_mya_aggregator" {
   }
 
   secret {
-    name  = "container-cosmos-token"
-    value = var.cosmos_token != "" ? var.cosmos_token : azurerm_cosmosdb_account.nbs_mya_cosmos_db[0].primary_key
+    name  = "splunk-hec-token"
+    value = var.splunk_hec_token
   }
 
   secret {
-    name  = "splunk-hec-token"
-    value = var.splunk_hec_token
+    name  = "key_vault_uri"
+    value = azurerm_key_vault.nbs_mya_key_vault.vault_uri
   }
 
   registry {
@@ -556,23 +532,13 @@ resource "azurerm_container_app" "nbs_mya_aggregator" {
       }
 
       env {
-        name        = "COSMOS_TOKEN"
-        secret_name = "container-cosmos-token"
-      }
-
-      env {
         name        = "SPLUNK_HEC_TOKEN"
         secret_name = "splunk-hec-token"
       }
 
       env {
         name  = "KEY_VAULT_URI"
-        value = azurerm_key_vault.nbs_mya_key_vault.vault_uri
-      }
-
-      env {
-        name  = "COSMOS_ENDPOINT"
-        value = var.cosmos_endpoint != "" ? var.cosmos_endpoint : azurerm_cosmosdb_account.nbs_mya_cosmos_db[0].endpoint
+        secret_name = "key_vault_uri"
       }
 
       env {

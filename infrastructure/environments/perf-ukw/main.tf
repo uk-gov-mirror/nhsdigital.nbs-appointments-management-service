@@ -67,8 +67,6 @@ module "mya_application_perf" {
   splunk_hec_token                                                = var.SPLUNK_HEC_TOKEN
   splunk_host_url                                                 = var.SPLUNK_HOST_URL
   autoscale_notification_email_address                            = var.AUTOSCALE_NOTIFICATION_EMAIL_ADDRESS
-  cosmos_endpoint                                                 = var.COSMOS_ENDPOINT
-  cosmos_token                                                    = var.COSMOS_TOKEN
   app_config_connection                                           = var.APP_CONFIG_CONNECTION
   create_booking_data_extracts                                    = true
   create_capacity_data_extracts                                   = true

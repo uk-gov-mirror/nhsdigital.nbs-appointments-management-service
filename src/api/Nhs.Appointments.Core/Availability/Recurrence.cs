@@ -29,13 +29,13 @@ public class RecurrenceException
     public string Label { get; set; }
     
     [JsonProperty("date")]
-    public DateOnly Date { get; set; }
+    public DateOnly? Date { get; set; }
     
     [JsonProperty("dateRange")]
     public DateRange DateRange { get; set; }
     
     [JsonProperty("session")]
-    public OverrideSession OverrideSession { get; set; }
+    public OverrideSessionRule OverrideSessionRule { get; set; }
 }
 
 public class DateRange
@@ -47,19 +47,22 @@ public class DateRange
     public DateOnly EndDate { get; set; }
 }
 
-public class OverrideSession
+public class OverrideSessionRule
 {
     [JsonProperty("from")]
-    public TimeOnly From { get; set; }
+    public TimeOnly? From { get; set; }
 
     [JsonProperty("until")]
-    public TimeOnly Until { get; set; }
+    public TimeOnly? Until { get; set; }
 
     [JsonProperty("services")]
     public ServicePatch[] ServicePatches { get; set; }
 
     [JsonProperty("capacity")]
-    public int Capacity { get; set; }
+    public int? Capacity { get; set; }
+    
+    [JsonProperty("label")]
+    public string Label { get; set; }
 }
 
 public class ServicePatch

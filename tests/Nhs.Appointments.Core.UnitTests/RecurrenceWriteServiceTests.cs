@@ -39,8 +39,8 @@ public class RecurrenceWriteServiceTests
             new()
             {
                 Date = DateOnly.ParseExact("2027-04-13", "yyyy-MM-dd"),
-                OverrideSession =
-                    new OverrideSession
+                OverrideSessionRule =
+                    new OverrideSessionRule
                     {
                         From = TimeOnly.ParseExact("09:00", "HH:mm"), Until = TimeOnly.ParseExact("17:00", "HH:mm"),
                     }
@@ -56,7 +56,7 @@ public class RecurrenceWriteServiceTests
             new()
             {
                 Date = DateOnly.ParseExact("2027-04-17", "yyyy-MM-dd"),
-                OverrideSession = new OverrideSession
+                OverrideSessionRule = new OverrideSessionRule
                 {
                     ServicePatches =
                     [

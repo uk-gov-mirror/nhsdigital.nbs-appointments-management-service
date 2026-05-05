@@ -80,6 +80,8 @@ public class AvailabilityWriteService(
             throw new ArgumentException("When editing a session a session to edit must be supplied.");
         }
 
+        //TODO the two methods below will EACH acquire and release their own site-day lock.
+        //is this okay or do we need to be smarter?
         await ApplyAvailability(site, date, sessions, mode, sessionToEdit);
         await bookingWriteService.RecalculateAppointmentStatuses(site, date);
     }

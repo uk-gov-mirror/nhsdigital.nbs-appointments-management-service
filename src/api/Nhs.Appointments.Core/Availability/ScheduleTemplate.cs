@@ -25,6 +25,18 @@ public class Session
     [JsonProperty("capacity")]
     [JsonPropertyName("capacity")]
     public int Capacity { get; set; }
+    
+    [JsonProperty("recurrenceId")]
+    [JsonPropertyName("recurrenceId")]
+    public Guid? RecurrenceId { get; set; }
+    
+    [JsonProperty("recurrenceVersion")]
+    [JsonPropertyName("recurrenceVersion")]
+    public int? RecurrenceVersion { get; set; }
+    
+    [JsonProperty("label")]
+    [JsonPropertyName("label")]
+    public string Label { get; set; }
 }
 
 public class SessionInstance(DateTime from, DateTime until) : TimePeriod(from, until), IEquatable<SessionInstance>

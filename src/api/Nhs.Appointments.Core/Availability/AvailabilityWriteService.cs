@@ -24,8 +24,8 @@ public class AvailabilityWriteService(
         if (template == null)
         {
             throw new ArgumentException("Template must be provided.");
-        }
 
+        }
         if (template.Sessions is null || template.Sessions.Length == 0)
         {
             throw new ArgumentException("Template must contain one or more sessions.");
@@ -70,7 +70,7 @@ public class AvailabilityWriteService(
             throw new ArgumentException("When editing a session a session to edit must be supplied.");
         }
 
-        await availabilityStore.ApplyAvailabilityTemplate(site, date, sessions, mode, sessionToEdit);
+        await availabilityStore.ApplyAvailability(site, date, sessions, mode, sessionToEdit);
         await bookingWriteService.RecalculateAppointmentStatuses(site, date);
     }
 
@@ -107,7 +107,10 @@ public class AvailabilityWriteService(
         while (cursor <= end)
         {
             if (weekdays.Contains(cursor.DayOfWeek))
+            {
                 yield return cursor;
+            }
+
             cursor = cursor.AddDays(1);
         }
     }
@@ -139,7 +142,7 @@ public class AvailabilityWriteService(
                 result = (editResult.Success, editResult.Message);
                 break;
             case SessionUpdateAction.EditSingle:
-                await availabilityStore.ApplyAvailabilityTemplate(
+                await availabilityStore.ApplyAvailability(
                     site,
                     from,
                     [sessionReplacement],

@@ -30,7 +30,7 @@ public class AvailabilityDocumentStore(
         return results;
     }
 
-    public async Task ApplyAvailabilityTemplate(string site, DateOnly date, Session[] sessions,
+    public async Task ApplyAvailability(string site, DateOnly date, Session[] sessions,
         ApplyAvailabilityMode mode, Session sessionToEdit = null)
     {
         var documentType = documentStore.GetDocumentType();

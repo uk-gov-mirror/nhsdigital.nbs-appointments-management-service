@@ -168,7 +168,7 @@ public class AvailabilityWriteServiceTests
 
         await _sut.ApplyAvailabilityTemplateAsync(site, from, until, template, ApplyAvailabilityMode.Overwrite, user);
         var actualDates = _availabilityStore.Invocations
-            .Where(i => i.Method.Name == nameof(IAvailabilityStore.ApplyAvailabilityTemplate))
+            .Where(i => i.Method.Name == nameof(IAvailabilityStore.ApplyAvailability))
             .Select(i => (DateOnly)i.Arguments[1]);
         var expectedDates = new[]
         {
@@ -241,7 +241,7 @@ public class AvailabilityWriteServiceTests
         await _sut.ApplySingleDateSessionAsync(date, site, sessions, ApplyAvailabilityMode.Overwrite, user);
 
         _availabilityStore.Verify(
-            x => x.ApplyAvailabilityTemplate(site, date, sessions, ApplyAvailabilityMode.Overwrite, null), Times.Once);
+            x => x.ApplyAvailability(site, date, sessions, ApplyAvailabilityMode.Overwrite, null), Times.Once);
         _availabilityCreatedEventStore.Verify(x => x.LogSingleDateSessionCreated(site, date, sessions, user),
             Times.Once);
     }
@@ -316,7 +316,7 @@ public class AvailabilityWriteServiceTests
         await _sut.SetAvailabilityAsync(date, site, sessions, ApplyAvailabilityMode.Overwrite);
 
         _availabilityStore.Verify(
-            x => x.ApplyAvailabilityTemplate(site, date, sessions, ApplyAvailabilityMode.Overwrite, null), Times.Once);
+            x => x.ApplyAvailability(site, date, sessions, ApplyAvailabilityMode.Overwrite, null), Times.Once);
     }
 
     [Fact]
@@ -349,7 +349,7 @@ public class AvailabilityWriteServiceTests
         await _sut.SetAvailabilityAsync(date, site, sessions, ApplyAvailabilityMode.Edit, sessionToEdit);
 
         _availabilityStore.Verify(
-            x => x.ApplyAvailabilityTemplate(site, date, sessions, ApplyAvailabilityMode.Edit, sessionToEdit),
+            x => x.ApplyAvailability(site, date, sessions, ApplyAvailabilityMode.Edit, sessionToEdit),
             Times.Once);
     }
 
@@ -653,7 +653,7 @@ public class AvailabilityWriteServiceTests
         result.BookingsCanceled.Should().Be(recalculationResponse.BookingsCanceled);
         result.UpdateSuccessful.Should().Be(true);
 
-        _availabilityStore.Verify(x => x.ApplyAvailabilityTemplate(site, from, sessionReplacements, ApplyAvailabilityMode.Edit, sessionMatcher), Times.Once);
+        _availabilityStore.Verify(x => x.ApplyAvailability(site, from, sessionReplacements, ApplyAvailabilityMode.Edit, sessionMatcher), Times.Once);
         _bookingsWriteService.Verify(x => x.RecalculateAppointmentStatuses(site, It.IsAny<DateOnly[]>(), NewlyUnsupportedBookingAction.Orphan), Times.Once);
     }
 

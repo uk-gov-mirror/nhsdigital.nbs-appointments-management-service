@@ -6,7 +6,7 @@ namespace Nhs.Appointments.Api.Integration.Data;
 public static partial class NaturalLanguageDate
 {
     [GeneratedRegex(
-        "^(?<format>Today|today|Tomorrow|tomorrow|Yesterday|yesterday|Next Monday|Next Tuesday|Next Wednesday|Next Thursday|Next Friday|Next Saturday|Next Sunday|(((?<magnitude>[0-9]+) (?<period>days|day|weeks|week|months|month|years|year) (?<direction>from|before) (now|today))))$")]
+        "^(?<format>Today|today|Tomorrow|tomorrow|Yesterday|yesterday|Next Monday|Next Tuesday|Next Wednesday|Next Thursday|Next Friday|Next Saturday|Next Sunday|((?<dayOfWeek>Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday) in (?<nWeeks>[0-9]+) weeks)|(((?<magnitude>[0-9]+) (?<period>days|day|weeks|week|months|month|years|year) (?<direction>from|before) (now|today))))$")]
     private static partial Regex NaturalLanguageRelativeDate();
 
     /// <summary>
@@ -45,19 +45,28 @@ public static partial class NaturalLanguageDate
             case "today":
                 return DateOnly.FromDateTime(DateTime.UtcNow);
             case "Next Monday":
-                return DateOnly.FromDateTime(GetDayInNextWeek(DayOfWeek.Monday));
+                return DateOnly.FromDateTime(GetDayInNextNWeeks(DayOfWeek.Monday));
             case "Next Tuesday":
-                return DateOnly.FromDateTime(GetDayInNextWeek(DayOfWeek.Tuesday));
+                return DateOnly.FromDateTime(GetDayInNextNWeeks(DayOfWeek.Tuesday));
             case "Next Wednesday":
-                return DateOnly.FromDateTime(GetDayInNextWeek(DayOfWeek.Wednesday));
+                return DateOnly.FromDateTime(GetDayInNextNWeeks(DayOfWeek.Wednesday));
             case "Next Thursday":
-                return DateOnly.FromDateTime(GetDayInNextWeek(DayOfWeek.Thursday));
+                return DateOnly.FromDateTime(GetDayInNextNWeeks(DayOfWeek.Thursday));
             case "Next Friday":
-                return DateOnly.FromDateTime(GetDayInNextWeek(DayOfWeek.Friday));
+                return DateOnly.FromDateTime(GetDayInNextNWeeks(DayOfWeek.Friday));
             case "Next Saturday":
-                return DateOnly.FromDateTime(GetDayInNextWeek(DayOfWeek.Saturday));
+                return DateOnly.FromDateTime(GetDayInNextNWeeks(DayOfWeek.Saturday));
             case "Next Sunday":
-                return DateOnly.FromDateTime(GetDayInNextWeek(DayOfWeek.Sunday));
+                return DateOnly.FromDateTime(GetDayInNextNWeeks(DayOfWeek.Sunday));
+        }
+        
+        var dayOfWeek = match.Groups["dayOfWeek"].Value;
+        var nWeeks = match.Groups["nWeeks"].Value;
+
+        if (dayOfWeek != string.Empty && nWeeks != string.Empty)
+        {
+            var dayOfWeekEnum =  Enum.Parse<DayOfWeek>(dayOfWeek);
+            return DateOnly.FromDateTime(GetDayInNextNWeeks(dayOfWeekEnum, int.Parse(nWeeks)));
         }
 
         var period = match.Groups["period"].Value;
@@ -80,11 +89,15 @@ public static partial class NaturalLanguageDate
     }
 
     /// <summary>
-    ///     Want to return a day of the week in the next week.
+    ///     Want to return a day of the week in the next nth week.
+    ///     Equivalent to 'Next Tuesday' when 'n' = 1.
+    ///     Equivalent to 'Not this coming Tuesday, but the one after' when 'n' = 2.
+    ///     etc...
     /// </summary>
     /// <param name="targetDay"></param>
+    /// <param name="numberOfWeeksInFuture"></param>
     /// <returns></returns>
-    private static DateTime GetDayInNextWeek(DayOfWeek targetDay)
+    private static DateTime GetDayInNextNWeeks(DayOfWeek targetDay, int numberOfWeeksInFuture = 1)
     {
         var today = DateTime.UtcNow;
 
@@ -92,12 +105,12 @@ public static partial class NaturalLanguageDate
         var daysSinceMonday = ((int)today.DayOfWeek - (int)DayOfWeek.Monday + 7) % 7;
         var thisWeeksMonday = today.AddDays(-daysSinceMonday);
 
-        // Get next week's Monday
-        var nextWeeksMonday = thisWeeksMonday.AddDays(7);
+        // Get next 'n' week's Monday
+        var nextNWeeksMonday = thisWeeksMonday.AddDays(7 * numberOfWeeksInFuture);
 
-        // Calculate days to target day from next Monday
+        // Calculate days to target day from a Monday
         var daysToTarget = ((int)targetDay - (int)DayOfWeek.Monday + 7) % 7;
 
-        return nextWeeksMonday.AddDays(daysToTarget);
+        return nextNWeeksMonday.AddDays(daysToTarget);
     }
 }

@@ -3,12 +3,12 @@
   Scenario: Can create a recurrence
     Given the default site exists
     When I create the following recurring availability at the default site
-      | StartDate     | EndDate              | ByDay                    | From     | Until     | SlotLength | Capacity | Services | Label      |
-      | Tomorrow      | 45 days from today   | Monday,Wednesday,Friday  | 09:00    | 17:00     | 5          | 1        | COVID    | Jonny Test |
+      | StartDate           | EndDate              | ByDay                    | From     | Until     | SlotLength | Capacity | Services | Label      |
+      | Monday in 3 weeks   | Friday in 5 weeks    | Monday,Wednesday,Friday  | 09:00    | 17:00     | 5          | 1        | COVID    | Jonny Test |
     Then the call should be successful
     And the following latest created recurring availability exists at the default site
-      | StartDate     | EndDate              | ByDay                    | From     | Until     | SlotLength | Capacity | Services | Label      |
-      | Tomorrow      | 45 days from today   | Monday,Wednesday,Friday  | 09:00    | 17:00     | 5          | 1        | COVID    | Jonny Test |
+      | StartDate           | EndDate              | ByDay                    | From     | Until     | SlotLength | Capacity | Services | Label      |
+      | Monday in 3 weeks   | Friday in 5 weeks    | Monday,Wednesday,Friday  | 09:00    | 17:00     | 5          | 1        | COVID    | Jonny Test |
 
   Scenario: Can create a weekend recurrence with multiple services
     Given the default site exists

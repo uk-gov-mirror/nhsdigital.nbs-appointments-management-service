@@ -386,7 +386,7 @@ public abstract partial class BaseFeatureSteps : Feature
     }
 
     protected IEnumerable<DailyAvailabilityDocument> DailyAvailabilityDocumentsFromTable(string site,
-        DataTable dataTable)
+        DataTable dataTable, Guid? recurrenceId = null, int? recurrenceVersion = null)
     {
         var sessions = dataTable.Rows.Skip(1).Select((row, index) => new DailyAvailabilityDocument
         {
@@ -401,8 +401,11 @@ public abstract partial class BaseFeatureSteps : Feature
                     From = TimeOnly.Parse(row.Cells.ElementAt(1).Value),
                     Until = TimeOnly.Parse(row.Cells.ElementAt(2).Value),
                     Services = row.Cells.ElementAt(3).Value.Split(",").Select(x => x.Trim()).ToArray(),
+                    SlotLength = int.Parse(row.Cells.ElementAt(4).Value),
                     Capacity = int.Parse(row.Cells.ElementAt(5).Value),
-                    SlotLength = int.Parse(row.Cells.ElementAt(4).Value)
+                    Label = row.Cells.ElementAt(6).Value,
+                    RecurrenceVersion = recurrenceVersion,
+                    RecurrenceId = recurrenceId
                 }
             },
             LastUpdatedBy = _userId

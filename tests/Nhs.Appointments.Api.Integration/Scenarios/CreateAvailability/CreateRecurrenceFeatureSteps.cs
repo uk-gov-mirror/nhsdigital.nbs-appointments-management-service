@@ -96,6 +96,17 @@ namespace Nhs.Appointments.Api.Integration.Scenarios.CreateAvailability
             recurrenceDocument.Resource.Should().BeEquivalentTo(expectedDocument, x => x.Excluding(y => y.LastUpdatedOn));
             recurrenceDocument.Resource.LastUpdatedOn.Should().NotBeNull();
         }
+        
+        [Then("the following daily availability sessions are created at the default site with the created recurrenceId")]
+        [And("the following daily availability sessions are created at the default site with the created recurrenceId")]
+        public async Task AssertDailyAvailabilityForRecurrence(DataTable expectedDailyAvailabilityTable)
+        {
+            var site = GetSiteId();
+            var expectedDocuments = DailyAvailabilityDocumentsFromTable(site, expectedDailyAvailabilityTable, LastCreatedRecurrenceId, 1);
+            var actualDocuments = await CosmosQueryFeed<DailyAvailabilityDocument>("booking_data", d => d.DocumentType == "daily_availability" && d.Site == site);
+            actualDocuments.Count().Should().Be(expectedDocuments.Count());
+            actualDocuments.Should().BeEquivalentTo(expectedDocuments, opts => opts.Excluding(x => x.LastUpdatedOn));
+        }
     }
 
     [Collection(FeatureToggleCollectionNames.RecurrenceCollection)]

@@ -3,12 +3,40 @@
   Scenario: Can create a recurrence
     Given the default site exists
     When I create the following recurring availability at the default site
-      | StartDate           | EndDate              | ByDay                    | From     | Until     | SlotLength | Capacity | Services | Label      |
-      | Monday in 3 weeks   | Friday in 5 weeks    | Monday,Wednesday,Friday  | 09:00    | 17:00     | 5          | 1        | COVID    | Jonny Test |
+      | StartDate           | EndDate              | ByDay                    | From     | Until     | SlotLength | Capacity | Services | Label               |
+      | Monday in 3 weeks   | Friday in 5 weeks    | Monday,Wednesday,Friday  | 09:00    | 17:00     | 5          | 1        | COVID    | My First Recurrence |
     Then the call should be successful
     And the following latest created recurring availability exists at the default site
-      | StartDate           | EndDate              | ByDay                    | From     | Until     | SlotLength | Capacity | Services | Label      |
-      | Monday in 3 weeks   | Friday in 5 weeks    | Monday,Wednesday,Friday  | 09:00    | 17:00     | 5          | 1        | COVID    | Jonny Test |
+      | StartDate           | EndDate              | ByDay                    | From     | Until     | SlotLength | Capacity | Services | Label               |
+      | Monday in 3 weeks   | Friday in 5 weeks    | Monday,Wednesday,Friday  | 09:00    | 17:00     | 5          | 1        | COVID    | My First Recurrence |
+    And the following daily availability sessions are created at the default site with the created recurrenceId
+      | Date                  | From   | Until  | Services | Slot Length | Capacity | Label               |
+      | Monday in 3 weeks     | 09:00  | 17:00  | COVID    | 5           | 1        | My First Recurrence |
+      | Wednesday in 3 weeks  | 09:00  | 17:00  | COVID    | 5           | 1        | My First Recurrence |
+      | Friday in 3 weeks     | 09:00  | 17:00  | COVID    | 5           | 1        | My First Recurrence |
+      | Monday in 4 weeks     | 09:00  | 17:00  | COVID    | 5           | 1        | My First Recurrence |
+      | Wednesday in 4 weeks  | 09:00  | 17:00  | COVID    | 5           | 1        | My First Recurrence |
+      | Friday in 4 weeks     | 09:00  | 17:00  | COVID    | 5           | 1        | My First Recurrence |
+      | Monday in 5 weeks     | 09:00  | 17:00  | COVID    | 5           | 1        | My First Recurrence |
+      | Wednesday in 5 weeks  | 09:00  | 17:00  | COVID    | 5           | 1        | My First Recurrence |
+      | Friday in 5 weeks     | 09:00  | 17:00  | COVID    | 5           | 1        | My First Recurrence |
+
+  Scenario: Can create a recurrence where the start and end date aren't in the ByDay pattern
+    Given the default site exists
+    When I create the following recurring availability at the default site
+      | StartDate           | EndDate                | ByDay             | From     | Until     | SlotLength | Capacity | Services          | Label            |
+      | Tuesday in 2 weeks  | Thursday in 4 weeks    | Wednesday,Friday  | 12:00    | 15:00     | 15         | 3        | COVID, FLU, RSV   | A New Recurrence |
+    Then the call should be successful
+    And the following latest created recurring availability exists at the default site
+      | StartDate           | EndDate                | ByDay             | From     | Until     | SlotLength | Capacity | Services          | Label            |
+      | Tuesday in 2 weeks  | Thursday in 4 weeks    | Wednesday,Friday  | 12:00    | 15:00     | 15         | 3        | COVID, FLU, RSV   | A New Recurrence |
+    And the following daily availability sessions are created at the default site with the created recurrenceId
+      | Date                  | From   | Until  | Services           | Slot Length  | Capacity | Label               |
+      | Wednesday in 2 weeks  | 12:00  | 15:00  | COVID, FLU, RSV    | 15           | 3        | A New Recurrence    |
+      | Friday in 2 weeks     | 12:00  | 15:00  | COVID, FLU, RSV    | 15           | 3        | A New Recurrence    |
+      | Wednesday in 3 weeks  | 12:00  | 15:00  | COVID, FLU, RSV    | 15           | 3        | A New Recurrence    |
+      | Friday in 3 weeks     | 12:00  | 15:00  | COVID, FLU, RSV    | 15           | 3        | A New Recurrence    |
+      | Wednesday in 4 weeks  | 12:00  | 15:00  | COVID, FLU, RSV    | 15           | 3        | A New Recurrence    |
 
   Scenario: Can create a weekend recurrence with multiple services
     Given the default site exists

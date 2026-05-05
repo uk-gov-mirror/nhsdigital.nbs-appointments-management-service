@@ -1,5 +1,6 @@
 using System.Globalization;
 using Nhs.Appointments.Core.Bookings;
+using Nhs.Appointments.Core.Concurrency;
 
 namespace Nhs.Appointments.Core.Availability;
 
@@ -7,7 +8,8 @@ public class AvailabilityWriteService(
     IAvailabilityStore availabilityStore,
     IAvailabilityCreatedEventStore availabilityCreatedEventStore,
     IBookingWriteService bookingWriteService,
-    IBookingQueryService bookingQueryService) : IAvailabilityWriteService
+    IBookingQueryService bookingQueryService,
+    ILeaseManager leaseManager) : IAvailabilityWriteService
 {
     public async Task ApplyAvailabilityTemplateAsync(string site, DateOnly from, DateOnly until, Template template, ApplyAvailabilityMode mode, string user)
     {
@@ -45,6 +47,14 @@ public class AvailabilityWriteService(
         await availabilityCreatedEventStore.LogTemplateCreated(site, from, until, template, user);
     }
 
+    private async Task ApplyAvailability(string site, DateOnly date, Session[] sessions, ApplyAvailabilityMode mode,
+        Session sessionToEdit = null)
+    {
+        var leaseKey = LeaseKeys.SiteKeyFactory.Create(site, date);
+        using var leaseContent = leaseManager.Acquire(leaseKey);
+        await availabilityStore.ApplyAvailability(site, date, sessions, mode, sessionToEdit);
+    }
+
     public async Task ApplySingleDateSessionAsync(DateOnly date, string site, Session[] sessions,
         ApplyAvailabilityMode mode, string user, Session sessionToEdit = null)
     {
@@ -70,7 +80,7 @@ public class AvailabilityWriteService(
             throw new ArgumentException("When editing a session a session to edit must be supplied.");
         }
 
-        await availabilityStore.ApplyAvailability(site, date, sessions, mode, sessionToEdit);
+        await ApplyAvailability(site, date, sessions, mode, sessionToEdit);
         await bookingWriteService.RecalculateAppointmentStatuses(site, date);
     }
 
@@ -142,7 +152,7 @@ public class AvailabilityWriteService(
                 result = (editResult.Success, editResult.Message);
                 break;
             case SessionUpdateAction.EditSingle:
-                await availabilityStore.ApplyAvailability(
+                await ApplyAvailability(
                     site,
                     from,
                     [sessionReplacement],

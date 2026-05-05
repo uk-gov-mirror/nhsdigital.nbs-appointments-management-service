@@ -1,5 +1,6 @@
 using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Bookings;
+using Nhs.Appointments.Core.Concurrency;
 
 namespace Nhs.Appointments.Core.UnitTests;
 
@@ -9,12 +10,13 @@ public class AvailabilityWriteServiceTests
     private readonly Mock<IAvailabilityStore> _availabilityStore = new();
     private readonly Mock<IBookingWriteService> _bookingsWriteService = new();
     private readonly Mock<IBookingQueryService> _bookingsQueryService = new();
+    private readonly Mock<ILeaseManager> _leaseManager = new();
     private readonly AvailabilityWriteService _sut;
 
     public AvailabilityWriteServiceTests()
     {
         _sut = new AvailabilityWriteService(_availabilityStore.Object, _availabilityCreatedEventStore.Object,
-            _bookingsWriteService.Object, _bookingsQueryService.Object);
+            _bookingsWriteService.Object, _bookingsQueryService.Object, _leaseManager.Object);
     }
 
     [Theory]

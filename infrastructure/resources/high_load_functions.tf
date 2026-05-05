@@ -318,15 +318,15 @@ resource "azurerm_windows_function_app_slot" "nbs_mya_high_load_func_app_preview
 
 
 resource "azurerm_role_assignment" "nbs_mya_high_load_func_app_kv_access" {
-  for_each             = { for i, v in azurerm_windows_function_app.nbs_mya_high_load_func_app : i => v.identity[0].principal_id }
+  count                = var.create_high_load_function_app ? 1 : 0
   scope                = azurerm_key_vault.nbs_mya_key_vault.id
   role_definition_name = "Key Vault Secrets User"
-  principal_id         = each.value
+  principal_id         = azurerm_windows_function_app.nbs_mya_high_load_func_app[0].identity[0].principal_id
 }
 
 resource "azurerm_role_assignment" "nbs_mya_high_load_func_app_preview_kv_access" {
-  for_each             = { for i, v in azurerm_windows_function_app_slot.nbs_mya_high_load_func_app_preview : i => v.identity[0].principal_id }
+  count                = var.create_high_load_function_app && var.create_app_slot ? 1 : 0
   scope                = azurerm_key_vault.nbs_mya_key_vault.id
   role_definition_name = "Key Vault Secrets User"
-  principal_id         = each.value
+  principal_id         = azurerm_windows_function_app_slot.nbs_mya_high_load_func_app_preview[0].identity[0].principal_id
 }

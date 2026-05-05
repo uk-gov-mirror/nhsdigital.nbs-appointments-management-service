@@ -113,7 +113,7 @@ resource "azurerm_container_app_job" "nbs_mya_booking_extracts_job" {
   }
 
   secret {
-    name  = "key_vault_uri"
+    name  = "key-vault-uri"
     value = azurerm_key_vault.nbs_mya_key_vault.vault_uri
   }
 
@@ -130,8 +130,8 @@ resource "azurerm_container_app_job" "nbs_mya_booking_extracts_job" {
       cpu    = 1
       memory = "2Gi"
       env {
-        name  = "KEY_VAULT_URI"
-        secret_name = "key_vault_uri"
+        name  = "key-vault-uri"
+        secret_name = "key-vault-uri"
       }
       env {
         name = "FileSenderOptions__Type"
@@ -239,7 +239,7 @@ resource "azurerm_container_app_job" "nbs_mya_capacity_extracts_job" {
   }
 
   secret {
-    name  = "key_vault_uri"
+    name  = "key-vault-uri"
     value = azurerm_key_vault.nbs_mya_key_vault.vault_uri
   }
 
@@ -256,8 +256,8 @@ resource "azurerm_container_app_job" "nbs_mya_capacity_extracts_job" {
       cpu    = 1
       memory = "2Gi"
       env {
-        name  = "KEY_VAULT_URI"
-        secret_name = "key_vault_uri"
+        name  = "key-vault-uri"
+        secret_name = "key-vault-uri"
       }
       env {
         name = "FileSenderOptions__Type"
@@ -350,7 +350,7 @@ resource "azurerm_container_app" "nbs_mya_auditor" {
   }
 
   secret {
-    name  = "key_vault_uri"
+    name  = "key-vault-uri"
     value = azurerm_key_vault.nbs_mya_key_vault.vault_uri
   }
 
@@ -383,8 +383,8 @@ resource "azurerm_container_app" "nbs_mya_auditor" {
       }
 
       env {
-        name  = "KEY_VAULT_URI"
-        secret_name = "key_vault_uri"
+        name  = "key-vault-uri"
+        secret_name = "key-vault-uri"
       }
 
       env {
@@ -509,7 +509,7 @@ resource "azurerm_container_app" "nbs_mya_aggregator" {
   }
 
   secret {
-    name  = "key_vault_uri"
+    name  = "key-vault-uri"
     value = azurerm_key_vault.nbs_mya_key_vault.vault_uri
   }
 
@@ -537,8 +537,8 @@ resource "azurerm_container_app" "nbs_mya_aggregator" {
       }
 
       env {
-        name  = "KEY_VAULT_URI"
-        secret_name = "key_vault_uri"
+        name  = "key-vault-uri"
+        secret_name = "key-vault-uri"
       }
 
       env {

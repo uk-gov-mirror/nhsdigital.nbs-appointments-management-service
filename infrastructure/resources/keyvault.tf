@@ -13,7 +13,7 @@ resource "azurerm_key_vault" "nbs_mya_key_vault" {
 }
 
 resource "azurerm_key_vault_secret" "active_cosmos_account" {
-  name         = "ActiveCosmosDBAccountName"
+  name         = "ACTIVE-COSMOS-DB-ACCOUNT"
   value        = "${var.application}-cdb-${var.environment}-${var.loc}"
   key_vault_id = azurerm_key_vault.nbs_mya_key_vault.id
 

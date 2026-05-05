@@ -7,6 +7,9 @@ public class RecurrenceWriteService(
     public async Task<Guid> CreateRecurrence(string site, RecurrencePattern recurrencePattern, string label,
         RecurrenceException[] recurrenceExceptions)
     {
+        ArgumentNullException.ThrowIfNull(site);
+        ArgumentNullException.ThrowIfNull(recurrencePattern);
+
         var recurrenceId = Guid.NewGuid();
         const int recurrenceVersion = 1;
         await recurrenceStore.WriteRecurrenceDocument(recurrenceId.ToString(), recurrenceVersion, site,
@@ -34,6 +37,7 @@ public class RecurrenceWriteService(
     {
         recurrencePattern.Session.RecurrenceId = recurrenceId;
         recurrencePattern.Session.RecurrenceVersion = recurrenceVersion;
+        recurrencePattern.Session.Label = label;
 
         var datesInRecurrence = GetDatesInRecurrence(recurrencePattern.StartDate, recurrencePattern.EndDate,
             recurrencePattern.ByDay);
@@ -95,8 +99,12 @@ public class RecurrenceWriteService(
     /// <returns></returns>
     private static IEnumerable<DateOnly> GetRecurrenceExceptionDates(RecurrenceException[] recurrenceExceptions)
     {
+        if (recurrenceExceptions == null || recurrenceExceptions.Length == 0)
+        {
+            return Array.Empty<DateOnly>();
+        }
+        
         var exceptionDates = new List<DateOnly>();
-
         var exceptionRules = recurrenceExceptions.Where(x => x.OverrideSessionRule == null);
 
         //these rules can overlap and intersect and that's okay
@@ -128,8 +136,12 @@ public class RecurrenceWriteService(
     private static IEnumerable<DailyAvailability> GetRecurrenceOverrides(RecurrencePattern recurrencePattern,
         RecurrenceException[] recurrenceExceptions)
     {
+        if (recurrenceExceptions == null || recurrenceExceptions.Length == 0)
+        {
+            return Array.Empty<DailyAvailability>();
+        }
+        
         var overrideDates = new List<DailyAvailability>();
-
         var overrideRules = recurrenceExceptions.Where(x => x.OverrideSessionRule != null);
 
         //these rules can NOT overlap dates (i.e. no hierarchy of overrides)
@@ -175,6 +187,11 @@ public class RecurrenceWriteService(
 
     private static string[] ApplyOverrideServicePatches(string[] parentServices, ServicePatch[] servicePatches)
     {
+        if (servicePatches == null || servicePatches.Length == 0)
+        {
+            return parentServices;
+        }
+        
         var servicesList = parentServices.ToList();
         foreach (var servicePatch in servicePatches)
         {

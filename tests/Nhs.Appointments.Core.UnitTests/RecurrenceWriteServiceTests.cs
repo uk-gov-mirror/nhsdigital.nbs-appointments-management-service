@@ -79,12 +79,28 @@ public class RecurrenceWriteServiceTests
     {
         var capturedStrings = new List<string>();
         
-        var response = await _sut.CreateRecurrence(It.IsAny<string>(), It.IsAny<RecurrencePattern>(), It.IsAny<string>(),
+        var recurrencePattern = new RecurrencePattern
+        {
+            Interval = 1,
+            Frequency = "Weekly",
+            StartDate = DateOnly.ParseExact("2027-04-02", "yyyy-MM-dd"),
+            EndDate = DateOnly.ParseExact("2027-05-20", "yyyy-MM-dd"),
+            ByDay = [DayOfWeek.Monday],
+            Session = new Session
+            {
+                Capacity = 1,
+                From = TimeOnly.ParseExact("10:00", "HH:mm"),
+                Until = TimeOnly.ParseExact("14:00", "HH:mm"),
+                Services = ["Covid"],
+                SlotLength = 5
+            }
+        };
+        
+        var response = await _sut.CreateRecurrence("a-site", recurrencePattern, It.IsAny<string>(),
             It.IsAny<RecurrenceException[]>());
         
         _recurrenceStore.Verify(
-            x => x.WriteRecurrenceDocument(Capture.In(capturedStrings), 1, It.IsAny<string>(),
-                It.IsAny<RecurrencePattern>(), It.IsAny<string>(), It.IsAny<RecurrenceException[]>()),
+            x => x.WriteRecurrenceDocument(Capture.In(capturedStrings), 1, "a-site", recurrencePattern, It.IsAny<string>(), It.IsAny<RecurrenceException[]>()),
             Times.Once);
 
         response.Should().Be(capturedStrings.Single());

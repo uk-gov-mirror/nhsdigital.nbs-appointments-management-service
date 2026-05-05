@@ -25,7 +25,7 @@ resource "azurerm_cosmosdb_account" "nbs_mya_cosmos_db" {
   }
   backup {
     type = "Continuous"
-    tier = "Continuous7Days"
+    tier = var.cosmos_backup_tier
   }
 }
 

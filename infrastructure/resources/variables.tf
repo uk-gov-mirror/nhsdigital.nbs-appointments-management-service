@@ -214,6 +214,11 @@ variable "cosmos_booking_aggregation_lease_autoscale_settings" {
   default = []
 }
 
+variable "cosmos_backup_tier" {
+  type    = string
+  default = "Continuous7Days"
+}
+
 variable "web_app_service_sku" {
   type = string
 }

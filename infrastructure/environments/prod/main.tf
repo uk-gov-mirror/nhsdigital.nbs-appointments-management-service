@@ -153,4 +153,5 @@ module "mya_application_prod" {
   cosmos_audit_lease_autoscale_settings = [{
     max_throughput = 1000
   }]
+  cosmos_backup_tier = "Continuous30Days"
 }

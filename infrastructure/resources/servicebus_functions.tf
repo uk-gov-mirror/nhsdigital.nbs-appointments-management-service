@@ -266,3 +266,17 @@ resource "azurerm_windows_function_app_slot" "nbs_mya_service_bus_func_app_previ
     type = "SystemAssigned"
   }
 }
+
+resource "azurerm_role_assignment" "nbs_mya_service_bus_func_app_kv_access" {
+  for_each             = { for i, v in azurerm_windows_function_app.nbs_mya_service_bus_func_app : i => v.identity[0].principal_id }
+  scope                = azurerm_key_vault.nbs_mya_key_vault.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = each.value
+}
+
+resource "azurerm_role_assignment" "nbs_mya_service_bus_func_app_preview_kv_access" {
+  for_each             = { for i, v in azurerm_windows_function_app_slot.nbs_mya_service_bus_func_app_preview : i => v.identity[0].principal_id }
+  scope                = azurerm_key_vault.nbs_mya_key_vault.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = each.value
+}

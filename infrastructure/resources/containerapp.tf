@@ -204,6 +204,11 @@ resource "azurerm_container_app_job" "nbs_mya_booking_extracts_job" {
   }
 }
 
+resource "azurerm_role_assignment" "nbs_mya_booking_extracts_job_kv_access" {
+  scope                = azurerm_key_vault.nbs_mya_key_vault.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_container_app_job.nbs_mya_booking_extracts_job.identity[0].principal_id
+}
 
 resource "azurerm_container_app_job" "nbs_mya_capacity_extracts_job" {
   count                        = var.create_capacity_data_extracts ? 1 : 0 
@@ -326,6 +331,12 @@ resource "azurerm_container_app_job" "nbs_mya_capacity_extracts_job" {
   identity {
     type = "SystemAssigned"
   }
+}
+
+resource "azurerm_role_assignment" "nbs_mya_capacity_extracts_job_kv_access" {
+  scope                = azurerm_key_vault.nbs_mya_key_vault.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_container_app_job.nbs_mya_capacity_extracts_job.identity[0].principal_id
 }
 
 resource "azurerm_container_app" "nbs_mya_auditor" {
@@ -495,6 +506,12 @@ resource "azurerm_container_app" "nbs_mya_auditor" {
   }
 }
 
+resource "azurerm_role_assignment" "nbs_mya_auditor_kv_access" {
+  scope                = azurerm_key_vault.nbs_mya_key_vault.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_container_app.nbs_mya_auditor.identity[0].principal_id
+}
+
 resource "azurerm_container_app" "nbs_mya_aggregator" {
   count                        = var.aggregator_changefeed_enable ? 1 : 0
   name                         = "${var.application}-aggregator-${var.environment}-${var.loc}"
@@ -595,4 +612,10 @@ resource "azurerm_container_app" "nbs_mya_aggregator" {
   identity {
     type = "SystemAssigned"
   }
+}
+
+resource "azurerm_role_assignment" "nbs_mya_aggregator_kv_access" {
+  scope                = azurerm_key_vault.nbs_mya_key_vault.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_container_app.nbs_mya_aggregator.identity[0].principal_id
 }

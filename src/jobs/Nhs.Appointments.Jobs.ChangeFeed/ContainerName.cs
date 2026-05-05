@@ -6,4 +6,5 @@ public static class ContainerName
     public const string CoreData = "core_data";
     public const string IndexData = "index_data";
     public const string AggregatedData = "aggregated_data";
+    public const string RecurrenceData = "recurrence_data";
 }

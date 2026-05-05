@@ -1,4 +1,4 @@
-using FluentAssertions;
+using System.Text;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
@@ -9,10 +9,7 @@ using Newtonsoft.Json;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Availability;
-using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Users;
-using System.Net;
-using System.Text;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
 
@@ -21,7 +18,6 @@ public class CancelSessionFunctionTests
     private readonly CancelSessionFunction _sut;
     private readonly Mock<IAvailabilityWriteService> _availabilityWriteService = new();
     private readonly Mock<ILogger<CancelSessionFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
     private readonly Mock<IValidator<CancelSessionRequest>> _validator = new();
 
@@ -31,8 +27,7 @@ public class CancelSessionFunctionTests
             _availabilityWriteService.Object,
             _validator.Object,
             _userContextProvider.Object,
-            _logger.Object,
-            _metricsRecorder.Object);
+            _logger.Object);
         _validator.Setup(x => x.ValidateAsync(It.IsAny<CancelSessionRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());
     }

@@ -20,10 +20,8 @@ public class TriggerUnconfirmedProvisionalBookingsCollectorFunction(
     IBookingWriteService bookingWriteService,
     IValidator<EmptyRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<TriggerBookingRemindersFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<EmptyRequest, RemoveExpiredProvisionalBookingsResponse>(validator, userContextProvider, logger,
-        metricsRecorder)
+    ILogger<TriggerBookingRemindersFunction> logger)
+    : BaseApiFunction<EmptyRequest, RemoveExpiredProvisionalBookingsResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "TriggerUnconfirmedProvisionalBookingsCollector", tags: ["System"],
         Summary = "Utility function to manually trigger the removal of expired unconfirmed provisional bookings")]

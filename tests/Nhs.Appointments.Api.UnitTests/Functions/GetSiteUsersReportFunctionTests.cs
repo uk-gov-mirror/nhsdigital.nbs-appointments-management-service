@@ -1,3 +1,4 @@
+using System.Text;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
@@ -11,7 +12,6 @@ using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Reports.Users;
 using Nhs.Appointments.Core.Users;
-using System.Text;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
 
@@ -21,7 +21,6 @@ public class GetSiteUsersReportFunctionTests
     private readonly Mock<IFeatureToggleHelper> _featureToggleHelper = new();
     private readonly Mock<IValidator<EmptyRequest>> _validator = new();
     private readonly Mock<ILogger<GetSiteUsersReportFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
     private readonly Mock<TimeProvider> _timeProvider = new();
 
@@ -38,7 +37,6 @@ public class GetSiteUsersReportFunctionTests
             _featureToggleHelper.Object,
             _validator.Object,
             _logger.Object,
-            _metricsRecorder.Object,
             _userContextProvider.Object);
         _validator.Setup(v => v.ValidateAsync(It.IsAny<EmptyRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());

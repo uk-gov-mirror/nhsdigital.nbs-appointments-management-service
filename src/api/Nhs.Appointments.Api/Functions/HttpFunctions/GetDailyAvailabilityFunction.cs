@@ -20,10 +20,8 @@ public class GetDailyAvailabilityFunction(
     IAvailabilityQueryService availabilityQueryService,
     IValidator<GetDailyAvailabilityRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<GetDailyAvailabilityFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<GetDailyAvailabilityRequest, IEnumerable<DailyAvailability>>(validator, userContextProvider,
-        logger, metricsRecorder)
+    ILogger<GetDailyAvailabilityFunction> logger)
+    : BaseApiFunction<GetDailyAvailabilityRequest, IEnumerable<DailyAvailability>>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "Get_DailyAvailabilityFunction", tags: ["Availability"],
         Summary = "Get daily availability within a date range previously")]

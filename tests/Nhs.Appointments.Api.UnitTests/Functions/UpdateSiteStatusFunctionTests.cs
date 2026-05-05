@@ -1,3 +1,4 @@
+using System.Text;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
@@ -9,10 +10,8 @@ using Newtonsoft.Json;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core;
-using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
-using System.Text;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
 public class UpdateSiteStatusFunctionTests
@@ -21,7 +20,6 @@ public class UpdateSiteStatusFunctionTests
     private readonly Mock<IValidator<SetSiteStatusRequest>> _validator = new();
     private readonly Mock<ILogger<UpdateSiteStatusFunction>> _logger = new();
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
 
     private readonly UpdateSiteStatusFunction _sut;
 
@@ -31,8 +29,7 @@ public class UpdateSiteStatusFunctionTests
             _siteService.Object,
             _validator.Object,
             _logger.Object,
-            _userContextProvider.Object,
-            _metricsRecorder.Object);
+            _userContextProvider.Object);
     }
 
     [Fact]

@@ -1,3 +1,4 @@
+using System.Text;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
@@ -10,14 +11,12 @@ using Nhs.Appointments.Api.Functions.HttpFunctions;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Users;
-using System.Text;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
 public class CancelDayFunctionTests
 {
 
     private readonly Mock<ILogger<CancelDayFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
     private readonly Mock<IValidator<CancelDayRequest>> _validator = new();
     private readonly Mock<IAvailabilityWriteService> _availabilityWriteService = new();
@@ -30,8 +29,7 @@ public class CancelDayFunctionTests
             _availabilityWriteService.Object,
             _validator.Object,
             _userContextProvider.Object,
-            _logger.Object,
-            _metricsRecorder.Object);
+            _logger.Object);
         _validator.Setup(x => x.ValidateAsync(It.IsAny<CancelDayRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());
     }

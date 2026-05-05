@@ -12,7 +12,6 @@ using Microsoft.Extensions.Logging;
 using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Extensions;
-using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Inspectors;
 using Nhs.Appointments.Core.Okta;
 using Nhs.Appointments.Core.Users;
@@ -20,14 +19,12 @@ using Nhs.Appointments.Core.Users;
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 
 public class SetUserRolesFunction(
-    IUserService userService, 
-    IValidator<SetUserRolesRequest> validator, 
-    IUserContextProvider userContextProvider, 
-    IOktaService oktaService, 
-    ILogger<SetUserRolesFunction> logger, 
-    IMetricsRecorder metricsRecorder
-) 
-    : BaseApiFunction<SetUserRolesRequest, EmptyResponse>(validator, userContextProvider: userContextProvider, logger, metricsRecorder)
+    IUserService userService,
+    IValidator<SetUserRolesRequest> validator,
+    IUserContextProvider userContextProvider,
+    IOktaService oktaService,
+    ILogger<SetUserRolesFunction> logger)
+    : BaseApiFunction<SetUserRolesRequest, EmptyResponse>(validator, userContextProvider: userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "SetUserRoles", tags: ["User"],
         Summary = "Set role assignments for a user at a site")]

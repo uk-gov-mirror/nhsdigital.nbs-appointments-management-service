@@ -44,3 +44,9 @@ stages:
             resourceGroup: nbs-mya-rg-${{env}}-uks
             serviceConnectionName: nbs-mya-rg-${{env}}
           isHotfix: false
+      - template: features/scripts/deploy-feature-toggles.yml
+        parameters:
+          env: ${{env}}
+          dependsOnDeployment: true
+          # only allowed release branches
+          isValidBranch: ${{ startsWith(variables['Build.SourceBranch'], 'refs/heads/release/') }}

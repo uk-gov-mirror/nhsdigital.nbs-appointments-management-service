@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,15 +15,9 @@ using Nhs.Appointments.Api.Auth;
 using Nhs.Appointments.Api.Json;
 using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Bookings;
-using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Inspectors;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 
@@ -27,10 +26,9 @@ public class ConfirmProvisionalBookingFunction(
     IValidator<ConfirmBookingRequest> validator,
     IUserContextProvider userContextProvider,
     ILogger<ConfirmProvisionalBookingFunction> logger,
-    IMetricsRecorder metricsRecorder,
     ISiteService siteService,
     IBookingQueryService bookingQueryService)
-    : BaseApiFunction<ConfirmBookingRequest, EmptyResponse>(validator, userContextProvider, logger, metricsRecorder)
+    : BaseApiFunction<ConfirmBookingRequest, EmptyResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "ConfirmProvisionalBooking", tags: ["Booking"],
         Summary = "Confirm a provisional booking")]

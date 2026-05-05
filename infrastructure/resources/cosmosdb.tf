@@ -164,6 +164,22 @@ resource "azurerm_cosmosdb_sql_container" "nbs_mya_audit_container" {
   }
 }
 
+resource "azurerm_cosmosdb_sql_container" "nbs_mya_recurrence_container" {
+  count                  = var.create_cosmos_db ? 1 : 0
+  name                   = "recurrence_data"
+  resource_group_name    = local.resource_group_name
+  account_name           = azurerm_cosmosdb_account.nbs_mya_cosmos_db[0].name
+  database_name          = azurerm_cosmosdb_sql_database.nbs_appts_database[0].name
+  partition_key_paths    = ["/site"]
+
+  dynamic "autoscale_settings" {
+    for_each = var.cosmos_booking_autoscale_settings
+    content {
+      max_throughput = autoscale_settings.value["max_throughput"]
+    }
+  }
+}
+
 resource "azurerm_cosmosdb_sql_container" "nbs_mya_audit_lease_container" {
   count                  = var.create_cosmos_db ? 1 : 0
   name                   = "audit_data_lease"

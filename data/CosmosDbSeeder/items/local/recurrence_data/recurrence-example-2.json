@@ -1,0 +1,116 @@
+{
+  "id": "c5858f02-05d7-419b-865f-818599a6c0e0",
+  "version": 1,
+  "docType": "recurrence",
+  "site": "6877d86e-c2df-4def-8508-e1eccf0ea6be",
+  "label": "Summer Schedule For Permanent Staff",
+  
+  "recurrencePattern": {
+    "frequency": "Weekly",
+    "interval": 1,
+    "byDay": [
+      1,
+      2,
+      3,
+      {
+        //future option for override every thursday has a different time schedule
+        //all other days use the default session data
+        "day": 4,
+        "session": {
+          "from": "10:00",
+          "until": "16:00"
+        }
+      },
+      5
+    ],
+    "startDate": "2026-05-01",
+    "endDate": "2026-08-01",
+    "session": {
+      "from": "09:00",
+      "until": "17:00",
+      "slotLength": 10,
+      "capacity": 5,
+      "services": [
+        "COVID:5_11",
+        "RSV:Adult",
+        "FLU:18_64",
+        "COVID:18+"
+      ]
+    }
+  },
+  "exceptions": [
+    {
+      //one-off closure for a single day
+      //no session prop defined means closed, not overridden
+      "date": "2026-05-09"
+    },
+    {
+      //closure date range
+      //no session prop can be defined when the dateRange props are used (override ranges are NOT permitted!!)
+      "label": "Bank Holiday Closure",
+      "dateRange": {
+        "startDate": "2026-05-10",
+        "endDate": "2026-05-13"
+      }
+    },
+    {
+      //one-off override
+      "label": "Ran out of Covid stock",
+      "date": "2026-06-01",
+      //any defined props here override the parent session props
+      //according to our override business logic
+      //any undefined props use the parent session props
+      "session": {
+        "services": [
+          {
+            "operation": "remove",
+            "service": "COVID:18+"
+          }
+        ]
+      }
+    },
+    {
+      //one-off override
+      "label": "One-off Meningitus offering",
+      "date": "2026-06-24",
+      "session": {
+        "services": [
+          {
+            "operation": "add",
+            "service": "MenB"
+          }
+        ]
+      }
+    },
+    {
+      //one-off override
+      "label": "Closing early",
+      "date": "2026-06-02",
+      "session": {
+        "from": "09:00",
+        "until": "15:00"
+      }
+    },
+    {
+      //one-off override
+      "label": "Extended opening hours",
+      "date": "2026-06-13",
+      "session": {
+        "from": "07:00",
+        "until": "20:00"
+      }
+    },
+    {
+      //one-off override
+      "label": "Jonny and Paul are ill",
+      "date": "2026-06-04",
+      "session": {
+        "capacity": 3
+      }
+    }
+  ],
+  "createdOn": "2026-03-25T14:54:31.233324Z",
+  "createdBy": "jonathan.dyson1@nhs.net",
+  "lastUpdatedBy": "jonathan.dyson1@nhs.net",
+  "lastUpdatedOn": "2026-03-25T14:54:31.233324Z"
+}

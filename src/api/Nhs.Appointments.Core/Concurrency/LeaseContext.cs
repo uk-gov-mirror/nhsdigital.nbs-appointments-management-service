@@ -1,15 +1,15 @@
 namespace Nhs.Appointments.Core.Concurrency;
 
-public class SiteLeaseContext : ISiteLeaseContext
+public class LeaseContext : ILeaseContext
 {
     private readonly Action _release;
 
-    public SiteLeaseContext(string siteKey, Action release)
+    public LeaseContext(string leaseKey, Action release)
     {
-        ArgumentException.ThrowIfNullOrEmpty(siteKey, nameof(siteKey));
+        ArgumentException.ThrowIfNullOrEmpty(leaseKey, nameof(leaseKey));
         ArgumentNullException.ThrowIfNull(release, nameof(release));
 
-        SiteKey = siteKey;
+        LeaseKey = leaseKey;
         _release = release;
     }
 
@@ -18,5 +18,5 @@ public class SiteLeaseContext : ISiteLeaseContext
         _release();
     }
 
-    public string SiteKey { get; private set; }
+    public string LeaseKey { get; private set; }
 }

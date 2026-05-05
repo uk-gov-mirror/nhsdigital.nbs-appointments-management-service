@@ -16,7 +16,6 @@ namespace Nhs.Appointments.Api.Tests.Functions;
 public class GetAvailabilityCreatedEventsFunctionTests
 {
     private readonly Mock<ILogger<GetAvailabilityCreatedEventsFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly GetAvailabilityCreatedEventsFunction _sut;
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
     private readonly Mock<IValidator<GetAvailabilityCreatedEventsRequest>> _validator = new();
@@ -28,8 +27,7 @@ public class GetAvailabilityCreatedEventsFunctionTests
             _availabilityQueryService.Object,
             _validator.Object,
             _userContextProvider.Object,
-            _logger.Object,
-            _metricsRecorder.Object);
+            _logger.Object);
         _validator
             .Setup(x => x.ValidateAsync(It.IsAny<GetAvailabilityCreatedEventsRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());

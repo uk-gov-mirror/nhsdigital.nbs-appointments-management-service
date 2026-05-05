@@ -18,9 +18,8 @@ public class ConsentToEulaFunction(
     IEulaService eulaService,
     IValidator<ConsentToEulaRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<ConsentToEulaFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<ConsentToEulaRequest, EmptyResponse>(validator, userContextProvider: userContextProvider, logger, metricsRecorder)
+    ILogger<ConsentToEulaFunction> logger)
+    : BaseApiFunction<ConsentToEulaRequest, EmptyResponse>(validator, userContextProvider: userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "ConsentToEula", tags: ["Eula"],
         Summary = "Confirm a user's consent to a specific EULA version.")]

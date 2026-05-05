@@ -1,7 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
@@ -14,10 +17,6 @@ using Nhs.Appointments.Core.Inspectors;
 using Nhs.Appointments.Core.Reports.Users;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 
@@ -27,8 +26,7 @@ public class GetSiteUsersReportFunction(
     IFeatureToggleHelper featureToggleHelper,
     IValidator<EmptyRequest> validator,
     ILogger<GetSiteUsersReportFunction> logger,
-    IMetricsRecorder metricsRecorder,
-    IUserContextProvider userContextProvider) : BaseApiFunction<EmptyRequest, FileResponse>(validator, userContextProvider, logger, metricsRecorder)
+    IUserContextProvider userContextProvider) : BaseApiFunction<EmptyRequest, FileResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetSiteUsersReport", tags: ["SiteUsersReport"],
         Summary = "Get Site Users Report")]

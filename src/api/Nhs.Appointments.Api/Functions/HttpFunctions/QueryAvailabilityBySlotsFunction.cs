@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +16,6 @@ using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Inspectors;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 public class QueryAvailabilityBySlotsFunction(
@@ -23,10 +23,9 @@ public class QueryAvailabilityBySlotsFunction(
     IValidator<AvailabilityQueryBySlotsRequest> validator,
     IUserContextProvider userContextProvider,
     ILogger<QueryAvailabilityBySlotsFunction> logger,
-    IMetricsRecorder metricsRecorder,
     IAvailableSlotsFilter availableSlotsFilter,
     ISiteService siteService,
-    IFeatureToggleHelper featureToggleHelper) : BaseApiFunction<AvailabilityQueryBySlotsRequest, AvailabilityBySlots>(validator, userContextProvider, logger, metricsRecorder)
+    IFeatureToggleHelper featureToggleHelper) : BaseApiFunction<AvailabilityQueryBySlotsRequest, AvailabilityBySlots>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "QueryAvailabilityBySlots", tags: ["Availability"],
         Summary = "Query appointment availability by slts")]

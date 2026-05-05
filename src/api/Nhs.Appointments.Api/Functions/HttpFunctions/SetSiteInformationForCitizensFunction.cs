@@ -21,10 +21,8 @@ public class SetSiteInformationForCitizensFunction(
     ISiteService siteService,
     IValidator<SetSiteInformationForCitizensRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<SetSiteInformationForCitizensFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<SetSiteInformationForCitizensRequest, EmptyResponse>(validator, userContextProvider, logger,
-        metricsRecorder)
+    ILogger<SetSiteInformationForCitizensFunction> logger)
+    : BaseApiFunction<SetSiteInformationForCitizensRequest, EmptyResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "SetSiteInformationForCitizens", tags: ["Sites"],
         Summary = "Set informationForCitizens value for a site")]

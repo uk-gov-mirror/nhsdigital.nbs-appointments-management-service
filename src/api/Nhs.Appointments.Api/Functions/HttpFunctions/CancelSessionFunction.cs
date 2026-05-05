@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +12,6 @@ using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Inspectors;
 using Nhs.Appointments.Core.Users;
-using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 
@@ -19,9 +19,8 @@ public class CancelSessionFunction(
     IAvailabilityWriteService availabilityWriteService,
     IValidator<CancelSessionRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<CancelSessionFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<CancelSessionRequest, EmptyResponse>(validator, userContextProvider, logger, metricsRecorder)
+    ILogger<CancelSessionFunction> logger)
+    : BaseApiFunction<CancelSessionRequest, EmptyResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "CancelSession", tags: ["Availability"], Summary = "Cancel a session")]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, "application/json", typeof(CancelBookingResponse),

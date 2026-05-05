@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +15,6 @@ using Nhs.Appointments.Audit.Functions;
 using Nhs.Appointments.Core.Inspectors;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
-using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 
@@ -22,9 +22,8 @@ public class SetSiteDetailsFunction(
     ISiteService siteService,
     IValidator<SetSiteDetailsRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<SetSiteDetailsFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<SetSiteDetailsRequest, EmptyResponse>(validator, userContextProvider, logger, metricsRecorder)
+    ILogger<SetSiteDetailsFunction> logger)
+    : BaseApiFunction<SetSiteDetailsRequest, EmptyResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "SetSiteDetails", tags: ["Sites"], Summary = "Set details for a site")]
     [OpenApiRequestBody("application/json", typeof(SetSiteDetailsRequest), Required = true)]

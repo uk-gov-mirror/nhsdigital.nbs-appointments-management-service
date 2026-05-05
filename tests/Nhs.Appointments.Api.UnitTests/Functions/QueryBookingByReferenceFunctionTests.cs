@@ -1,7 +1,6 @@
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
-using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -20,7 +19,6 @@ public class QueryBookingByReferenceFunctionTests
 {
     private readonly Mock<IBookingQueryService> _bookingQueryService = new();
     private readonly Mock<ILogger<QueryBookingByReferenceFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
 
     private readonly QueryBookingByReferenceFunction _sut;
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
@@ -34,7 +32,6 @@ public class QueryBookingByReferenceFunctionTests
             _validator.Object,
             _userContextProvider.Object,
             _logger.Object,
-            _metricsRecorder.Object,
             _siteService.Object);
 
         _validator.Setup(

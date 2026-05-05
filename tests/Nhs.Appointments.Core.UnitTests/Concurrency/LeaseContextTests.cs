@@ -2,29 +2,29 @@ using Nhs.Appointments.Core.Concurrency;
 
 namespace Nhs.Appointments.Core.UnitTests.Concurrency;
 
-public class SiteLeaseContextTests
+public class LeaseContextTests
 {
     [Fact]
-    public void SiteKeyNotSupplied_ConstructorCalled_ThrowsArgumentNullException()
+    public void LeaseKeyNotSupplied_ConstructorCalled_ThrowsArgumentNullException()
     {
         // Arrange.
         Action releaseAction = () => { };
 
-        Action action = () => new SiteLeaseContext("", releaseAction);
+        Action action = () => new LeaseContext("", releaseAction);
 
         // Act - not required.
 
         // Assert.
         action.Should()
             .Throw<ArgumentException>()
-            .WithMessage("The value cannot be an empty string. (Parameter 'siteKey')");
+            .WithMessage("The value cannot be an empty string. (Parameter 'leaseKey')");
     }
 
     [Fact]
     public void ReleaseActionNotSupplied_ConstructorCalled_ThrowsArgumentNullException()
     {
         // Arrange.
-        Action action = () => new SiteLeaseContext("siteKey", null);
+        Action action = () => new LeaseContext("dummyLeaseKey", null);
 
         // Act - not required.
 
@@ -35,29 +35,29 @@ public class SiteLeaseContextTests
     }
 
     [Fact]
-    public void SiteLeaseContextCreated_SiteKeyRequested_ReturnsCorrectValue()
+    public void LeaseContextCreated_LeaseKeyRequested_ReturnsCorrectValue()
     {
         // Arrange.
         Action releaseAction = () => { };
-        var randomSiteKey = Guid.NewGuid().ToString();
-        var sut = new SiteLeaseContext(randomSiteKey, releaseAction);
+        var randomLeaseKey = Guid.NewGuid().ToString();
+        var sut = new LeaseContext(randomLeaseKey, releaseAction);
 
         // Act - not required.
 
         // Assert.
-        sut.SiteKey.Should()
-            .Be(randomSiteKey);
+        sut.LeaseKey.Should()
+            .Be(randomLeaseKey);
     }
 
     [Fact]
-    public void ReleaseActionSet_SiteLeaseContextDisposed_ReleaseActionCalled()
+    public void ReleaseActionSet_LeaseContextDisposed_ReleaseActionCalled()
     {
         // Arrange.
         var releaseAction = new Mock<Action>();
-        var randomSiteKey = Guid.NewGuid().ToString();
+        var randomLeaseKey = Guid.NewGuid().ToString();
 
         // Act.
-        using (new SiteLeaseContext(randomSiteKey, releaseAction.Object)) { };
+        using (new LeaseContext(randomLeaseKey, releaseAction.Object)) { };
 
         // Assert.
         releaseAction.Verify(action => action(), Times.Once());

@@ -4,7 +4,7 @@
   "configs": [
     {
       "services": [],
-      "emailTemplate": "742e84b2-5d93-4d03-92f0-27252174c342",
+      "emailTemplate": "cd45a489-0ace-4261-9596-29a2929ac726",
       "smsTemplate": "",
       "eventType": "UserRolesChanged"
     },
@@ -16,25 +16,37 @@
     },
     {
       "services": ["COVID:5_11", "COVID:12_17", "COVID:18+"],
-      "emailTemplate": "5028cb32-6168-41ee-8773-2493d073f369",
+      "emailTemplate": "013bf1ab-b9af-4358-8f41-83b573c9b121",
       "smsTemplate": "",
       "eventType": "BookingMade"
     },
     {
       "services": ["FLU:2_3", "FLU:18_64", "FLU:65+"],
-      "emailTemplate": "82a5a379-9853-46e7-a720-8403eb899216",
+      "emailTemplate": "47a7f432-ec7e-4e23-bbb3-105ac134ac73",
       "smsTemplate": "",
       "eventType": "BookingMade"
     },
     {
       "services": ["COVID_FLU:18_64", "COVID_FLU:65+"],
-      "emailTemplate": "307b5c89-e602-42c1-bdce-5f8043f3ca64",
+      "emailTemplate": "357d32fc-b8d5-4e63-aef3-87dc6ddd9ce8",
       "smsTemplate": "",
       "eventType": "BookingMade"
     },
     {
       "services": ["RSV:Adult"],
-      "emailTemplate": "c096719c-5aef-4803-9a05-099c136e1c73",
+      "emailTemplate": "f8ea99be-a78d-42a6-bf81-a6233a7987cf",
+      "smsTemplate": "",
+      "eventType": "BookingMade"
+    },
+    {
+      "services": [ "COVID_RSV:18+" ],
+      "emailTemplate": "c674887d-a07c-4fcb-befb-bc3ea842b553",
+      "smsTemplate": "",
+      "eventType": "BookingMade"
+    },
+    {
+      "services": [ "MENB:ALL" ],
+      "emailTemplate": "316e3c1c-4cb9-494c-901b-d54a083f7e99",
       "smsTemplate": "",
       "eventType": "BookingMade"
     },
@@ -48,7 +60,9 @@
         "FLU:65+",
         "COVID_FLU:18_64",
         "COVID_FLU:65+",
-        "RSV:Adult"
+        "RSV:Adult",
+        "COVID_RSV:18+",
+        "MENB:ALL"
       ],
       "emailTemplate": "",
       "smsTemplate": "4b0fae92-07bf-46ba-ad16-1f86ac122d15",
@@ -64,7 +78,9 @@
         "FLU:65+",
         "COVID_FLU:18_64",
         "COVID_FLU:65+",
-        "RSV:Adult"
+        "RSV:Adult",
+        "COVID_RSV:18+",
+        "MENB:ALL"
       ],
       "emailTemplate": "36b50be4-fad7-440e-8958-b0dc66efe33a",
       "smsTemplate": "c452be27-5bae-422d-9691-6bb955dbc51f",
@@ -80,7 +96,9 @@
         "FLU:65+",
         "COVID_FLU:18_64",
         "COVID_FLU:65+",
-        "RSV:Adult"
+        "RSV:Adult",
+        "COVID_RSV:18+",
+        "MENB:ALL"
       ],
       "emailTemplate": "c64a1fc4-fbce-48f1-bfb6-9ee95037d531",
       "smsTemplate": "1809338e-2c31-4e10-b61a-5f63732fe202",
@@ -96,7 +114,9 @@
         "FLU:65+",
         "COVID_FLU:18_64",
         "COVID_FLU:65+",
-        "RSV:Adult"
+        "RSV:Adult",
+        "COVID_RSV:18+",
+        "MENB:ALL"
       ],
       "emailTemplate": "6c665f03-a7c9-47aa-a087-4fbcd8888f96",
       "smsTemplate": "18a415e5-0354-4986-b84b-947e3b3fc055",

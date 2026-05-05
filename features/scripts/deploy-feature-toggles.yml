@@ -3,12 +3,16 @@
     type: string
   - name: isValidBranch
     type: boolean
+  - name: dependsOnDeployment
+    type: boolean
 
 stages:
   - stage: DeployFeatures${{parameters.env}}
     displayName: Deploy Features ${{parameters.env}}
     condition: and(succeeded(), eq(${{parameters.isValidBranch}}, true))
-    dependsOn: []
+    dependsOn: 
+       - ${{ if parameters.dependsOnDeployment }}:
+          - Deploy${{parameters.env}}
     jobs:
       - deployment: ApplyFeatureToggles
         displayName: "Apply Feature Toggles"

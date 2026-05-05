@@ -23,9 +23,8 @@ public class SetAvailabilityFunction(
     IValidator<SetAvailabilityRequest> validator,
     IUserContextProvider userContextProvider,
     ILogger<SetAvailabilityFunction> logger,
-    IMetricsRecorder metricsRecorder,
     ISiteService siteService)
-    : BaseApiFunction<SetAvailabilityRequest, EmptyResponse>(validator, userContextProvider: userContextProvider, logger, metricsRecorder)
+    : BaseApiFunction<SetAvailabilityRequest, EmptyResponse>(validator, userContextProvider: userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "SetAvailability", tags: ["Availability"],
         Summary = "Set appointment availability for a single day")]

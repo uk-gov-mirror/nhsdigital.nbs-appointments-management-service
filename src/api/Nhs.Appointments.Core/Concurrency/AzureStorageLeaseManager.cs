@@ -6,15 +6,15 @@ using Polly;
 
 namespace Nhs.Appointments.Core.Concurrency;
 
-internal class AzureStorageSiteLeaseManager : ISiteLeaseManager
+internal class AzureStorageLeaseManager : ILeaseManager
 {
     private readonly IAzureBlobStorage _azureBlobStorage;
-    private readonly SiteLeaseManagerOptions _options;
+    private readonly LeaseManagerOptions _options;
     private readonly int _acquireTimeInSeconds;
     private readonly int _delayRetryTimeInMilliseconds;
 
-    public AzureStorageSiteLeaseManager(
-        IOptions<SiteLeaseManagerOptions> options, 
+    public AzureStorageLeaseManager(
+        IOptions<LeaseManagerOptions> options, 
         IAzureBlobStorage azureBlobStorage, 
         int acquireTimeInSeconds = 20, 
         int delayRetryTimeInMilliseconds = 100
@@ -29,15 +29,13 @@ internal class AzureStorageSiteLeaseManager : ISiteLeaseManager
         _delayRetryTimeInMilliseconds = delayRetryTimeInMilliseconds;
     }
 
-    public ISiteLeaseContext Acquire(string site, DateOnly date)
+    public ILeaseContext Acquire(string leaseKey)
     {
-        var blobName = LeaseKeys.SiteKeyFactory.Create(site, date);
-
-        var leaseClient = GetLeaseClient(blobName);
+        var leaseClient = GetLeaseClient(leaseKey);
         var leasePipeline = CreateResiliencePipeline();
         leasePipeline.Execute(() => leaseClient.Acquire(TimeSpan.FromSeconds(_acquireTimeInSeconds)));
 
-        return new SiteLeaseContext(blobName, () => leaseClient.Release());
+        return new LeaseContext(leaseKey, () => leaseClient.Release());
     }
 
     private BlobLeaseClient GetLeaseClient(string blobName)

@@ -1,3 +1,4 @@
+using System.Text;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
@@ -13,7 +14,6 @@ using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Json;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
-using System.Text;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
 
@@ -22,7 +22,6 @@ public class ApplyAvailabilityTemplateFunctionTests
     private readonly Mock<IAvailabilityWriteService> _availabilityWriteService = new();
     private readonly Mock<IValidator<ApplyAvailabilityTemplateRequest>> _validator = new();
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly Mock<ISiteService> _siteService = new();
     private readonly Mock<ILogger<ApplyAvailabilityTemplateFunction>> _logger = new();
 
@@ -35,7 +34,6 @@ public class ApplyAvailabilityTemplateFunctionTests
             _validator.Object,
             _userContextProvider.Object,
             _logger.Object,
-            _metricsRecorder.Object,
             _siteService.Object);
 
         _validator.Setup(x => x.ValidateAsync(It.IsAny<ApplyAvailabilityTemplateRequest>(), It.IsAny<CancellationToken>()))

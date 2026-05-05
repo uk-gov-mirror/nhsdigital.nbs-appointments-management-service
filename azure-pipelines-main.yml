@@ -22,7 +22,7 @@ stages:
       prBuildServiceConnectionName: $(prBuildServiceConnectionName)
       prDockerServiceConnectionName: $(prDockerServiceConnectionName)
 
-  - ${{ each env in parameters.environments }}:              
+  - ${{ each env in parameters.environments }}:
       - template: scripts/pipeline-templates/deploy.yml
         parameters:
           env: ${{env}}
@@ -51,3 +51,9 @@ stages:
             serviceConnectionName: nbs-mya${{env}}-rg-stag
             isHotfix: false
             isStrategicTenant: false
+      - template: features/scripts/deploy-feature-toggles.yml
+        parameters:
+          env: ${{env}}
+          dependsOnDeployment: true
+          # no restrictions on branch name for dev and perf
+          isValidBranch: true

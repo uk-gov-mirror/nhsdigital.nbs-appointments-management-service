@@ -123,6 +123,7 @@ resource "azurerm_windows_function_app" "nbs_mya_service_bus_func_app" {
     "AzureWebJobs.AggregateDailySiteSummary.Disabled"                      = var.aggregator_changefeed_enable
     "AzureWebJobs.ProposeCancelDateRangeFunction.Disabled"                 = true
     "AzureWebJobs.CancelDateRangeFunction.Disabled"                        = true
+    "AzureWebJobs.CreateRecurrenceFunction.Disabled"                       = true
   }
 
   sticky_settings {
@@ -256,6 +257,7 @@ resource "azurerm_windows_function_app_slot" "nbs_mya_service_bus_func_app_previ
     "AzureWebJobs.GetSiteUsersReportFunction.Disabled"                     = true
     "AzureWebJobs.ProposeCancelDateRangeFunction.Disabled"                 = true
     "AzureWebJobs.CancelDateRangeFunction.Disabled"                        = true
+    "AzureWebJobs.CreateRecurrenceFunction.Disabled"                       = true
   }
 
   identity {

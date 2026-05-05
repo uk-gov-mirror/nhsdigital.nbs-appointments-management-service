@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +18,6 @@ using Nhs.Appointments.Core.OdsCodes;
 using Nhs.Appointments.Core.Reports.MasterSiteList;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 
@@ -29,10 +29,8 @@ public class GetReportMasterSiteListFunction(
     IFeatureToggleHelper featureToggleHelper,
     IValidator<EmptyRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<GetReportMasterSiteListFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<EmptyRequest, FileResponse>(validator, userContextProvider, logger,
-        metricsRecorder)
+    ILogger<GetReportMasterSiteListFunction> logger)
+    : BaseApiFunction<EmptyRequest, FileResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "GetMasterSiteListReport", tags: ["MasterSiteListReport"],
         Summary = "Get Master Site List Report")]

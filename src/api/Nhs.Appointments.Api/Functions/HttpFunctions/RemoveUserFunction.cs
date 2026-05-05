@@ -19,9 +19,8 @@ public class RemoveUserFunction(
     IUserService userService,
     IValidator<RemoveUserRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<RemoveUserFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<RemoveUserRequest, RemoveUserResponse>(validator, userContextProvider: userContextProvider, logger, metricsRecorder)
+    ILogger<RemoveUserFunction> logger)
+    : BaseApiFunction<RemoveUserRequest, RemoveUserResponse>(validator, userContextProvider: userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "RemoveUser", tags: ["User"],
         Summary = "Remove all assigned roles from a user at the specified site")]

@@ -13,6 +13,7 @@
     "CancelADateRangeWithBookings": false,
     "CancellationReasonBookingsReporting": false,
     "SiteTypeBookingsReporting": false,
+    "Recurrence": false,
     "TestFeaturePercentageEnabled": {
       "EnabledFor": [
         {

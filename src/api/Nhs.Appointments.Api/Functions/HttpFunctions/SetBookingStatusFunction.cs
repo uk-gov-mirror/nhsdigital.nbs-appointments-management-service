@@ -18,10 +18,8 @@ public class SetBookingStatusFunction(
     IBookingWriteService bookingWriteService,
     IValidator<SetBookingStatusRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<SetBookingStatusFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<SetBookingStatusRequest, SetBookingStatusResponse>(validator, userContextProvider, logger,
-        metricsRecorder)
+    ILogger<SetBookingStatusFunction> logger)
+    : BaseApiFunction<SetBookingStatusRequest, SetBookingStatusResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "SetBookingStatus", tags: ["Booking"], Summary = "Set the status of a booking")]
     [OpenApiRequestBody("application/json", typeof(SetBookingStatusRequest), Required = true)]

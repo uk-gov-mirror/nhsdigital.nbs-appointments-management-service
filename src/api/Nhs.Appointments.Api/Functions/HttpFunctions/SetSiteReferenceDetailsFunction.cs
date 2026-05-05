@@ -22,10 +22,8 @@ public class SetSiteReferenceDetailsFunction(
     ISiteService siteService,
     IValidator<SetSiteReferenceDetailsRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<SetSiteReferenceDetailsFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<SetSiteReferenceDetailsRequest, EmptyResponse>(validator, userContextProvider, logger,
-        metricsRecorder)
+    ILogger<SetSiteReferenceDetailsFunction> logger)
+    : BaseApiFunction<SetSiteReferenceDetailsRequest, EmptyResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "SetSiteReferenceDetails", tags: ["Sites"],
         Summary = "Set reference details for a site")]

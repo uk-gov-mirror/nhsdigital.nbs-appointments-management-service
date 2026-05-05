@@ -1,3 +1,4 @@
+using System.Text;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
@@ -13,7 +14,6 @@ using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Core.Features;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
-using System.Text;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
 
@@ -21,7 +21,6 @@ public class QueryAvailabilityBySlotsFunctionTests
 {
     private readonly Mock<IBookingAvailabilityStateService> _bookingAvailabilityStateService = new();
     private readonly Mock<ILogger<QueryAvailabilityBySlotsFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
     private readonly Mock<IValidator<AvailabilityQueryBySlotsRequest>> _validator = new();
     private readonly Mock<IFeatureToggleHelper> _featureToggleHelper = new();
@@ -37,7 +36,6 @@ public class QueryAvailabilityBySlotsFunctionTests
             _validator.Object,
             _userContextProvider.Object,
             _logger.Object,
-            _metricsRecorder.Object,
             _availableSlotsFilter.Object,
             _siteService.Object,
             _featureToggleHelper.Object);

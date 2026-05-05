@@ -7,6 +7,7 @@
     "CancelADateRange": true,
     "CancelADateRangeWithBookings": true,
     "CancellationReasonBookingsReporting": true,
-    "SiteTypeBookingsReporting": true
+    "SiteTypeBookingsReporting": true,
+    "Recurrence": false
   }
 }

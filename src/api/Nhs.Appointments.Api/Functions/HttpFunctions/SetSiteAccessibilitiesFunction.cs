@@ -22,10 +22,8 @@ public class SetSiteAccessibilitiesFunction(
     ISiteService siteService,
     IValidator<SetSiteAccessibilitiesRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<SetSiteAccessibilitiesFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<SetSiteAccessibilitiesRequest, EmptyResponse>(validator, userContextProvider, logger,
-        metricsRecorder)
+    ILogger<SetSiteAccessibilitiesFunction> logger)
+    : BaseApiFunction<SetSiteAccessibilitiesRequest, EmptyResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "SetSiteAccessibilities", tags: ["Sites"],
         Summary = "Set accessibilities values for a site")]

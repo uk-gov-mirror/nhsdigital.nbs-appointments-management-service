@@ -271,6 +271,7 @@ const expectedSiteSummaryReportHeaders = [
   'COVID_FLU:65+ Booked',
   'RSV:Adult Booked',
   'COVID_RSV:18+ Booked',
+  'MENB:ALL Booked',
   'Total Bookings',
   'Cancelled',
   'Maximum Capacity',
@@ -284,6 +285,7 @@ const expectedSiteSummaryReportHeaders = [
   'COVID_FLU:65+ Capacity',
   'RSV:Adult Capacity',
   'COVID_RSV:18+ Capacity',
+  'MENB:ALL Capacity',
 ];
 
 const expectedUsersReportHeaders = ['User'];

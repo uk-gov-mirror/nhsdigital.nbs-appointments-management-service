@@ -1,3 +1,4 @@
+using System.Text;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
@@ -6,10 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Newtonsoft.Json;
-using Nhs.Appointments.Api.Models;
-using Nhs.Appointments.Core.Features;
-using System.Text;
 using Nhs.Appointments.Api.Functions.HttpFunctions;
+using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Availability;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Core.Users;
@@ -18,7 +17,6 @@ namespace Nhs.Appointments.Api.Tests.Functions;
 public class ProposeAvailabilityChangeFunctionTests
 {
     private readonly Mock<ILogger<ProposeAvailabilityChangeFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly Mock<IBookingAvailabilityStateService> _bookingAvailabilityStateService = new();
     private readonly Mock<IUserContextProvider> _userContextProvider = new();
     private readonly Mock<IValidator<AvailabilityChangeProposalRequest>> _validator = new();
@@ -28,11 +26,10 @@ public class ProposeAvailabilityChangeFunctionTests
     public ProposeAvailabilityChangeFunctionTests()
     {
         _sut = new ProposeAvailabilityChangeFunction(
-            _bookingAvailabilityStateService.Object, 
-            _validator.Object, 
+            _bookingAvailabilityStateService.Object,
+            _validator.Object,
             _userContextProvider.Object,
-            _logger.Object, 
-            _metricsRecorder.Object);
+            _logger.Object);
         _validator.Setup(x => x.ValidateAsync(It.IsAny<AvailabilityChangeProposalRequest>(), It.IsAny<CancellationToken>()))
          .ReturnsAsync(new ValidationResult());
     }

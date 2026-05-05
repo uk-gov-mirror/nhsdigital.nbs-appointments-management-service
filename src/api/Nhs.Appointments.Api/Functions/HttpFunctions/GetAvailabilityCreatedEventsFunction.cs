@@ -20,10 +20,8 @@ public class GetAvailabilityCreatedEventsFunction(
     IAvailabilityQueryService availabilityQueryService,
     IValidator<GetAvailabilityCreatedEventsRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<GetAvailabilityCreatedEventsFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<GetAvailabilityCreatedEventsRequest, IEnumerable<AvailabilityCreatedEvent>>(validator,
-        userContextProvider, logger, metricsRecorder)
+    ILogger<GetAvailabilityCreatedEventsFunction> logger)
+    : BaseApiFunction<GetAvailabilityCreatedEventsRequest, IEnumerable<AvailabilityCreatedEvent>>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "Get_AvailabilityCreatedEventsFunction", tags: ["Availability"],
         Summary = "Get records of availability created previously")]

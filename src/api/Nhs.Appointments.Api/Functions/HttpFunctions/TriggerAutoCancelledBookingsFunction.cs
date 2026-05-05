@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +13,6 @@ using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core.Bookings;
 using Nhs.Appointments.Core.Inspectors;
 using Nhs.Appointments.Core.Users;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Nhs.Appointments.Api.Functions.HttpFunctions;
 
@@ -20,9 +20,8 @@ public class TriggerAutoCancelledBookingsFunction(
     IBookingWriteService bookingWriteService,
     IValidator<EmptyRequest> validator,
     IUserContextProvider userContextProvider,
-    ILogger<TriggerAutoCancelledBookingsFunction> logger,
-    IMetricsRecorder metricsRecorder)
-    : BaseApiFunction<EmptyRequest, EmptyResponse>(validator, userContextProvider, logger, metricsRecorder)
+    ILogger<TriggerAutoCancelledBookingsFunction> logger)
+    : BaseApiFunction<EmptyRequest, EmptyResponse>(validator, userContextProvider, logger)
 {
     [OpenApiOperation(operationId: "TriggerAutoCancelledBookingsFunction", tags: ["System"],
        Summary = "Utility function to manually trigger auto cancellation notifications for bookings")]

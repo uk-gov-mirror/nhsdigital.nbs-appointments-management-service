@@ -1,3 +1,4 @@
+using System.Net;
 using FluentAssertions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
@@ -8,8 +9,6 @@ using Nhs.Appointments.Api.Models;
 using Nhs.Appointments.Core;
 using Nhs.Appointments.Core.Sites;
 using Nhs.Appointments.Core.Users;
-using System.Net;
-using System.Security.Policy;
 using Site = Nhs.Appointments.Core.Sites.Site;
 
 namespace Nhs.Appointments.Api.Tests.Functions;
@@ -17,7 +16,6 @@ namespace Nhs.Appointments.Api.Tests.Functions;
 public class SetSiteInformationForCitizensFunctionTests
 {
     private readonly Mock<ILogger<SetSiteInformationForCitizensFunction>> _logger = new();
-    private readonly Mock<IMetricsRecorder> _metricsRecorder = new();
     private readonly Mock<ISiteService> _siteService = new();
     private readonly SetSiteInformationForCitizensFunctionTestProxi _sut;
     private readonly Mock<IUserContextProvider> _userContext = new();
@@ -29,9 +27,7 @@ public class SetSiteInformationForCitizensFunctionTests
             _siteService.Object,
             _validator.Object,
             _userContext.Object,
-            _logger.Object,
-            _metricsRecorder.Object
-        );
+            _logger.Object);
     }
 
     [Theory]
@@ -99,9 +95,8 @@ public class SetSiteInformationForCitizensFunctionTests
         ISiteService siteService,
         IValidator<SetSiteInformationForCitizensRequest> validator,
         IUserContextProvider userContextProvider,
-        ILogger<SetSiteInformationForCitizensFunction> logger,
-        IMetricsRecorder metricsRecorder)
-        : SetSiteInformationForCitizensFunction(siteService, validator, userContextProvider, logger, metricsRecorder)
+        ILogger<SetSiteInformationForCitizensFunction> logger)
+        : SetSiteInformationForCitizensFunction(siteService, validator, userContextProvider, logger)
     {
         private readonly ILogger<SetSiteInformationForCitizensFunction> _logger = logger;
 
